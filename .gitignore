@@ -1,0 +1,7 @@
+.env
+venv/
+__pycache__/
+*.pyc
+.groq_cache/
+.run_progress.json
+*.db
