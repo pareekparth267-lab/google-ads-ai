@@ -4325,7 +4325,7 @@ DATA_MANAGER_API_BASE  = "https://datamanager.googleapis.com/v1"
 
 # ── OAuth2: Start authorization flow ───────────────────────────────
 @app.get("/auth/google")
-async def auth_google_start(redirect_uri: str = "http://https://google-ads-ai-zaok.onrender.com/auth/callback"):
+async def auth_google_start(redirect_uri: str = "https://google-ads-ai-zaok.onrender.com/auth/callback"):
     """Step 1: Redirect user to Google OAuth consent screen."""
     if not GOOGLE_CLIENT_ID:
         raise HTTPException(400, "GOOGLE_ADS_CLIENT_ID not set in .env")
