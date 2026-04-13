@@ -3765,13 +3765,15 @@ async def job_result(job_id: str):
 
 
 # ── Google Ads Library ───────────────────────────────────────
+GOOGLE_ADS_AVAILABLE = False
+GoogleAdsClient = None
+GoogleAdsException = None
 try:
     from google.ads.googleads.client import GoogleAdsClient
     from google.ads.googleads.errors import GoogleAdsException
     GOOGLE_ADS_AVAILABLE = True
-except ImportError:
-    GOOGLE_ADS_AVAILABLE = False
-    print("⚠️ google-ads library not installed")
+except Exception as e:
+    print(f"⚠️ google-ads library error: {e}")
 
 GOOGLE_ADS_CONFIG = {
     "developer_token":   GOOGLE_ADS_DEV_TOK,
