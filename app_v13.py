@@ -97,7 +97,7 @@ else:
 _key_cooldown: dict = {k: 0.0 for k in GROQ_KEYS}
 _key_last_ts:  dict = {k: 0.0 for k in GROQ_KEYS}
 _MIN_GAP = 1.5   # min seconds between calls on the SAME key (safety floor)
-_groq_sem = asyncio.Semaphore(1)  # one call at a time globally
+_groq_sem = asyncio.Semaphore(3)  # allow 3 parallel calls
 
 # ── Response cache (avoids re-running same agent prompt) ──────────
 _CACHE_DIR = _pl.Path(".groq_cache")
