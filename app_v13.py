@@ -49,6 +49,10 @@ GOOGLE_CLIENT_SEC   = os.getenv("GOOGLE_ADS_CLIENT_SECRET", "").strip()
 GOOGLE_REFRESH_TOK  = os.getenv("GOOGLE_ADS_REFRESH_TOKEN", "").strip()
 GOOGLE_MCC_ID       = os.getenv("GOOGLE_ADS_MCC_ID", "").strip()
 
+# Google API URLs
+GOOGLE_TOKEN_URL    = "https://oauth2.googleapis.com/token"
+GOOGLE_ADS_BASE     = "https://googleads.googleapis.com/v17"
+
 DB_PATH = "campaigns.db"
 
 # ═══════════════════════════════════════════════════════════════════
