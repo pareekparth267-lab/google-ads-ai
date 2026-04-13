@@ -388,7 +388,7 @@ def _repair_json(raw: str) -> str:
     raw += '}' * max(0, open_braces)
     return raw
 
-def ai_json(system: str, user: str, max_tokens: int = 700, agent_num: int = 0) -> dict:
+def ai_json(system: str, user: str, max_tokens: int = 700, agent_num: int = 0, **kwargs) -> dict:
     """Call Groq and parse JSON response robustly."""
     try:
         raw = groq_chat(system, user, max_tokens, agent_num=agent_num)
