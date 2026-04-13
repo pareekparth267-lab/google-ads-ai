@@ -3240,15 +3240,24 @@ async def diagnose_google_ads(_: None = Depends(verify_key)):
             headers=headers, timeout=30
         )
         if r.is_success:
-            customers = r.json().get("resourceNames", [])
+            try:
+                customers = r.json().get("resourceNames", [])
+            except Exception:
+                customers = []
             diag["step_3_accessible_customers"] = {
                 "success":         True,
                 "accessible_count": len(customers),
                 "customer_ids":    [c.split("/")[-1] for c in customers],
                 "raw":             customers[:10],
+                "raw_text":        r.text[:300],
             }
         else:
-            err = r.json().get("error", {})
+            diag["step_3_raw_response"] = r.text[:500]
+            diag["step_3_status_code"] = r.status_code
+            try:
+                err = r.json().get("error", {})
+            except Exception:
+                err = {"message": r.text[:200]}
             diag["step_3_accessible_customers"] = {
                 "success": False,
                 "status":  r.status_code,
