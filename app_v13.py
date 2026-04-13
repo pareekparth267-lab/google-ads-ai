@@ -70,6 +70,7 @@ GROQ_MODEL_FAST  = os.getenv("GROQ_MODEL_FAST",  "llama-3.1-8b-instant")     # a
 GROQ_MODEL       = GROQ_MODEL_SMART   # legacy alias
 SMART_AGENT_LIMIT = 35
 
+import re
 import hashlib, pathlib as _pl
 
 def _load_groq_keys() -> list:
@@ -572,16 +573,23 @@ Return JSON: {{
     )
 
 # ─── PHASE B: KEYWORDS (Agents 4–7) ─────────────────────────────
-
 def agent_04_stag_keyword_architect(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 04: STAG Keyword Architect")
     return ai_json(
         "You are a Google Ads keyword architect. Return ONLY valid compact JSON. No explanation.",
-        f"""Build STAG keyword structure for {d.business_name} ({d.business_type}) in {d.target_location}.
-RULES: Return compact JSON with NO extra whitespace. Exactly 5 themes, 5 keywords each (25 total).
-Each keyword object must have: keyword, match_type (EXACT/PHRASE/BROAD), estimated_volume (high/med/low), estimated_cpc (number).
+        f"""Build STAG keyword structure for {d.business_name} ({d.business_type}).
+CRITICAL RULES:
+- DO NOT include city names, state names, or any location words in keywords
+- DO NOT use "near me", "nearby", "in [city]", "[city] + service" patterns
+- Location targeting is handled by campaign geo-settings, NOT keywords
+- Keywords must be SERVICE-BASED ONLY — describe WHAT the business does
+- Return compact JSON. Exactly 5 themes, 5 keywords each (25 total).
+- Each keyword: keyword, match_type (EXACT/PHRASE/BROAD), estimated_volume (high/med/low), estimated_cpc (number)
 
-{{"keywords_by_service":{{"[Theme Name]":[{{"keyword":"[kw]","match_type":"EXACT","estimated_volume":"high","estimated_cpc":3.5}}]}},"total_keywords":25,"recommended_ad_groups":5}}
+GOOD examples: "garage door repair", "emergency garage door service", "garage door spring replacement"
+BAD examples: "garage door repair phoenix", "garage door near me", "cheap garage door"
+
+{{"keywords_by_service":{{"[Theme Name]":[{{"keyword":"[service keyword only]","match_type":"EXACT","estimated_volume":"high","estimated_cpc":3.5}}]}},"total_keywords":25,"recommended_ad_groups":5}}
 
 5 themes for {d.business_type}:""",
         max_tokens=1500,
@@ -592,6 +600,7 @@ def agent_05_brand_segmentation(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 05: Brand Segmentation")
     return ai_json(
         "You are a brand keyword segmentation specialist for Google Ads.",
+        "You are a brand keyword specialist. NEVER include city/location names in keywords. Service-based keywords only.",
         f"""Create brand vs. non-brand keyword segmentation for {d.business_name} ({d.business_type}).
 Return JSON: {{
   "brand_campaign": {{
@@ -634,14 +643,16 @@ Return JSON: {{
 def agent_07_intent_clustering(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 07: Intent Clustering")
     return ai_json(
-        "You are an intent clustering expert for Google Ads campaign organization.",
-        f"""Create intent-based keyword clusters for {d.business_type}.
+        "You are an intent clustering expert for Google Ads campaign organization. NEVER include city names, state names, or location words in keywords. Pure service-based keywords only.",
+        f"""RULE: NO location words in keywords. Pure service keywords only. No city names, no state names, no 'near me'.
+
+Create intent-based keyword clusters for {d.business_type}.
 Return JSON: {{
   "clusters": [
     {{
       "cluster_name": "",
       "intent": "emergency|planned|research|local",
-      "keywords": [...],
+      "keywords": [...service keywords only, NO location words],
       "recommended_landing_page_type": "",
       "recommended_cta": "",
       "bid_multiplier": number
