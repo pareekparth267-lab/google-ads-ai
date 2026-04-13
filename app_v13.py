@@ -2904,6 +2904,8 @@ async def run_all_agents(d: RunCrewRequest, resume_from: dict | None = None) -> 
         agent_85_funnel_orchestrator,
     ], "Phase N: Scaling & Growth")
     winner_scale, mkt_expand, kw_expand, comp_gap, profit_roas, cross_sync, funnel_orch = n_results
+    kw_expand = _strip_location_keywords(kw_expand, d.target_location)
+    comp_gap  = _strip_location_keywords(comp_gap,  d.target_location)
     # Strip location from expansion keyword agents
     kw_expand = _strip_location_keywords(kw_expand, d.target_location)
     comp_gap  = _strip_location_keywords(comp_gap,  d.target_location)
