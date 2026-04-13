@@ -3230,6 +3230,8 @@ async def diagnose_google_ads(_: None = Depends(verify_key)):
         "developer-token": GOOGLE_ADS_DEV_TOK,
         "Content-Type":   "application/json",
     }
+    if GOOGLE_MCC_ID:
+        headers["login-customer-id"] = GOOGLE_MCC_ID.replace("-","")
 
     # Step 3 — List accessible customers
     try:
