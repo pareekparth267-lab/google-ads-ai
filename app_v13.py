@@ -148,7 +148,7 @@ def _parse_retry_after(headers) -> float:
             pass
     return 30.0  # safe default
 
-def groq_chat(system: str, user: str, max_tokens: int = 700, agent_num: int = 0) -> str:
+def groq_chat(system: str, user: str, max_tokens: int = 700, agent_num: int = 0, **kwargs) -> str:
     """
     Groq API call with:
     - 4-key rotation  (instant switch on 429, no long waits)
@@ -391,7 +391,7 @@ def _repair_json(raw: str) -> str:
 def ai_json(system: str, user: str, max_tokens: int = 700, agent_num: int = 0, **kwargs) -> dict:
     """Call Groq and parse JSON response robustly."""
     try:
-        raw = groq_chat(system, user, max_tokens, agent_num=agent_num)
+        raw = groq_chat(system, user, max_tokens=max_tokens, agent_num=agent_num)
         # Strip markdown fences if model adds them anyway
         if "```" in raw:
             raw = raw.split("```")[1]
