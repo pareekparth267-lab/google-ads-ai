@@ -3236,7 +3236,7 @@ async def diagnose_google_ads(_: None = Depends(verify_key)):
     # Step 3 — List accessible customers
     try:
         r = httpx.get(
-            f"{GOOGLE_ADS_BASE}/customers:listAccessibleCustomers",
+            "https://googleads.googleapis.com/v17/customers:listAccessibleCustomers",
             headers=headers, timeout=30
         )
         if r.is_success:
@@ -3358,7 +3358,7 @@ async def list_customers(_: None = Depends(verify_key)):
     # List accessible customers
     try:
         r = httpx.get(
-            f"{GOOGLE_ADS_BASE}/customers:listAccessibleCustomers",
+            "https://googleads.googleapis.com/v17/customers:listAccessibleCustomers",
             headers=headers, timeout=30
         )
         if not r.is_success:
