@@ -2656,7 +2656,7 @@ Return JSON: {{
   "risk_mitigation_plan": [...]
 }}"""
     ,
-        max_tokens=1200,
+        max_tokens=400,
         agent_num=86
     )
 
@@ -2683,7 +2683,7 @@ Return JSON: {{
   "estimated_automation_hours_saved_monthly": number
 }}"""
     ,
-        max_tokens=1200,
+        max_tokens=400,
         agent_num=87
     )
 
@@ -2716,7 +2716,7 @@ Return JSON: {{
   "next_review_date": ""
 }}"""
     ,
-        max_tokens=1200,
+        max_tokens=400,
         agent_num=88
     )
 
