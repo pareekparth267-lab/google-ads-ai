@@ -3709,6 +3709,40 @@ Return JSON: {{
     )
     return result
 
+
+# Background Job Store
+import uuid as _uuid2
+_jobs = {}
+
+@app.post("/start-job")
+async def start_job(body: RunCrewRequest, background_tasks: BackgroundTasks, _=Depends(verify_key)):
+    job_id = str(_uuid2.uuid4())[:12]
+    _jobs[job_id] = {"status": "running", "result": None, "error": None}
+    async def run_job():
+        try:
+            result = await run_all_agents(body)
+            _jobs[job_id]["status"] = "done"
+            _jobs[job_id]["result"] = result
+        except Exception as e:
+            _jobs[job_id]["status"] = "error"
+            _jobs[job_id]["error"] = str(e)
+    background_tasks.add_task(run_job)
+    return {"job_id": job_id, "status": "running"}
+
+@app.get("/job-status/{job_id}")
+async def job_status(job_id: str):
+    job = _jobs.get(job_id)
+    if not job:
+        return {"status": "not_found"}
+    return {"status": job["status"], "error": job.get("error")}
+
+@app.get("/job-result/{job_id}")
+async def job_result(job_id: str):
+    job = _jobs.get(job_id)
+    if not job or job["status"] != "done":
+        return {"error": "Not ready"}
+    return job["result"]
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
