@@ -3712,6 +3712,7 @@ Return JSON: {{
 
 # Background Job Store
 import uuid as _uuid2
+import traceback as _tb
 _jobs = {}
 
 @app.post("/start-job")
@@ -3725,7 +3726,7 @@ async def start_job(body: RunCrewRequest, background_tasks: BackgroundTasks, _=D
             _jobs[job_id]["result"] = result
         except Exception as e:
             _jobs[job_id]["status"] = "error"
-            _jobs[job_id]["error"] = str(e)
+            _jobs[job_id]["error"] = str(e) + " TRACE: " + _tb.format_exc()
     background_tasks.add_task(run_job)
     return {"job_id": job_id, "status": "running"}
 
