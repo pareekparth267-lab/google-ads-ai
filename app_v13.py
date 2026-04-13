@@ -601,8 +601,7 @@ BAD examples: "garage door repair phoenix", "garage door near me", "cheap garage
 def agent_05_brand_segmentation(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 05: Brand Segmentation")
     return ai_json(
-        "You are a brand keyword segmentation specialist for Google Ads.",
-        "You are a brand keyword specialist. NEVER include city/location names in keywords. Service-based keywords only.",
+        "You are a brand keyword segmentation specialist for Google Ads. NEVER include city/location names in keywords. Service-based keywords only.",
         f"""Create brand vs. non-brand keyword segmentation for {d.business_name} ({d.business_type}).
 Return JSON: {{
   "brand_campaign": {{
