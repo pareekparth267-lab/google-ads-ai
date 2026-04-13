@@ -1391,7 +1391,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);}
         <div class="fg">
           <div class="form-group">
             <label>Backend URL</label>
-            <input type="url" id="set_backend" value="http://https://google-ads-ai-zaok.onrender.com">
+            <input type="url" id="set_backend" value="https://google-ads-ai-zaok.onrender.com">
           </div>
           <div class="form-group">
             <label>Dashboard API Key</label>
@@ -1607,7 +1607,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);}
           </div>
           <div class="form-group mb12">
             <label>Redirect URI (must match Google Console)</label>
-            <input type="text" id="oauth_redirect" value="http://https://google-ads-ai-zaok.onrender.com/auth/callback">
+            <input type="text" id="oauth_redirect" value="https://google-ads-ai-zaok.onrender.com/auth/callback">
           </div>
           <button class="btn btn-primary" onclick="startOAuth()">🔐 Authorize Google Ads Account</button>
           <div id="oauth_result" class="mt12" style="display:none;"></div>
@@ -1635,7 +1635,7 @@ DASHBOARD_API_KEY=<span style="color:var(--muted)">optional security key</span>
 // ─────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────
-let BACKEND = localStorage.getItem('backend') || 'http://https://google-ads-ai-zaok.onrender.com';
+let BACKEND = localStorage.getItem('backend') || 'https://google-ads-ai-zaok.onrender.com';
 let lastResults = null;
 let _lazyRenderData = null;
 let _renderedTabs   = new Set();
