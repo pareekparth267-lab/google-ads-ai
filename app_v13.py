@@ -412,6 +412,34 @@ def ai_json(system: str, user: str, max_tokens: int = 700, agent_num: int = 0) -
         log.error(f"AI call failed (agent {agent_num}): {e}")
         return {"error": str(e)}
 
+def repair_json(text):
+    """Comprehensive JSON repair."""
+    if not text or not text.strip():
+        return None
+    text = text.strip()
+    text = re.sub(r'^```(?:json)?\s*', '', text, flags=re.MULTILINE)
+    text = re.sub(r'\s*```$', '', text, flags=re.MULTILINE)
+    text = text.strip()
+    try:
+        return json.loads(text)
+    except Exception:
+        pass
+    cleaned = re.sub(r',\s*([}\]])', r'\1', text)
+    try:
+        return json.loads(cleaned)
+    except Exception:
+        pass
+    fixed = cleaned
+    opens = fixed.count('{') - fixed.count('}')
+    opens_arr = fixed.count('[') - fixed.count(']')
+    fixed = re.sub(r',\s*$', '', fixed.rstrip())
+    fixed += ']' * max(0, opens_arr) + '}' * max(0, opens)
+    try:
+        return json.loads(fixed)
+    except Exception:
+        return None
+
+
 def ai_text(system: str, user: str, max_tokens: int = 400) -> str:
     """Call Groq for plain text using the fast model."""
     try:
@@ -421,167 +449,80 @@ def ai_text(system: str, user: str, max_tokens: int = 400) -> str:
         return f"Error: {e}"
 
 
-def _strip_location_keywords(kw_data: dict, target_location: str) -> dict:
+def _strip_location_keywords(kw_data, target_location=""):
     """
-    Remove ALL location-based keywords from keyword data.
-    Google Ads best practice: location targeting belongs in campaign geo-settings, not keywords.
+    AGGRESSIVELY remove location-specific keywords from any keyword structure.
+    Handles: lists, dicts, nested objects, strings.
     """
-    if not kw_data or not isinstance(kw_data, dict):
-        return kw_data
-
-    # Build location terms to strip
-    location_terms = set()
-    if target_location:
-        # Add full location and each word
-        parts = target_location.lower().replace(',', ' ').split()
-        location_terms.update(p for p in parts if len(p) > 2)
-        location_terms.add(target_location.lower())
-
-    # Always strip these patterns regardless of location
-    ALWAYS_STRIP = [
-        'near me', 'nearby', 'local', 'in my area', 'around me',
-        'closest', 'nearest', 'close to me', 'in my city',
-        'in [city]', 'in [location]', '[city]', '[location]',
+    # Build location patterns to strip
+    location_patterns = [
+        r'\bnear me\b', r'\bnearby\b', r'\blocal\b', r'\bin my area\b',
+        r'\baround me\b', r'\bin my city\b', r'\bin [a-z]+ (fl|ca|tx|ny|az|ga|nc|va|wa|or|co|nv|ut|id|mt|wy|nd|sd|ne|ks|ok|ar|la|ms|al|tn|ky|wv|sc|mo|ia|mn|wi|il|in|mi|oh|pa|nj|de|md|ct|ri|ma|vt|nh|me|ak|hi)\b',
+        r'\b[a-z]+(\s[a-z]+)? (fl|ca|tx|ny|az|ga|nc|va|wa|or|co|nv|ut|id|mt|wy|nd|sd|ne|ks|ok|ar|la|ms|al|tn|ky|wv|sc|mo|ia|mn|wi|il|in|mi|oh|pa|nj|de|md|ct|ri|ma|vt|nh|me|ak|hi)\b',
     ]
-
-    # Common US state abbreviations and words
-    GEO_PATTERNS = re.compile(
-        r'\b(near me|nearby|local|around me|closest|nearest|'
-        r'fl|ca|tx|ny|az|ga|wa|or|co|nv|ut|nm|id|mt|wy|nd|sd|'
-        r'mn|ia|mo|ar|la|ms|al|tn|ky|wv|va|nc|sc|'
-        r'clearwater|tampa|orlando|miami|jacksonville|'
-        r'safety harbor|dunedin|largo|pinellas|'
-        r'in \w+|near \w+)\b',
-        re.IGNORECASE
-    )
-
-    def is_location_kw(kw_text: str) -> bool:
-        kw_lower = kw_text.lower().strip()
-        # Check location terms from target location
-        for term in location_terms:
-            if term and len(term) > 2 and term in kw_lower:
+    
+    # Extract city/state from target_location if provided
+    if target_location:
+        # Split "City, State" or "City State" 
+        parts = re.split(r'[,\s]+', target_location.lower().strip())
+        for part in parts:
+            part = part.strip()
+            if len(part) > 2:  # Skip short abbreviations
+                location_patterns.append(r'\b' + re.escape(part) + r'\b')
+    
+    def is_location_keyword(kw_str):
+        """Return True if keyword contains location terms."""
+        kw_lower = kw_str.lower().strip()
+        for pattern in location_patterns:
+            if re.search(pattern, kw_lower):
                 return True
-        # Check always-strip patterns
-        for term in ALWAYS_STRIP:
-            if term.lower() in kw_lower:
-                return True
-        # Check geo patterns
-        if GEO_PATTERNS.search(kw_lower):
-            return True
         return False
-
-    def clean_list(kw_list):
+    
+    def strip_from_list(kw_list):
+        """Remove location keywords from a list."""
         if not isinstance(kw_list, list):
             return kw_list
-        cleaned = []
+        result = []
         for item in kw_list:
             if isinstance(item, str):
-                if not is_location_kw(item):
-                    cleaned.append(item)
+                if not is_location_keyword(item):
+                    result.append(item)
             elif isinstance(item, dict):
-                kw_text = item.get('keyword', item.get('term', ''))
-                if not is_location_kw(kw_text):
-                    cleaned.append(item)
+                result.append(strip_from_dict(item))
             else:
-                cleaned.append(item)
-        return cleaned
+                result.append(item)
+        return result
+    
+    def strip_from_dict(d):
+        """Recursively strip location keywords from dict values."""
+        if not isinstance(d, dict):
+            return d
+        result = {}
+        for k, v in d.items():
+            if k.lower() in ('keyword', 'keywords', 'search_terms', 'terms', 'kws', 'kw_list', 'keyword_list'):
+                if isinstance(v, list):
+                    result[k] = strip_from_list(v)
+                elif isinstance(v, str):
+                    result[k] = v if not is_location_keyword(v) else ""
+                else:
+                    result[k] = v
+            elif isinstance(v, list):
+                result[k] = strip_from_list(v)
+            elif isinstance(v, dict):
+                result[k] = strip_from_dict(v)
+            else:
+                result[k] = v
+        return result
+    
+    # Handle different input types
+    if isinstance(kw_data, list):
+        return strip_from_list(kw_data)
+    elif isinstance(kw_data, dict):
+        return strip_from_dict(kw_data)
+    elif isinstance(kw_data, str):
+        return kw_data if not is_location_keyword(kw_data) else ""
+    return kw_data
 
-    result = {}
-    for key, val in kw_data.items():
-        if isinstance(val, dict):
-            result[key] = {svc: clean_list(kws) for svc, kws in val.items()}
-        elif isinstance(val, list):
-            result[key] = clean_list(val)
-        else:
-            result[key] = val
-
-    return result
-
-# ════════════════════════════════════════════════════════════════
-# PYDANTIC MODELS
-# ════════════════════════════════════════════════════════════════
-
-class RunCrewRequest(BaseModel):
-    business_name: str
-    business_type: str
-    website_url: str
-    target_location: str
-    target_language: str = "English"
-    secondary_language: str = "Spanish"
-    conversion_goal: str = "Leads"
-    daily_budget: float = 50.0
-    monthly_revenue: float = 0.0
-    customer_id: str = ""
-    auto_publish: bool = False
-    campaign_types: List[str] = ["Search", "Performance Max", "Display"]
-    disabled_agents: List[int] = []   # agent numbers to skip e.g. [12, 13, 65]
-
-class AnalyzeUrlRequest(BaseModel):
-    url: str
-
-class SearchTermsRequest(BaseModel):
-    search_terms: List[str]
-    business_type: str
-    current_negatives: List[str] = []
-
-class QualityScoreRequest(BaseModel):
-    keywords: List[str]
-    headlines: List[str]
-    descriptions: List[str] = []
-    landing_page_content: str = ""
-    business_type: str
-
-class AnomalyRequest(BaseModel):
-    campaign_name: str
-    metrics: Dict[str, Any]
-    historical_avg: Dict[str, Any]
-
-class AudienceRequest(BaseModel):
-    business_name: str
-    business_type: str
-    target_location: str
-    website_url: str = ""
-
-class ReportRequest(BaseModel):
-    campaign_name: str
-    metrics: Dict[str, Any]
-    conversion_goal: str = "Leads"
-
-class BidAdjustRequest(BaseModel):
-    campaign_name: str
-    device_data: Dict[str, Any]
-    location_data: Dict[str, Any]
-    time_data: Dict[str, Any]
-
-class CompetitorSpyRequest(BaseModel):
-    business_type: str
-    target_location: str
-    competitors: List[str] = []
-
-class SmartBudgetRequest(BaseModel):
-    business_name: str
-    current_spend: float
-    current_roas: float
-    target_cpa: float
-    campaign_data: Dict[str, Any] = {}
-
-class LandingPageRequest(BaseModel):
-    business_name: str
-    business_type: str
-    target_location: str
-    conversion_goal: str
-    keywords: List[str] = []
-
-class ShoppingFeedRequest(BaseModel):
-    business_name: str
-    products: List[Dict[str, Any]]
-    target_location: str
-
-# ════════════════════════════════════════════════════════════════
-# THE 35 AGENTS
-# ════════════════════════════════════════════════════════════════
-
-# ─── PHASE A: FOUNDATION (Agents 1–3) ───────────────────────────
 
 def agent_01_business_intelligence(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 01: Business Intelligence")
