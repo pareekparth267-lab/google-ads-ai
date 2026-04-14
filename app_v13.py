@@ -412,34 +412,6 @@ def ai_json(system: str, user: str, max_tokens: int = 700, agent_num: int = 0) -
         log.error(f"AI call failed (agent {agent_num}): {e}")
         return {"error": str(e)}
 
-def repair_json(text):
-    """Comprehensive JSON repair."""
-    if not text or not text.strip():
-        return None
-    text = text.strip()
-    text = re.sub(r'^```(?:json)?\s*', '', text, flags=re.MULTILINE)
-    text = re.sub(r'\s*```$', '', text, flags=re.MULTILINE)
-    text = text.strip()
-    try:
-        return json.loads(text)
-    except Exception:
-        pass
-    cleaned = re.sub(r',\s*([}\]])', r'\1', text)
-    try:
-        return json.loads(cleaned)
-    except Exception:
-        pass
-    fixed = cleaned
-    opens = fixed.count('{') - fixed.count('}')
-    opens_arr = fixed.count('[') - fixed.count(']')
-    fixed = re.sub(r',\s*$', '', fixed.rstrip())
-    fixed += ']' * max(0, opens_arr) + '}' * max(0, opens)
-    try:
-        return json.loads(fixed)
-    except Exception:
-        return None
-
-
 def ai_text(system: str, user: str, max_tokens: int = 400) -> str:
     """Call Groq for plain text using the fast model."""
     try:
@@ -449,80 +421,202 @@ def ai_text(system: str, user: str, max_tokens: int = 400) -> str:
         return f"Error: {e}"
 
 
-def _strip_location_keywords(kw_data, target_location=""):
+def _strip_location_keywords(kw_data: dict, target_location: str) -> dict:
     """
-    AGGRESSIVELY remove location-specific keywords from any keyword structure.
-    Handles: lists, dicts, nested objects, strings.
+    Remove ALL location-based keywords from keyword data — handles ALL nested structures.
+    Covers: keywords_by_service, expansion_keyword_clusters, brand_campaign.keywords, etc.
     """
-    # Build location patterns to strip
-    location_patterns = [
-        r'\bnear me\b', r'\bnearby\b', r'\blocal\b', r'\bin my area\b',
-        r'\baround me\b', r'\bin my city\b', r'\bin [a-z]+ (fl|ca|tx|ny|az|ga|nc|va|wa|or|co|nv|ut|id|mt|wy|nd|sd|ne|ks|ok|ar|la|ms|al|tn|ky|wv|sc|mo|ia|mn|wi|il|in|mi|oh|pa|nj|de|md|ct|ri|ma|vt|nh|me|ak|hi)\b',
-        r'\b[a-z]+(\s[a-z]+)? (fl|ca|tx|ny|az|ga|nc|va|wa|or|co|nv|ut|id|mt|wy|nd|sd|ne|ks|ok|ar|la|ms|al|tn|ky|wv|sc|mo|ia|mn|wi|il|in|mi|oh|pa|nj|de|md|ct|ri|ma|vt|nh|me|ak|hi)\b',
-    ]
-    
-    # Extract city/state from target_location if provided
+    if not kw_data or not isinstance(kw_data, dict):
+        return kw_data
+
+    # Build location terms from target_location
+    location_terms = set()
     if target_location:
-        # Split "City, State" or "City State" 
-        parts = re.split(r'[,\s]+', target_location.lower().strip())
-        for part in parts:
-            part = part.strip()
-            if len(part) > 2:  # Skip short abbreviations
-                location_patterns.append(r'\b' + re.escape(part) + r'\b')
-    
-    def is_location_keyword(kw_str):
-        """Return True if keyword contains location terms."""
-        kw_lower = kw_str.lower().strip()
-        for pattern in location_patterns:
-            if re.search(pattern, kw_lower):
+        parts = target_location.lower().replace(',', ' ').replace('.', ' ').split()
+        location_terms.update(p for p in parts if len(p) > 2)
+        location_terms.add(target_location.lower())
+
+    # Geo patterns — comprehensive
+    GEO_PATTERNS = re.compile(
+        r'\b(near me|nearby|near by|local|around me|in my area|closest|nearest|'
+        r'close to me|in my city|in my town|'
+        r'\bfl\b|\bca\b|\btx\b|\bny\b|\baz\b|\bga\b|\bwa\b|'
+        r'clearwater|tampa|orlando|miami|jacksonville|st pete|saint pete|'
+        r'safety harbor|dunedin|largo|pinellas|hillsborough|'
+        r'\bin [a-z]{3,}\b|\bnear [a-z]{3,}\b)\b',
+        re.IGNORECASE
+    )
+
+    def is_location_kw(kw_text: str) -> bool:
+        if not kw_text:
+            return False
+        kw_lower = kw_text.lower().strip()
+        for term in location_terms:
+            if term and len(term) > 2 and term in kw_lower:
                 return True
+        if GEO_PATTERNS.search(kw_lower):
+            return True
         return False
-    
-    def strip_from_list(kw_list):
-        """Remove location keywords from a list."""
+
+    def clean_text(text: str) -> bool:
+        """Returns True if keyword should be KEPT (not location-based)."""
+        return not is_location_kw(str(text))
+
+    def clean_list(kw_list: list) -> list:
+        """Strip location keywords from a list of strings or dicts."""
         if not isinstance(kw_list, list):
             return kw_list
         result = []
         for item in kw_list:
             if isinstance(item, str):
-                if not is_location_keyword(item):
+                if clean_text(item):
                     result.append(item)
             elif isinstance(item, dict):
-                result.append(strip_from_dict(item))
+                # Handle {keyword: "...", match_type: "..."} format
+                kw_text = item.get('keyword', item.get('term', item.get('text', '')))
+                if clean_text(kw_text):
+                    result.append(item)
             else:
                 result.append(item)
         return result
-    
-    def strip_from_dict(d):
-        """Recursively strip location keywords from dict values."""
-        if not isinstance(d, dict):
-            return d
-        result = {}
-        for k, v in d.items():
-            if k.lower() in ('keyword', 'keywords', 'search_terms', 'terms', 'kws', 'kw_list', 'keyword_list'):
-                if isinstance(v, list):
-                    result[k] = strip_from_list(v)
-                elif isinstance(v, str):
-                    result[k] = v if not is_location_keyword(v) else ""
-                else:
-                    result[k] = v
-            elif isinstance(v, list):
-                result[k] = strip_from_list(v)
-            elif isinstance(v, dict):
-                result[k] = strip_from_dict(v)
-            else:
-                result[k] = v
-        return result
-    
-    # Handle different input types
-    if isinstance(kw_data, list):
-        return strip_from_list(kw_data)
-    elif isinstance(kw_data, dict):
-        return strip_from_dict(kw_data)
-    elif isinstance(kw_data, str):
-        return kw_data if not is_location_keyword(kw_data) else ""
-    return kw_data
 
+    def clean_value(val):
+        """Recursively clean any value."""
+        if isinstance(val, list):
+            # Check if list of strings (keywords)
+            if all(isinstance(i, str) for i in val):
+                return clean_list(val)
+            # Check if list of dicts with keyword field
+            if all(isinstance(i, dict) for i in val):
+                # Could be keyword objects or cluster objects
+                cleaned = []
+                for item in val:
+                    if 'keyword' in item or 'term' in item:
+                        # It's a keyword dict - apply location filter
+                        kw_text = item.get('keyword', item.get('term', ''))
+                        if clean_text(kw_text):
+                            cleaned.append(item)
+                    elif 'keywords' in item:
+                        # It's a cluster dict containing keywords list
+                        item_copy = dict(item)
+                        item_copy['keywords'] = clean_list(item.get('keywords', []))
+                        cleaned.append(item_copy)
+                    else:
+                        cleaned.append(item)
+                return cleaned
+            return val
+        elif isinstance(val, dict):
+            return {k: clean_value(v) for k, v in val.items()}
+        return val
+
+    # Apply cleaning to the entire data structure
+    result = {}
+    for key, val in kw_data.items():
+        if key == 'keywords_by_service' or key == 'keywords_by_theme':
+            # Dict of service -> list of keywords
+            result[key] = {svc: clean_list(kws) for svc, kws in val.items()} if isinstance(val, dict) else val
+        elif key == 'expansion_keyword_clusters':
+            # List of cluster objects with 'keywords' inside
+            result[key] = clean_value(val)
+        elif key in ('brand_campaign', 'non_brand_campaigns', 'competitor_keywords',
+                     'brand_protection_keywords', 'clusters', 'long_tail_opportunities',
+                     'question_based_keywords', 'competitor_gap_keywords', 'trending_keywords',
+                     'high_value_search_terms', 'new_keyword_opportunities', 'competitor_keyword_gaps'):
+            result[key] = clean_value(val)
+        elif isinstance(val, list):
+            result[key] = clean_list(val)
+        elif isinstance(val, dict):
+            result[key] = {k: clean_value(v) for k, v in val.items()}
+        else:
+            result[key] = val
+
+    return result
+
+# ════════════════════════════════════════════════════════════════
+# PYDANTIC MODELS
+# ════════════════════════════════════════════════════════════════
+
+class RunCrewRequest(BaseModel):
+    business_name: str
+    business_type: str
+    website_url: str
+    target_location: str
+    target_language: str = "English"
+    secondary_language: str = "Spanish"
+    conversion_goal: str = "Leads"
+    daily_budget: float = 50.0
+    monthly_revenue: float = 0.0
+    customer_id: str = ""
+    auto_publish: bool = False
+    campaign_types: List[str] = ["Search", "Performance Max", "Display"]
+    disabled_agents: List[int] = []   # agent numbers to skip e.g. [12, 13, 65]
+
+class AnalyzeUrlRequest(BaseModel):
+    url: str
+
+class SearchTermsRequest(BaseModel):
+    search_terms: List[str]
+    business_type: str
+    current_negatives: List[str] = []
+
+class QualityScoreRequest(BaseModel):
+    keywords: List[str]
+    headlines: List[str]
+    descriptions: List[str] = []
+    landing_page_content: str = ""
+    business_type: str
+
+class AnomalyRequest(BaseModel):
+    campaign_name: str
+    metrics: Dict[str, Any]
+    historical_avg: Dict[str, Any]
+
+class AudienceRequest(BaseModel):
+    business_name: str
+    business_type: str
+    target_location: str
+    website_url: str = ""
+
+class ReportRequest(BaseModel):
+    campaign_name: str
+    metrics: Dict[str, Any]
+    conversion_goal: str = "Leads"
+
+class BidAdjustRequest(BaseModel):
+    campaign_name: str
+    device_data: Dict[str, Any]
+    location_data: Dict[str, Any]
+    time_data: Dict[str, Any]
+
+class CompetitorSpyRequest(BaseModel):
+    business_type: str
+    target_location: str
+    competitors: List[str] = []
+
+class SmartBudgetRequest(BaseModel):
+    business_name: str
+    current_spend: float
+    current_roas: float
+    target_cpa: float
+    campaign_data: Dict[str, Any] = {}
+
+class LandingPageRequest(BaseModel):
+    business_name: str
+    business_type: str
+    target_location: str
+    conversion_goal: str
+    keywords: List[str] = []
+
+class ShoppingFeedRequest(BaseModel):
+    business_name: str
+    products: List[Dict[str, Any]]
+    target_location: str
+
+# ════════════════════════════════════════════════════════════════
+# THE 35 AGENTS
+# ════════════════════════════════════════════════════════════════
+
+# ─── PHASE A: FOUNDATION (Agents 1–3) ───────────────────────────
 
 def agent_01_business_intelligence(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 01: Business Intelligence")
@@ -593,38 +687,57 @@ Return JSON: {{
 # ─── PHASE B: KEYWORDS (Agents 4–7) ─────────────────────────────
 
 def agent_04_stag_keyword_architect(d: RunCrewRequest) -> dict:
-    log.info("▶ Agent 04: STAG Keyword Architect")
+    log.info("\u25b6 Agent 04: STAG Keyword Architect")
     return ai_json(
         "You are a Google Ads keyword architect. Return ONLY valid compact JSON. No explanation.",
-        f"""Build STAG keyword structure for {d.business_name} ({d.business_type}) in {d.target_location}.
-RULES: Return compact JSON with NO extra whitespace. Exactly 5 themes, 5 keywords each (25 total).
-Each keyword object must have: keyword, match_type (EXACT/PHRASE/BROAD), estimated_volume (high/med/low), estimated_cpc (number).
+        f"""Build STAG keyword structure for {d.business_name} ({d.business_type}).
 
-{{"keywords_by_service":{{"[Theme Name]":[{{"keyword":"[kw]","match_type":"EXACT","estimated_volume":"high","estimated_cpc":3.5}}]}},"total_keywords":25,"recommended_ad_groups":5}}
+ABSOLUTE RULES - NO EXCEPTIONS:
+1. ZERO location words in any keyword. No city names, no state names, no zip codes.
+2. NO near me, nearby, local, in [city], clearwater, fl, florida, tampa, or ANY place name.
+3. NO price/cost words: cost, costs, cheap, affordable, price, pricing, how much, rates
+4. NO superlatives: best, top, #1, cheapest, leading, premier
+5. NO informational: how to, what is, diy, tips, guide, tutorial
+6. ONLY pure service keywords - describe WHAT the business does, nothing else.
 
-5 themes for {d.business_type}:""",
+GOOD: "pool cleaning", "pool maintenance service", "pool repair", "emergency pool service"
+BAD: "pool cleaning clearwater", "pool cleaning near me", "best pool cleaning", "pool cleaning cost"
+
+Return compact JSON. Exactly 5 themes, 5 keywords each (25 total).
+Each keyword: keyword, match_type (EXACT/PHRASE/BROAD), estimated_volume (high/med/low), estimated_cpc (number)
+
+EXAMPLE FORMAT:
+{{"keywords_by_service":{{"[Theme]":[{{"keyword":"[pure service keyword only]","match_type":"EXACT","estimated_volume":"high","estimated_cpc":3.5}}]}},"total_keywords":25,"recommended_ad_groups":5}}
+
+Generate 5 service themes for {d.business_type} business. Remember: service keywords ONLY, zero location words:""",
         max_tokens=1500,
         agent_num=4,
     )
 
 def agent_05_brand_segmentation(d: RunCrewRequest) -> dict:
-    log.info("▶ Agent 05: Brand Segmentation")
+    log.info("\u25b6 Agent 05: Brand Segmentation")
     return ai_json(
-        "You are a brand keyword segmentation specialist for Google Ads.",
+        "You are a brand keyword segmentation specialist for Google Ads. STRICT RULE: NEVER include city names, state names, 'near me', 'nearby', 'local', or ANY geographic words in keywords.",
         f"""Create brand vs. non-brand keyword segmentation for {d.business_name} ({d.business_type}).
+
+STRICT RULE: ALL keywords must be pure service/brand terms ONLY.
+ZERO location words. ZERO price words. ZERO superlatives.
+BAD: "pool cleaning clearwater", "best pool service near me" 
+GOOD: "pool cleaning service", "pool maintenance company"
+
 Return JSON: {{
   "brand_campaign": {{
-    "keywords": [...],
+    "keywords": ["brand name only keywords - no location"],
     "recommended_bid_strategy": "",
     "budget_percentage": number
   }},
   "non_brand_campaigns": {{
-    "keywords": [...],
+    "keywords": ["pure service keywords - no location, no near me, no city names"],
     "recommended_bid_strategy": "",
     "budget_percentage": number
   }},
-  "competitor_keywords": [...],
-  "brand_protection_keywords": [...]
+  "competitor_keywords": ["competitor brand names only"],
+  "brand_protection_keywords": ["brand variations only"]
 }}"""
     ,
         max_tokens=900,
@@ -651,16 +764,21 @@ Return JSON: {{
     )
 
 def agent_07_intent_clustering(d: RunCrewRequest) -> dict:
-    log.info("▶ Agent 07: Intent Clustering")
+    log.info("\u25b6 Agent 07: Intent Clustering")
     return ai_json(
-        "You are an intent clustering expert for Google Ads campaign organization.",
+        "You are an intent clustering expert for Google Ads. ABSOLUTE RULE: Every keyword must be a pure service term. ZERO location words - no city, no state, no near me, no local, no clearwater, no fl. Keywords describe WHAT the service is, never WHERE.",
         f"""Create intent-based keyword clusters for {d.business_type}.
+
+ZERO LOCATION WORDS IN ANY KEYWORD. Pure service terms only.
+GOOD: "emergency pool repair", "pool maintenance service", "pool equipment replacement"
+BAD: "pool repair near me", "pool service clearwater", "local pool cleaning"
+
 Return JSON: {{
   "clusters": [
     {{
-      "cluster_name": "",
-      "intent": "emergency|planned|research|local",
-      "keywords": [...],
+      "cluster_name": "descriptive cluster name",
+      "intent": "emergency|planned|research|commercial",
+      "keywords": ["pure service keyword", "another service keyword"],
       "recommended_landing_page_type": "",
       "recommended_cta": "",
       "bid_multiplier": number
@@ -947,7 +1065,7 @@ Return JSON: {{
   "scaling_triggers": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=1500,
         agent_num=17
     )
 
@@ -992,7 +1110,7 @@ Return JSON: {{
   "portfolio_strategies": []
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=1300,
         agent_num=19
     )
 
@@ -1340,7 +1458,7 @@ Return JSON: {{
   "win_back_campaigns": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=1300,
         agent_num=33
     )
 
@@ -1550,7 +1668,7 @@ Return JSON: {{
   "pre_peak_preparation_checklist": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=1300,
         agent_num=42
     )
 
@@ -1729,7 +1847,7 @@ Return JSON: {{
   "estimated_cpa_improvement": "X%"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=1500,
         agent_num=49
     )
 
@@ -1888,7 +2006,7 @@ Return JSON: {{
   "expected_cpa_vs_remarketing": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=1400,
         agent_num=56
     )
 
@@ -2509,37 +2627,42 @@ Return JSON: {{
     )
 
 def agent_81_keyword_expander(d: RunCrewRequest) -> dict:
-    log.info("▶ Agent 81: Keyword Expander")
+    log.info("\u25b6 Agent 81: Keyword Expander")
     return ai_json(
-        "You are a keyword expansion and opportunity discovery expert for Google Ads.",
-        f"""Discover keyword expansion opportunities for {d.business_name} ({d.business_type}) in {d.target_location}.
+        "You are a keyword expansion expert for Google Ads. CRITICAL RULE: Every single keyword must be a pure service term with ZERO location words. No city names, no state names, no near me, no local, no clearwater, no fl, no florida, no safety harbor. Only keywords describing WHAT the service is.",
+        f"""Expand keywords for {d.business_name} ({d.business_type}).
+
+ZERO LOCATION WORDS - ABSOLUTE RULE:
+GOOD examples: "pool repair service", "swimming pool maintenance", "pool equipment repair", "pool cleaning company"
+BAD examples: "pool repair clearwater", "pool service near me", "clearwater pool cleaning", "pool cleaning fl"
+
 Return JSON: {{
   "expansion_keyword_clusters": [
     {{
-      "theme": "",
-      "keywords": [...],
+      "theme": "theme name",
+      "keywords": ["pure service keyword only", "another pure service keyword"],
       "estimated_monthly_volume": number,
       "competition": "low|medium|high",
-      "recommended_match_type": "",
+      "recommended_match_type": "PHRASE",
       "priority": "high|medium|low"
     }}
   ],
-  "long_tail_opportunities": [...],
-  "question_based_keywords": [...],
-  "competitor_gap_keywords": [...],
-  "trending_keywords": [...],
-  "negative_list_expansion": [...],
-  "weekly_expansion_cadence": ""
+  "long_tail_opportunities": ["long tail service keywords only"],
+  "question_based_keywords": ["what service questions only"],
+  "competitor_gap_keywords": ["service keywords competitors miss"],
+  "trending_keywords": ["trending service keywords"],
+  "negative_list_expansion": ["irrelevant terms to exclude"],
+  "weekly_expansion_cadence": "brief description"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=1000,
         agent_num=81
     )
 
 def agent_82_competitor_gap_finder(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 82: Competitor Gap Finder")
     return ai_json(
-        "You are a competitive keyword gap analysis expert for Google Ads.",
+        "You are a competitive keyword gap analysis expert for Google Ads. STRICT RULE: ALL keywords must be pure service terms. ZERO location words - no city names, no state, no near me, no local.",
         f"""Find competitor keyword gaps for {d.business_name} ({d.business_type}) in {d.target_location}.
 Return JSON: {{
   "competitor_keyword_gaps": [
