@@ -2129,13 +2129,9 @@ Return JSON: {{
   "waste_categories": [
     {{"category":"","estimated_waste_pct":number,"diagnosis":"","fix":"","priority":"high|medium|low"}}
   ],
-  "immediate_savings_opportunities": [...],
-  "weekly_audit_checklist": [...],
-  "negative_keyword_gaps": [...],
-  "quality_score_waste": [...],
-  "placement_waste": [...],
-  "estimated_monthly_savings": number,
-  "audit_automation_plan": [...]
+  "immediate_savings_opportunities": ["action 1","action 2","action 3"],
+  "weekly_audit_checklist": ["item 1","item 2","item 3"],
+  "estimated_monthly_savings": number
 }}"""
     ,
         max_tokens=600,
@@ -2160,10 +2156,7 @@ Return JSON: {{
     "sections": [...],
     "tone": "executive|technical|agency"
   }},
-  "looker_studio_widgets": [...],
-  "kpi_goal_tracking": {{}},
-  "commentary_templates": [...],
-  "red_amber_green_thresholds": {{}}
+  "red_amber_green_thresholds": {{"ctr":"2%","cpa":"","roas":"3x"}}
 }}"""
     ,
         max_tokens=600,
