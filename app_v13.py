@@ -7,7 +7,6 @@
 ╚══════════════════════════════════════════════════════════════════╝
 """
 
-import re
 import os
 import json
 import time
@@ -41,7 +40,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 log = logging.getLogger(__name__)
 
 # ── Config ───────────────────────────────────────────────────────
-DASHBOARD_API_KEY   = os.getenv("DASHBOARD_API_KEY", "").strip()
+GROQ_API_KEY        = os.getenv("GROQ_API_KEY", "")
+DASHBOARD_API_KEY   = os.getenv("DASHBOARD_API_KEY", "").strip()  # empty = no auth required
 GOOGLE_ADS_DEV_TOK  = os.getenv("GOOGLE_ADS_DEVELOPER_TOKEN", "").strip()
 GOOGLE_CLIENT_ID    = os.getenv("GOOGLE_ADS_CLIENT_ID", "").strip()
 GOOGLE_CLIENT_SEC   = os.getenv("GOOGLE_ADS_CLIENT_SECRET", "").strip()
@@ -50,126 +50,61 @@ GOOGLE_MCC_ID       = os.getenv("GOOGLE_ADS_MCC_ID", "").strip()
 
 DB_PATH = "campaigns.db"
 
-# ═══════════════════════════════════════════════════════════════════
-# GROQ — 4-KEY POOL + DUAL MODEL + RESPONSE CACHE
-# ─────────────────────────────────────────────────────────────────
-# .env setup:
-#   GROQ_API_KEY=gsk_key1
-#   GROQ_API_KEY_2=gsk_key2
-#   GROQ_API_KEY_3=gsk_key3
-#   GROQ_API_KEY_4=gsk_key4
-#
-# How rotation works:
-#   • Each key has its own cooldown timer (set when it gets 429)
-#   • On every call we pick the key with the earliest cooldown
-#   • If that key is still cooling down, we wait only until IT is ready
-#   • This means with 4 keys you almost never wait — just rotate!
-# ═══════════════════════════════════════════════════════════════════
-GROQ_BASE_URL    = "https://api.groq.com/openai/v1"
-GROQ_MODEL_SMART = os.getenv("GROQ_MODEL_SMART", "llama-3.3-70b-versatile")  # agents 1-35
-GROQ_MODEL_FAST  = os.getenv("GROQ_MODEL_FAST",  "llama-3.1-8b-instant")     # agents 36-88
-GROQ_MODEL       = GROQ_MODEL_SMART   # legacy alias
+# ── Groq AI Client (OpenAI-compatible) ───────────────────────────
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+
+# Two-tier model strategy:
+#   GROQ_MODEL_FAST : llama-3.1-8b-instant  → 20,000 TPM free tier  (phases G-O, agents 36-88)
+#   GROQ_MODEL_SMART: llama-3.3-70b-versatile → 6,000 TPM free tier (core agents 1-35)
+GROQ_MODEL_SMART = os.getenv("GROQ_MODEL_SMART", "llama-3.3-70b-versatile")
+GROQ_MODEL_FAST  = os.getenv("GROQ_MODEL_FAST",  "llama-3.1-8b-instant")
+GROQ_MODEL       = GROQ_MODEL_SMART   # default (kept for any legacy references)
+
+# Agents 1-35 are "core" and get the smart model.
+# Agents 36-88 are "extended" and get the fast model (higher TPM).
 SMART_AGENT_LIMIT = 35
 
-import hashlib, pathlib as _pl
-
-def _load_groq_keys() -> list:
-    seen, keys = set(), []
-    for var in ["GROQ_API_KEY", "GROQ_API_KEY_2", "GROQ_API_KEY_3", "GROQ_API_KEY_4"]:
-        k = os.getenv(var, "").strip()
-        if k and k not in seen:
-            keys.append(k)
-            seen.add(k)
-    return keys
-
-GROQ_KEYS = _load_groq_keys()
-GROQ_API_KEY = GROQ_KEYS[0] if GROQ_KEYS else ""  # kept for legacy checks
-
-if GROQ_KEYS:
-    log.info(f"🔑 Groq key pool: {len(GROQ_KEYS)} key(s) loaded — "
-             f"{len(GROQ_KEYS)}× effective rate limit")
-else:
-    log.warning("⚠️  No GROQ_API_KEY found in .env")
-
-# Per-key cooldown: key → epoch time when the key is available again
-_key_cooldown: dict = {k: 0.0 for k in GROQ_KEYS}
-_key_last_ts:  dict = {k: 0.0 for k in GROQ_KEYS}
-_MIN_GAP = 1.5   # min seconds between calls on the SAME key (safety floor)
-_groq_sem = asyncio.Semaphore(1)  # one call at a time globally
-
-# ── Response cache (avoids re-running same agent prompt) ──────────
-_CACHE_DIR = _pl.Path(".groq_cache")
-_CACHE_DIR.mkdir(exist_ok=True)
-
-def _cache_key(system: str, user: str) -> str:
-    return hashlib.md5(f"{system}|||{user}".encode()).hexdigest()
-
-def _cache_get(system: str, user: str):
-    p = _CACHE_DIR / _cache_key(system, user)
-    if p.exists():
-        try:
-            return p.read_text(encoding="utf-8")
-        except Exception:
-            pass
-    return None
-
-def _cache_set(system: str, user: str, result: str):
-    try:
-        p = _CACHE_DIR / _cache_key(system, user)
-        p.write_text(result, encoding="utf-8")
-    except Exception:
-        pass
-
-def _pick_best_key() -> str:
-    """Return the key with the earliest cooldown (available soonest)."""
-    if not GROQ_KEYS:
-        raise RuntimeError("No GROQ API keys loaded — check your .env file")
-    return min(GROQ_KEYS, key=lambda k: _key_cooldown.get(k, 0.0))
-
-def _parse_retry_after(headers) -> float:
-    """Parse Groq's retry-after header. Returns seconds to wait."""
-    ra = headers.get("retry-after", "")
-    if ra:
-        try:
-            return min(float(ra), 90.0)  # cap at 90s
-        except Exception:
-            pass
-    # Try x-ratelimit-reset-tokens: "12.345s" or "1m23.4s"
-    rt = headers.get("x-ratelimit-reset-tokens", "")
-    if rt:
-        try:
-            if "m" in rt:
-                parts = rt.replace("s","").split("m")
-                return min(float(parts[0])*60 + float(parts[1]), 90.0)
-            return min(float(rt.replace("s","")), 90.0)
-        except Exception:
-            pass
-    return 30.0  # safe default
+# ── Token-bucket rate limiter ─────────────────────────────────────
+# 70b model:  6,000 TPM  → gap = 60/8  = 7.5s per call at 800 tokens avg
+# 8b model:  20,000 TPM  → gap = 60/25 = 2.4s per call at 800 tokens avg
+_groq_lock         = asyncio.Lock()
+_groq_last_call_ts = {"smart": 0.0, "fast": 0.0}
+_MIN_GAP_SMART     = 7.0   # seconds between calls to 70b model
+_MIN_GAP_FAST      = 2.5   # seconds between calls to 8b model
+_groq_sem          = asyncio.Semaphore(1)   # one call at a time — safest
 
 def groq_chat(system: str, user: str, max_tokens: int = 700, agent_num: int = 0) -> str:
+    """Single Groq API call with smart model routing and proper 429 handling.
+    
+    - agent_num 1-35  → llama-3.3-70b-versatile (GROQ_MODEL_SMART, 6k TPM)
+    - agent_num 36-88 → llama-3.1-8b-instant    (GROQ_MODEL_FAST,  20k TPM)
+    - agent_num 0     → defaults to fast model
     """
-    Groq API call with:
-    - 4-key rotation  (instant switch on 429, no long waits)
-    - Dual model      (70b for agents 1-35, 8b for 36-88)
-    - Response cache  (skip call if same prompt already answered)
-    - Smart retry     (per-key cooldown tracking)
-    """
-    if not GROQ_KEYS:
+    global _groq_last_call_ts
+    if not GROQ_API_KEY:
         raise RuntimeError("GROQ_API_KEY not set in .env")
-
-    # ── Cache check ───────────────────────────────────────────────
-    cached = _cache_get(system, user)
-    if cached:
-        log.info(f"  💾 Cache hit for agent {agent_num}")
-        return cached
 
     # ── Model selection ───────────────────────────────────────────
     use_smart = (1 <= agent_num <= SMART_AGENT_LIMIT)
     model     = GROQ_MODEL_SMART if use_smart else GROQ_MODEL_FAST
+    tier_key  = "smart" if use_smart else "fast"
+    min_gap   = _MIN_GAP_SMART if use_smart else _MIN_GAP_FAST
 
+    # ── Per-model throttle ────────────────────────────────────────
+    now  = time.time()
+    wait = min_gap - (now - _groq_last_call_ts[tier_key])
+    if wait > 0:
+        log.info(f"  ⏳ Rate-limit gap {wait:.1f}s ({model})...")
+        time.sleep(wait)
+    _groq_last_call_ts[tier_key] = time.time()
+
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type":  "application/json",
+    }
     payload = {
-        "model":       model,
-        "max_tokens":  max_tokens,
+        "model":      model,
+        "max_tokens": max_tokens,
         "temperature": 0.4,
         "messages": [
             {"role": "system", "content": system + "\n\nRespond with valid JSON only. No markdown fences, no preamble."},
@@ -177,75 +112,46 @@ def groq_chat(system: str, user: str, max_tokens: int = 700, agent_num: int = 0)
         ],
     }
 
-    # ── Try up to (n_keys × 3) times before giving up ────────────
-    max_attempts = len(GROQ_KEYS) * 3
-    tried_keys_this_round: set = set()
-
-    for attempt in range(max_attempts):
-        # Pick the key available soonest
-        key = _pick_best_key()
-        now = time.time()
-
-        # Wait only until THIS key's cooldown expires
-        wait_for_key = _key_cooldown.get(key, 0.0) - now
-        if wait_for_key > 0:
-            log.info(f"  ⏳ All keys cooling — waiting {wait_for_key:.1f}s (attempt {attempt+1})")
-            time.sleep(wait_for_key)
-
-        # Enforce minimum gap per key
-        gap = _MIN_GAP - (time.time() - _key_last_ts.get(key, 0.0))
-        if gap > 0:
-            time.sleep(gap)
-
-        key_label = f"key{GROQ_KEYS.index(key)+1}"
-        _key_last_ts[key] = time.time()
-
+    for attempt in range(8):
         try:
             with httpx.Client(timeout=90) as client:
-                r = client.post(
-                    f"{GROQ_BASE_URL}/chat/completions",
-                    json=payload,
-                    headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-                )
+                r = client.post(f"{GROQ_BASE_URL}/chat/completions", json=payload, headers=headers)
 
-                if r.status_code == 200:
-                    content = r.json()["choices"][0]["message"]["content"].strip()
-                    _cache_set(system, user, content)   # save to cache
-                    _key_cooldown[key] = 0.0            # key is healthy again
-                    return content
-
-                elif r.status_code == 429:
-                    # How long does THIS key need to cool?
-                    cool = _parse_retry_after(r.headers)
-                    _key_cooldown[key] = time.time() + cool
-                    log.warning(
-                        f"  🔄 Groq 429 on {key_label} — cooling for {cool:.0f}s, "
-                        f"switching to next key (attempt {attempt+1}/{max_attempts})"
-                    )
-                    # Don't sleep — immediately loop and pick a different key
+                if r.status_code == 429:
+                    # Read the actual Retry-After header — respect it but cap at 90s
+                    retry_after = int(r.headers.get("retry-after", 0))
+                    # Parse x-ratelimit-reset-tokens or x-ratelimit-reset-requests if present
+                    reset_tokens = r.headers.get("x-ratelimit-reset-tokens", "")
+                    # Parse "Xs" format (e.g. "12.5s" or "1m30s")
+                    wait = min(retry_after if retry_after > 0 else 15, 90)
+                    log.warning(f"Groq 429 ({model}) — waiting {wait}s (attempt {attempt+1}/8). retry-after={retry_after}s")
+                    time.sleep(wait)
+                    _groq_last_call_ts[tier_key] = time.time()
                     continue
 
-                elif r.status_code == 401:
-                    log.error(f"  ❌ Groq 401 on {key_label} — invalid key, removing from pool")
-                    _key_cooldown[key] = time.time() + 9999  # park it forever
+                if r.status_code == 503:
+                    wait = 10 + attempt * 5
+                    log.warning(f"Groq 503 ({model}) — waiting {wait}s")
+                    time.sleep(wait)
                     continue
 
-                elif r.status_code == 503:
-                    _key_cooldown[key] = time.time() + 15
-                    log.warning(f"  ⚠️  Groq 503 on {key_label} — retry in 15s")
-                    continue
+                r.raise_for_status()
+                _groq_last_call_ts[tier_key] = time.time()
+                return r.json()["choices"][0]["message"]["content"].strip()
 
-                else:
-                    r.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            if attempt < 7:
+                w = min(15 + attempt * 10, 60)
+                log.warning(f"Groq HTTP {e.response.status_code} ({model}) — retry {attempt+1} in {w}s")
+                time.sleep(w)
+            else:
+                raise
+        except (httpx.TimeoutException, httpx.ConnectError) as e:
+            w = 10 + attempt * 5
+            log.warning(f"Groq network error ({model}) — retry {attempt+1} in {w}s: {e}")
+            time.sleep(w)
 
-        except httpx.TimeoutException:
-            log.warning(f"  ⏱ Groq timeout on {key_label} — retrying")
-            _key_cooldown[key] = time.time() + 5
-        except Exception as e:
-            log.warning(f"  ⚠️  Groq error on {key_label}: {e}")
-            _key_cooldown[key] = time.time() + 10
-
-    raise RuntimeError(f"Groq API failed after {max_attempts} attempts across {len(GROQ_KEYS)} keys")
+    raise RuntimeError(f"Groq API ({model}) failed after 8 retries")
 
 # ── Database ─────────────────────────────────────────────────────
 def init_db():
@@ -350,42 +256,6 @@ def verify_key(x_api_key: Optional[str] = Header(None)):
         raise HTTPException(status_code=401, detail="Invalid API key — set it in Settings tab or leave DASHBOARD_API_KEY empty in .env")
 
 # ── AI Helpers (Groq) ────────────────────────────────────────────
-def _repair_json(raw: str) -> str:
-    """Attempt to fix truncated JSON from cut-off max_tokens responses."""
-    raw = raw.strip()
-    if not raw:
-        return raw
-    # Remove trailing comma before trying to close
-    raw = re.sub(r',\s*$', '', raw.rstrip())
-    # Count unclosed brackets and braces
-    in_string = False
-    escape_next = False
-    open_braces = 0
-    open_brackets = 0
-    for ch in raw:
-        if escape_next:
-            escape_next = False
-            continue
-        if ch == '\\' and in_string:
-            escape_next = True
-            continue
-        if ch == '"' and not in_string:
-            in_string = True
-        elif ch == '"' and in_string:
-            in_string = False
-        elif not in_string:
-            if ch == '{':   open_braces += 1
-            elif ch == '}': open_braces -= 1
-            elif ch == '[':   open_brackets += 1
-            elif ch == ']': open_brackets -= 1
-    # Close any open string first
-    if in_string:
-        raw += '"'
-    # Close open structures (brackets before braces, innermost first)
-    raw += ']' * max(0, open_brackets)
-    raw += '}' * max(0, open_braces)
-    return raw
-
 def ai_json(system: str, user: str, max_tokens: int = 700, agent_num: int = 0) -> dict:
     """Call Groq and parse JSON response robustly."""
     try:
@@ -395,21 +265,12 @@ def ai_json(system: str, user: str, max_tokens: int = 700, agent_num: int = 0) -
             raw = raw.split("```")[1]
             if raw.startswith("json"):
                 raw = raw[4:]
-        raw = raw.strip()
-        try:
-            return json.loads(raw)
-        except json.JSONDecodeError:
-            # Attempt JSON repair for truncated responses
-            repaired = _repair_json(raw)
-            try:
-                result = json.loads(repaired)
-                log.warning(f"Agent {agent_num}: JSON repaired successfully")
-                return result
-            except json.JSONDecodeError as e:
-                log.error(f"JSON parse error (agent {agent_num}): {e} | raw[:200]: {raw[:200]}")
-                return {"error": str(e), "raw_preview": raw[:500]}
+        return json.loads(raw.strip())
+    except json.JSONDecodeError as e:
+        log.error(f"JSON parse error: {e} | raw[:300]: {raw[:300]}")
+        return {"error": str(e), "raw_preview": raw[:500]}
     except Exception as e:
-        log.error(f"AI call failed (agent {agent_num}): {e}")
+        log.error(f"AI call failed: {e}")
         return {"error": str(e)}
 
 def ai_text(system: str, user: str, max_tokens: int = 400) -> str:
@@ -419,118 +280,6 @@ def ai_text(system: str, user: str, max_tokens: int = 400) -> str:
     except Exception as e:
         log.error(f"AI text call failed: {e}")
         return f"Error: {e}"
-
-
-def _strip_location_keywords(kw_data: dict, target_location: str) -> dict:
-    """
-    Remove ALL location-based keywords from keyword data — handles ALL nested structures.
-    Covers: keywords_by_service, expansion_keyword_clusters, brand_campaign.keywords, etc.
-    """
-    if not kw_data or not isinstance(kw_data, dict):
-        return kw_data
-
-    # Build location terms from target_location
-    location_terms = set()
-    if target_location:
-        parts = target_location.lower().replace(',', ' ').replace('.', ' ').split()
-        location_terms.update(p for p in parts if len(p) > 2)
-        location_terms.add(target_location.lower())
-
-    # Geo patterns — comprehensive
-    GEO_PATTERNS = re.compile(
-        r'\b(near me|nearby|near by|local|around me|in my area|closest|nearest|'
-        r'close to me|in my city|in my town|'
-        r'\bfl\b|\bca\b|\btx\b|\bny\b|\baz\b|\bga\b|\bwa\b|'
-        r'clearwater|tampa|orlando|miami|jacksonville|st pete|saint pete|'
-        r'safety harbor|dunedin|largo|pinellas|hillsborough|'
-        r'\bin [a-z]{3,}\b|\bnear [a-z]{3,}\b)\b',
-        re.IGNORECASE
-    )
-
-    def is_location_kw(kw_text: str) -> bool:
-        if not kw_text:
-            return False
-        kw_lower = kw_text.lower().strip()
-        for term in location_terms:
-            if term and len(term) > 2 and term in kw_lower:
-                return True
-        if GEO_PATTERNS.search(kw_lower):
-            return True
-        return False
-
-    def clean_text(text: str) -> bool:
-        """Returns True if keyword should be KEPT (not location-based)."""
-        return not is_location_kw(str(text))
-
-    def clean_list(kw_list: list) -> list:
-        """Strip location keywords from a list of strings or dicts."""
-        if not isinstance(kw_list, list):
-            return kw_list
-        result = []
-        for item in kw_list:
-            if isinstance(item, str):
-                if clean_text(item):
-                    result.append(item)
-            elif isinstance(item, dict):
-                # Handle {keyword: "...", match_type: "..."} format
-                kw_text = item.get('keyword', item.get('term', item.get('text', '')))
-                if clean_text(kw_text):
-                    result.append(item)
-            else:
-                result.append(item)
-        return result
-
-    def clean_value(val):
-        """Recursively clean any value."""
-        if isinstance(val, list):
-            # Check if list of strings (keywords)
-            if all(isinstance(i, str) for i in val):
-                return clean_list(val)
-            # Check if list of dicts with keyword field
-            if all(isinstance(i, dict) for i in val):
-                # Could be keyword objects or cluster objects
-                cleaned = []
-                for item in val:
-                    if 'keyword' in item or 'term' in item:
-                        # It's a keyword dict - apply location filter
-                        kw_text = item.get('keyword', item.get('term', ''))
-                        if clean_text(kw_text):
-                            cleaned.append(item)
-                    elif 'keywords' in item:
-                        # It's a cluster dict containing keywords list
-                        item_copy = dict(item)
-                        item_copy['keywords'] = clean_list(item.get('keywords', []))
-                        cleaned.append(item_copy)
-                    else:
-                        cleaned.append(item)
-                return cleaned
-            return val
-        elif isinstance(val, dict):
-            return {k: clean_value(v) for k, v in val.items()}
-        return val
-
-    # Apply cleaning to the entire data structure
-    result = {}
-    for key, val in kw_data.items():
-        if key == 'keywords_by_service' or key == 'keywords_by_theme':
-            # Dict of service -> list of keywords
-            result[key] = {svc: clean_list(kws) for svc, kws in val.items()} if isinstance(val, dict) else val
-        elif key == 'expansion_keyword_clusters':
-            # List of cluster objects with 'keywords' inside
-            result[key] = clean_value(val)
-        elif key in ('brand_campaign', 'non_brand_campaigns', 'competitor_keywords',
-                     'brand_protection_keywords', 'clusters', 'long_tail_opportunities',
-                     'question_based_keywords', 'competitor_gap_keywords', 'trending_keywords',
-                     'high_value_search_terms', 'new_keyword_opportunities', 'competitor_keyword_gaps'):
-            result[key] = clean_value(val)
-        elif isinstance(val, list):
-            result[key] = clean_list(val)
-        elif isinstance(val, dict):
-            result[key] = {k: clean_value(v) for k, v in val.items()}
-        else:
-            result[key] = val
-
-    return result
 
 # ════════════════════════════════════════════════════════════════
 # PYDANTIC MODELS
@@ -687,57 +436,35 @@ Return JSON: {{
 # ─── PHASE B: KEYWORDS (Agents 4–7) ─────────────────────────────
 
 def agent_04_stag_keyword_architect(d: RunCrewRequest) -> dict:
-    log.info("\u25b6 Agent 04: STAG Keyword Architect")
+    log.info("▶ Agent 04: STAG Keyword Architect")
     return ai_json(
-        "You are a Google Ads keyword architect. Return ONLY valid compact JSON. No explanation.",
-        f"""Build STAG keyword structure for {d.business_name} ({d.business_type}).
-
-ABSOLUTE RULES - NO EXCEPTIONS:
-1. ZERO location words in any keyword. No city names, no state names, no zip codes.
-2. NO near me, nearby, local, in [city], clearwater, fl, florida, tampa, or ANY place name.
-3. NO price/cost words: cost, costs, cheap, affordable, price, pricing, how much, rates
-4. NO superlatives: best, top, #1, cheapest, leading, premier
-5. NO informational: how to, what is, diy, tips, guide, tutorial
-6. ONLY pure service keywords - describe WHAT the business does, nothing else.
-
-GOOD: "pool cleaning", "pool maintenance service", "pool repair", "emergency pool service"
-BAD: "pool cleaning clearwater", "pool cleaning near me", "best pool cleaning", "pool cleaning cost"
-
-Return compact JSON. Exactly 5 themes, 5 keywords each (25 total).
-Each keyword: keyword, match_type (EXACT/PHRASE/BROAD), estimated_volume (high/med/low), estimated_cpc (number)
-
-EXAMPLE FORMAT:
-{{"keywords_by_service":{{"[Theme]":[{{"keyword":"[pure service keyword only]","match_type":"EXACT","estimated_volume":"high","estimated_cpc":3.5}}]}},"total_keywords":25,"recommended_ad_groups":5}}
-
-Generate 5 service themes for {d.business_type} business. Remember: service keywords ONLY, zero location words:""",
-        max_tokens=1500,
+        "You are a Google Ads keyword architect using Single Theme Ad Groups (STAG).",
+        f"""Build a STAG keyword structure for {d.business_name} ({d.business_type}) in {d.target_location}.
+Return COMPACT JSON (no extra whitespace) with exactly 5 service themes, 6 keywords each:
+{{"keywords_by_service":{{"Theme1":[{{"keyword":"","match_type":"EXACT|PHRASE|BROAD","estimated_volume":"high|med|low","estimated_cpc":0.0,"commercial_intent":0.0}}]}},"total_keywords":30,"recommended_ad_groups":5}}
+Use real keywords specific to {d.business_type}. Keep all strings short.""",
+        max_tokens=900,
         agent_num=4,
     )
 
 def agent_05_brand_segmentation(d: RunCrewRequest) -> dict:
-    log.info("\u25b6 Agent 05: Brand Segmentation")
+    log.info("▶ Agent 05: Brand Segmentation")
     return ai_json(
-        "You are a brand keyword segmentation specialist for Google Ads. STRICT RULE: NEVER include city names, state names, 'near me', 'nearby', 'local', or ANY geographic words in keywords.",
+        "You are a brand keyword segmentation specialist for Google Ads.",
         f"""Create brand vs. non-brand keyword segmentation for {d.business_name} ({d.business_type}).
-
-STRICT RULE: ALL keywords must be pure service/brand terms ONLY.
-ZERO location words. ZERO price words. ZERO superlatives.
-BAD: "pool cleaning clearwater", "best pool service near me" 
-GOOD: "pool cleaning service", "pool maintenance company"
-
 Return JSON: {{
   "brand_campaign": {{
-    "keywords": ["brand name only keywords - no location"],
+    "keywords": [...],
     "recommended_bid_strategy": "",
     "budget_percentage": number
   }},
   "non_brand_campaigns": {{
-    "keywords": ["pure service keywords - no location, no near me, no city names"],
+    "keywords": [...],
     "recommended_bid_strategy": "",
     "budget_percentage": number
   }},
-  "competitor_keywords": ["competitor brand names only"],
-  "brand_protection_keywords": ["brand variations only"]
+  "competitor_keywords": [...],
+  "brand_protection_keywords": [...]
 }}"""
     ,
         max_tokens=900,
@@ -764,21 +491,16 @@ Return JSON: {{
     )
 
 def agent_07_intent_clustering(d: RunCrewRequest) -> dict:
-    log.info("\u25b6 Agent 07: Intent Clustering")
+    log.info("▶ Agent 07: Intent Clustering")
     return ai_json(
-        "You are an intent clustering expert for Google Ads. ABSOLUTE RULE: Every keyword must be a pure service term. ZERO location words - no city, no state, no near me, no local, no clearwater, no fl. Keywords describe WHAT the service is, never WHERE.",
+        "You are an intent clustering expert for Google Ads campaign organization.",
         f"""Create intent-based keyword clusters for {d.business_type}.
-
-ZERO LOCATION WORDS IN ANY KEYWORD. Pure service terms only.
-GOOD: "emergency pool repair", "pool maintenance service", "pool equipment replacement"
-BAD: "pool repair near me", "pool service clearwater", "local pool cleaning"
-
 Return JSON: {{
   "clusters": [
     {{
-      "cluster_name": "descriptive cluster name",
-      "intent": "emergency|planned|research|commercial",
-      "keywords": ["pure service keyword", "another service keyword"],
+      "cluster_name": "",
+      "intent": "emergency|planned|research|local",
+      "keywords": [...],
       "recommended_landing_page_type": "",
       "recommended_cta": "",
       "bid_multiplier": number
@@ -813,7 +535,7 @@ Return JSON: {{
   "price_extensions": []
 }}"""
     ,
-        max_tokens=1500,
+        max_tokens=900,
         agent_num=8
     )
 
@@ -839,7 +561,7 @@ Return JSON: {{
   ]
 }}"""
     ,
-        max_tokens=1500,
+        max_tokens=900,
         agent_num=9
     )
 
@@ -1007,7 +729,7 @@ Return JSON: {{
   "minimum_test_duration_days": number
 }}"""
     ,
-        max_tokens=1000,
+        max_tokens=700,
         agent_num=15
     )
 
@@ -1033,7 +755,7 @@ Return JSON: {{
   "geo_targeting_recommendation": ""
 }}"""
     ,
-        max_tokens=1000,
+        max_tokens=700,
         agent_num=16
     )
 
@@ -1065,7 +787,7 @@ Return JSON: {{
   "scaling_triggers": [...]
 }}"""
     ,
-        max_tokens=1500,
+        max_tokens=700,
         agent_num=17
     )
 
@@ -1110,7 +832,7 @@ Return JSON: {{
   "portfolio_strategies": []
 }}"""
     ,
-        max_tokens=1300,
+        max_tokens=700,
         agent_num=19
     )
 
@@ -1329,7 +1051,7 @@ Return JSON: {{
   "conversion_elements_checklist": [...]
 }}"""
     ,
-        max_tokens=1400,
+        max_tokens=700,
         agent_num=27
     )
 
@@ -1458,7 +1180,7 @@ Return JSON: {{
   "win_back_campaigns": [...]
 }}"""
     ,
-        max_tokens=1300,
+        max_tokens=700,
         agent_num=33
     )
 
@@ -1668,7 +1390,7 @@ Return JSON: {{
   "pre_peak_preparation_checklist": [...]
 }}"""
     ,
-        max_tokens=1300,
+        max_tokens=600,
         agent_num=42
     )
 
@@ -1847,7 +1569,7 @@ Return JSON: {{
   "estimated_cpa_improvement": "X%"
 }}"""
     ,
-        max_tokens=1500,
+        max_tokens=600,
         agent_num=49
     )
 
@@ -2006,7 +1728,7 @@ Return JSON: {{
   "expected_cpa_vs_remarketing": ""
 }}"""
     ,
-        max_tokens=1400,
+        max_tokens=600,
         agent_num=56
     )
 
@@ -2627,42 +2349,37 @@ Return JSON: {{
     )
 
 def agent_81_keyword_expander(d: RunCrewRequest) -> dict:
-    log.info("\u25b6 Agent 81: Keyword Expander")
+    log.info("▶ Agent 81: Keyword Expander")
     return ai_json(
-        "You are a keyword expansion expert for Google Ads. CRITICAL RULE: Every single keyword must be a pure service term with ZERO location words. No city names, no state names, no near me, no local, no clearwater, no fl, no florida, no safety harbor. Only keywords describing WHAT the service is.",
-        f"""Expand keywords for {d.business_name} ({d.business_type}).
-
-ZERO LOCATION WORDS - ABSOLUTE RULE:
-GOOD examples: "pool repair service", "swimming pool maintenance", "pool equipment repair", "pool cleaning company"
-BAD examples: "pool repair clearwater", "pool service near me", "clearwater pool cleaning", "pool cleaning fl"
-
+        "You are a keyword expansion and opportunity discovery expert for Google Ads.",
+        f"""Discover keyword expansion opportunities for {d.business_name} ({d.business_type}) in {d.target_location}.
 Return JSON: {{
   "expansion_keyword_clusters": [
     {{
-      "theme": "theme name",
-      "keywords": ["pure service keyword only", "another pure service keyword"],
+      "theme": "",
+      "keywords": [...],
       "estimated_monthly_volume": number,
       "competition": "low|medium|high",
-      "recommended_match_type": "PHRASE",
+      "recommended_match_type": "",
       "priority": "high|medium|low"
     }}
   ],
-  "long_tail_opportunities": ["long tail service keywords only"],
-  "question_based_keywords": ["what service questions only"],
-  "competitor_gap_keywords": ["service keywords competitors miss"],
-  "trending_keywords": ["trending service keywords"],
-  "negative_list_expansion": ["irrelevant terms to exclude"],
-  "weekly_expansion_cadence": "brief description"
+  "long_tail_opportunities": [...],
+  "question_based_keywords": [...],
+  "competitor_gap_keywords": [...],
+  "trending_keywords": [...],
+  "negative_list_expansion": [...],
+  "weekly_expansion_cadence": ""
 }}"""
     ,
-        max_tokens=1000,
+        max_tokens=600,
         agent_num=81
     )
 
 def agent_82_competitor_gap_finder(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 82: Competitor Gap Finder")
     return ai_json(
-        "You are a competitive keyword gap analysis expert for Google Ads. STRICT RULE: ALL keywords must be pure service terms. ZERO location words - no city names, no state, no near me, no local.",
+        "You are a competitive keyword gap analysis expert for Google Ads.",
         f"""Find competitor keyword gaps for {d.business_name} ({d.business_type}) in {d.target_location}.
 Return JSON: {{
   "competitor_keyword_gaps": [
@@ -2847,70 +2564,33 @@ Return JSON: {{
     )
 
 # ════════════════════════════════════════════════════════════════
-# PROGRESS SAVE / RESUME — survives crashes and 429 hangs
-# ════════════════════════════════════════════════════════════════
-import uuid as _uuid
-
-_PROGRESS_FILE = _pl.Path(".run_progress.json")
-
-def _save_progress(run_id: str, results: dict, total: int = 88):
-    """Save partial results to disk after every agent."""
-    try:
-        _PROGRESS_FILE.write_text(
-            json.dumps({"run_id": run_id, "results": results,
-                        "saved_at": time.time(), "total": total}),
-            encoding="utf-8"
-        )
-    except Exception as e:
-        log.warning(f"Could not save progress: {e}")
-
-def _load_progress() -> dict | None:
-    if _PROGRESS_FILE.exists():
-        try:
-            return json.loads(_PROGRESS_FILE.read_text(encoding="utf-8"))
-        except Exception:
-            pass
-    return None
-
-def _clear_progress():
-    if _PROGRESS_FILE.exists():
-        _PROGRESS_FILE.unlink()
-
-# ════════════════════════════════════════════════════════════════
-# MAIN CREW RUNNER  (4-key rotation, progress save, resumable)
+# MAIN CREW RUNNER  (rate-limit safe — max 2 concurrent Groq calls)
 # ════════════════════════════════════════════════════════════════
 
-async def run_all_agents(d: RunCrewRequest, resume_from: dict | None = None) -> dict:
-    loop     = asyncio.get_event_loop()
+async def run_all_agents(d: RunCrewRequest) -> dict:
+    loop = asyncio.get_event_loop()
     disabled = set(d.disabled_agents or [])
-    run_id   = resume_from.get("run_id", str(_uuid.uuid4())[:8]) if resume_from else str(_uuid.uuid4())[:8]
-
-    # Start with previously saved results (for resume), or empty
-    results: dict = resume_from.get("results", {}) if resume_from else {}
 
     def _skip():
         return {"skipped": True, "reason": "Disabled by user"}
 
     async def run(fn, agent_num: int = 0):
-        """Run one agent, skip if disabled, save progress after."""
         if agent_num and agent_num in disabled:
             log.info(f"⏭ Agent {agent_num:02d} skipped (disabled)")
             return _skip()
         async with _groq_sem:
-            result = await loop.run_in_executor(None, fn, d)
-        # Save progress after every agent
-        results[f"_agent_{agent_num:02d}"] = result
-        _save_progress(run_id, results)
-        return result
+            return await loop.run_in_executor(None, fn, d)
 
     async def run_batch(fns, label, start_num: int = 1):
         log.info(f"═══ {label} ═══")
-        batch_results = []
-        for i, fn in enumerate(fns):
-            agent_num = start_num + i
-            r = await run(fn, agent_num)
-            batch_results.append(r)
-        return batch_results
+        nums = list(range(start_num, start_num + len(fns)))
+        results = []
+        pairs = list(zip(fns, nums))
+        # Run ONE at a time — the per-model throttle in groq_chat handles spacing
+        for fn, n in pairs:
+            result = await run(fn, n)
+            results.append(result)
+        return results
 
     if disabled:
         log.info(f"⚙️ Running {88 - len(disabled)}/88 agents ({len(disabled)} disabled)")
@@ -3034,20 +2714,6 @@ async def run_all_agents(d: RunCrewRequest, resume_from: dict | None = None) -> 
         agent_85_funnel_orchestrator,
     ], "Phase N: Scaling & Growth")
     winner_scale, mkt_expand, kw_expand, comp_gap, profit_roas, cross_sync, funnel_orch = n_results
-    # Strip location terms from ALL keyword results — service-based keywords only
-    for _var_name, _var in [('keywords', keywords), ('brand_seg', brand_seg),
-                             ('clusters', clusters), ('kw_expand', kw_expand), ('comp_gap', comp_gap)]:
-        pass  # stripping done inline below
-    if isinstance(keywords,  dict) and not keywords.get('error'):
-        keywords  = _strip_location_keywords(keywords,  d.target_location)
-    if isinstance(brand_seg, dict) and not brand_seg.get('error'):
-        brand_seg = _strip_location_keywords(brand_seg, d.target_location)
-    if isinstance(clusters,  dict) and not clusters.get('error'):
-        clusters  = _strip_location_keywords(clusters,  d.target_location)
-    if isinstance(kw_expand, dict) and not kw_expand.get('error'):
-        kw_expand = _strip_location_keywords(kw_expand, d.target_location)
-    if isinstance(comp_gap,  dict) and not comp_gap.get('error'):
-        comp_gap  = _strip_location_keywords(comp_gap,  d.target_location)
 
     # ── Phase O: Master Orchestrators (86–88) ───────────────────
     log.info("═══ Phase O: Master Orchestrators ═══")
@@ -3176,76 +2842,14 @@ async def health():
         "agents":          88,
         "phases":          16,
         "google_ads_ready": bool(GOOGLE_ADS_DEV_TOK and GOOGLE_REFRESH_TOK),
-        "ai_provider":     "Groq (dual-model, 4-key rotation)",
+        "ai_provider":     "Groq (dual-model)",
         "ai_model_smart":  GROQ_MODEL_SMART,
         "ai_model_fast":   GROQ_MODEL_FAST,
-        "groq_keys_loaded": len(GROQ_KEYS),
         "ai_ready":        bool(GROQ_API_KEY),
         "auth_required":   bool(DASHBOARD_API_KEY),
         "publish_ready":   bool(GOOGLE_ADS_DEV_TOK and GOOGLE_CLIENT_ID and GOOGLE_REFRESH_TOK),
         "mcc_configured":  bool(GOOGLE_MCC_ID),
     }
-
-@app.get("/key-status")
-async def key_status():
-    """Show which Groq keys are available and which are cooling down."""
-    now = time.time()
-    return {
-        "total_keys": len(GROQ_KEYS),
-        "keys": [
-            {
-                "key_num": i + 1,
-                "key_preview": f"...{k[-6:]}",
-                "available": _key_cooldown.get(k, 0.0) <= now,
-                "cooldown_remaining_s": max(0, round(_key_cooldown.get(k, 0.0) - now, 1)),
-            }
-            for i, k in enumerate(GROQ_KEYS)
-        ],
-        "all_available": all(_key_cooldown.get(k, 0.0) <= now for k in GROQ_KEYS),
-    }
-
-@app.get("/resume-status")
-async def resume_status():
-    """Check if a previous run was interrupted and can be resumed."""
-    data = _load_progress()
-    if not data:
-        return {"has_progress": False}
-    agents_done = len([k for k in data.get("results", {}) if k.startswith("_agent_")])
-    total = data.get("total", 88)
-    pct   = round(agents_done / total * 100)
-    saved = datetime.fromtimestamp(data.get("saved_at", 0)).strftime("%H:%M:%S")
-    return {
-        "has_progress":     True,
-        "run_id":           data.get("run_id", "?"),
-        "agents_completed": agents_done,
-        "total_agents":     total,
-        "percent_complete": pct,
-        "saved_at":         saved,
-    }
-
-@app.post("/resume-run")
-async def resume_run(_: None = Depends(verify_key)):
-    """Resume an interrupted run — returns saved partial results."""
-    data = _load_progress()
-    if not data:
-        return JSONResponse({"error": "No saved progress found — start a new run"}, status_code=404)
-    log.info(f"▶ Resuming run {data.get('run_id')} with {len(data.get('results',{}))} saved results")
-    return {
-        "resumed":          True,
-        "run_id":           data.get("run_id"),
-        "agents_completed": len([k for k in data.get("results",{}) if k.startswith("_agent_")]),
-        "partial_results":  data.get("results", {}),
-    }
-
-@app.delete("/clear-progress")
-async def clear_run_progress(_: None = Depends(verify_key)):
-    """Clear saved progress so the next run starts fresh."""
-    _clear_progress()
-    # Also clear response cache
-    for f in _CACHE_DIR.glob("*"):
-        try: f.unlink()
-        except Exception: pass
-    return {"cleared": True, "message": "Progress and cache cleared"}
 
 @app.post("/run-crew")
 @app.post("/run-crew-v13")
@@ -3607,8 +3211,6 @@ async def create_test_account(body: dict, _: None = Depends(verify_key)):
             }
     except Exception as e:
         raise HTTPException(500, str(e))
-
-@app.get("/history")
 async def history(_: None = Depends(verify_key)):
     return {"campaigns": list_campaigns()}
 
@@ -3684,9 +3286,8 @@ Return ONLY this JSON:
   "business_type": "specific type e.g. Garage Door Repair, Electrical Contractor, Dental Clinic",
   "location": "city and state if found, else leave blank",
   "services": ["service 1", "service 2", "service 3", "service 4", "service 5"],
-  "unique_value_propositions": ["USP 1", "USP 2", "USP 3"],
+  "unique_value_propositions": ["infer from business type"],
   "target_audience": "who they serve",
-  "seed_keywords": ["keyword 1", "keyword 2", "keyword 3", "keyword 4", "keyword 5", "keyword 6", "keyword 7", "keyword 8"],
   "fetch_status": "{'url_only' if is_domain_only else 'success'}"
 }}"""
     )
@@ -3853,293 +3454,6 @@ Return JSON: {{
 }}"""
     )
     return result
-
-# ── Google Ads Library ───────────────────────────────────────
-GOOGLE_ADS_AVAILABLE = False
-try:
-    from google.ads.googleads.client import GoogleAdsClient as _GoogleAdsClient
-    from google.ads.googleads.errors import GoogleAdsException as _GoogleAdsException
-    GOOGLE_ADS_AVAILABLE = True
-except Exception as _gads_err:
-    log.warning(f"google-ads library not installed: {_gads_err}. Install with: pip install google-ads")
-    _GoogleAdsClient = None
-
-GOOGLE_ADS_CONFIG = {
-    "developer_token":   GOOGLE_ADS_DEV_TOK,
-    "client_id":         GOOGLE_CLIENT_ID,
-    "client_secret":     GOOGLE_CLIENT_SEC,
-    "refresh_token":     GOOGLE_REFRESH_TOK,
-    "login_customer_id": GOOGLE_MCC_ID.replace("-","") if GOOGLE_MCC_ID else "",
-    "use_proto_plus":    True,
-}
-
-class GoogleAdsPublisher:
-    """Publishes agent results to Google Ads API."""
-
-    def __init__(self, customer_id: str):
-        self.customer_id = customer_id.replace("-","").strip()
-        if not GOOGLE_ADS_AVAILABLE or not _GoogleAdsClient:
-            raise RuntimeError(
-                "google-ads library not installed. Run: pip install google-ads"
-            )
-        self.client = _GoogleAdsClient.load_from_dict(GOOGLE_ADS_CONFIG)
-
-    # ── helpers ──────────────────────────────────────────────────
-    def _enum(self, path: str):
-        parts = path.split(".")
-        obj = self.client.enums
-        for p in parts:
-            obj = getattr(obj, p)
-        return obj
-
-    def _svc(self, name: str):
-        return self.client.get_service(name)
-
-    def _op(self, name: str):
-        return self.client.get_type(name + "Operation")
-
-    # ── Budget ───────────────────────────────────────────────────
-    def _create_budget(self, daily_budget: float) -> str:
-        svc = self._svc("CampaignBudgetService")
-        op  = self._op("CampaignBudget")
-        b   = op.create
-        b.name              = f"AdsForge Budget {int(time.time())}"
-        b.amount_micros     = int(daily_budget * 1_000_000)
-        b.delivery_method   = self.client.enums.BudgetDeliveryMethodEnum.STANDARD
-        b.explicitly_shared = True
-        res = svc.mutate_campaign_budgets(customer_id=self.customer_id, operations=[op])
-        return res.results[0].resource_name
-
-    # ── Main publish ─────────────────────────────────────────────
-    def publish(self, result: dict, request: dict) -> dict:
-        out = {
-            "success": False, "budget_resource": "", "search_campaign": "",
-            "pmax_campaign": "", "keywords_added": 0, "ad_groups_created": 0,
-            "ads_created": 0, "sitelinks_created": 0, "extensions_created": 0,
-            "errors": [], "published_agents": [], "status": "PAUSED",
-        }
-        try:
-            daily_budget  = float(request.get("daily_budget", 50))
-            business_name = request.get("business_name", "Business")
-            website_url   = request.get("website_url", "https://example.com")
-
-            # 1. Budget (A18)
-            budget_res = self._create_budget(daily_budget)
-            out["budget_resource"] = budget_res
-            out["published_agents"].append("A18: Budget Allocator")
-            log.info(f"✅ Budget: {budget_res}")
-
-            # 2. Search Campaign (A17)
-            csvc = self._svc("CampaignService")
-            cop  = self._op("Campaign")
-            c    = cop.create
-            c.name                           = f"[AdsForge] {business_name} — Search"
-            c.status                         = self.client.enums.CampaignStatusEnum.PAUSED
-            c.advertising_channel_type       = self.client.enums.AdvertisingChannelTypeEnum.SEARCH
-            c.campaign_budget                = budget_res
-            c.maximize_conversions.target_cpa_micros = 0
-            c.network_settings.target_google_search  = True
-            c.network_settings.target_search_network = True
-            c.network_settings.target_content_network = False
-            cr = csvc.mutate_campaigns(customer_id=self.customer_id, operations=[cop])
-            camp_res = cr.results[0].resource_name
-            out["search_campaign"] = camp_res
-            out["published_agents"].append("A17: Campaign Architect")
-            log.info(f"✅ Search campaign (PAUSED): {camp_res}")
-
-            # 3. Location Targeting (A21)
-            location = request.get("target_location", "")
-            if location:
-                try:
-                    gsvc  = self._svc("GoogleAdsService")
-                    ccsvc = self._svc("CampaignCriterionService")
-                    loc_name = location.split(",")[0].strip()
-                    query = f"SELECT geo_target_constant.resource_name FROM geo_target_constant WHERE geo_target_constant.canonical_name LIKE \'%{loc_name}%\' LIMIT 1"
-                    for row in gsvc.search(customer_id=self.customer_id, query=query):
-                        crit_op = self._op("CampaignCriterion")
-                        crit_op.create.campaign = camp_res
-                        crit_op.create.location.geo_target_constant = row.geo_target_constant.resource_name
-                        ccsvc.mutate_campaign_criteria(customer_id=self.customer_id, operations=[crit_op])
-                        out["published_agents"].append("A21: Geo Targeting")
-                        break
-                except Exception as e:
-                    out["errors"].append(f"Location: {e}")
-
-            # 4. Negative Keywords (A06)
-            neg_kws = (result.get("negative_keywords") or {}).get("campaign_level_negatives", [])
-            if neg_kws:
-                try:
-                    ccsvc2  = self._svc("CampaignCriterionService")
-                    neg_ops = []
-                    for kw in neg_kws[:50]:
-                        op2 = self._op("CampaignCriterion")
-                        op2.create.campaign = camp_res
-                        op2.create.negative = True
-                        op2.create.keyword.text       = str(kw)[:80]
-                        op2.create.keyword.match_type = self.client.enums.KeywordMatchTypeEnum.BROAD
-                        neg_ops.append(op2)
-                    if neg_ops:
-                        ccsvc2.mutate_campaign_criteria(customer_id=self.customer_id, operations=neg_ops)
-                        out["published_agents"].append("A06: Negative Mining")
-                        log.info(f"✅ {len(neg_ops)} negatives added")
-                except Exception as e:
-                    out["errors"].append(f"Negatives: {e}")
-
-            # 5. STAG Ad Groups + Keywords + RSA Ads (A04 + A08)
-            FORBIDDEN = ["near me","nearby","cheap","cheapest","free","jobs",
-                         "career","how to","diy","wikipedia","best","top",
-                         "#1","discount","hiring","salary"]
-            kw_data   = result.get("keywords") or {}
-            services  = kw_data.get("keywords_by_service") or {}
-            ad_copy   = result.get("ad_copy") or {}
-            headlines = ad_copy.get("headlines", [])
-            descs     = ad_copy.get("descriptions", [])
-
-            agsvc  = self._svc("AdGroupService")
-            agcsvc = self._svc("AdGroupCriterionService")
-            adasvc = self._svc("AdGroupAdService")
-
-            for svc_name, kws in list(services.items())[:10]:
-                try:
-                    agop = self._op("AdGroup")
-                    ag   = agop.create
-                    ag.name         = f"{business_name} — {svc_name}"[:255]
-                    ag.campaign     = camp_res
-                    ag.status       = self.client.enums.AdGroupStatusEnum.ENABLED
-                    ag.type_        = self.client.enums.AdGroupTypeEnum.SEARCH_STANDARD
-                    ag.cpc_bid_micros = 2_000_000
-                    agr    = agsvc.mutate_ad_groups(customer_id=self.customer_id, operations=[agop])
-                    ag_res = agr.results[0].resource_name
-                    out["ad_groups_created"] += 1
-
-                    # Keywords
-                    clean = []
-                    for k in kws:
-                        text = k["keyword"] if isinstance(k, dict) else str(k)
-                        mt   = (k.get("match_type","PHRASE") if isinstance(k, dict) else "PHRASE")
-                        if not any(f in text.lower() for f in FORBIDDEN):
-                            clean.append((text, mt))
-
-                    if clean:
-                        kwops = []
-                        for text, mt in clean[:20]:
-                            op3 = self._op("AdGroupCriterion")
-                            cr3 = op3.create
-                            cr3.ad_group      = ag_res
-                            cr3.status        = self.client.enums.AdGroupCriterionStatusEnum.ENABLED
-                            cr3.keyword.text  = text[:80]
-                            cr3.keyword.match_type = getattr(
-                                self.client.enums.KeywordMatchTypeEnum,
-                                mt, self.client.enums.KeywordMatchTypeEnum.PHRASE
-                            )
-                            kwops.append(op3)
-                        agcsvc.mutate_ad_group_criteria(customer_id=self.customer_id, operations=kwops)
-                        out["keywords_added"] += len(kwops)
-
-                    # RSA Ad
-                    if len(headlines) >= 3 and len(descs) >= 2:
-                        adaop = self._op("AdGroupAd")
-                        aa    = adaop.create
-                        aa.ad_group = ag_res
-                        aa.status   = self.client.enums.AdGroupAdStatusEnum.ENABLED
-                        rsa         = aa.ad.responsive_search_ad
-                        for hl in headlines[:15]:
-                            asset      = self.client.get_type("AdTextAsset")
-                            asset.text = hl[:30]
-                            rsa.headlines.append(asset)
-                        for desc in descs[:4]:
-                            asset      = self.client.get_type("AdTextAsset")
-                            asset.text = desc[:90]
-                            rsa.descriptions.append(asset)
-                        aa.ad.final_urls.append(website_url)
-                        adasvc.mutate_ad_group_ads(customer_id=self.customer_id, operations=[adaop])
-                        out["ads_created"] += 1
-
-                except Exception as e:
-                    out["errors"].append(f"Ad group {svc_name}: {e}")
-
-            if services:
-                out["published_agents"].extend(["A04: STAG Keywords", "A08: RSA Copywriter"])
-
-            # 6. Sitelinks as Assets — API v17 format (A26)
-            extensions = result.get("extensions") or {}
-            sitelinks  = extensions.get("sitelinks") or ad_copy.get("sitelinks", [])
-            asset_svc  = self._svc("AssetService")
-            ca_svc     = self._svc("CampaignAssetService")
-            for sl in sitelinks[:6]:
-                try:
-                    title = (sl.get("title") or sl.get("link_text") or "")[:25]
-                    desc1 = (sl.get("description1") or "")[:35]
-                    desc2 = (sl.get("description2") or "")[:35]
-                    sl_url = sl.get("url", website_url) if isinstance(sl, dict) else website_url
-                    if not title:
-                        continue
-                    aop = self._op("Asset")
-                    aop.create.sitelink_asset.link_text    = title
-                    aop.create.sitelink_asset.description1 = desc1
-                    aop.create.sitelink_asset.description2 = desc2
-                    aop.create.final_urls.append(sl_url)
-                    ar      = asset_svc.mutate_assets(customer_id=self.customer_id, operations=[aop])
-                    a_res   = ar.results[0].resource_name
-                    caop    = self._op("CampaignAsset")
-                    caop.create.campaign   = camp_res
-                    caop.create.asset      = a_res
-                    caop.create.field_type = self.client.enums.AssetFieldTypeEnum.SITELINK
-                    ca_svc.mutate_campaign_assets(customer_id=self.customer_id, operations=[caop])
-                    out["sitelinks_created"] += 1
-                except Exception as e:
-                    out["errors"].append(f"Sitelink: {e}")
-            if out["sitelinks_created"]:
-                out["published_agents"].append("A26: Extension Suite")
-
-            # 7. Callout Extensions (A26)
-            callouts = extensions.get("callouts", [])
-            for callout_text in callouts[:10]:
-                try:
-                    aop = self._op("Asset")
-                    aop.create.callout_asset.callout_text = str(callout_text)[:25]
-                    ar    = asset_svc.mutate_assets(customer_id=self.customer_id, operations=[aop])
-                    a_res = ar.results[0].resource_name
-                    caop  = self._op("CampaignAsset")
-                    caop.create.campaign   = camp_res
-                    caop.create.asset      = a_res
-                    caop.create.field_type = self.client.enums.AssetFieldTypeEnum.CALLOUT
-                    ca_svc.mutate_campaign_assets(customer_id=self.customer_id, operations=[caop])
-                    out["extensions_created"] += 1
-                except Exception as e:
-                    out["errors"].append(f"Callout: {e}")
-
-            # 8. Conversion Actions (A22)
-            conv_actions = (result.get("conversion_tracking") or {}).get("conversion_actions", [])
-            if conv_actions:
-                try:
-                    conv_svc = self._svc("ConversionActionService")
-                    for action in conv_actions[:3]:
-                        cop2 = self._op("ConversionAction")
-                        ca   = cop2.create
-                        ca.name     = action.get("name","Lead")[:100]
-                        ca.status   = self.client.enums.ConversionActionStatusEnum.ENABLED
-                        ca.type_    = self.client.enums.ConversionActionTypeEnum.WEBPAGE
-                        ca.category = self.client.enums.ConversionActionCategoryEnum.LEAD
-                        ca.value_settings.default_value          = float(action.get("value", 1.0))
-                        ca.value_settings.always_use_default_value = True
-                        conv_svc.mutate_conversion_actions(customer_id=self.customer_id, operations=[cop2])
-                    out["published_agents"].append("A22: Conv Tracking")
-                except Exception as e:
-                    out["errors"].append(f"Conversions: {e}")
-
-            out["success"] = True
-            log.info(f"✅ Published {len(out['published_agents'])} agent results to Google Ads")
-
-        except Exception as e:
-            out["errors"].append(str(e))
-            log.error(f"❌ Publish failed: {e}")
-        return out
-
-    def publish_all_agents(self, result: dict, request: dict) -> dict:
-        """Runs full publish for all agents."""
-        return self.publish(result, request)
-
 
 if __name__ == "__main__":
     import uvicorn
@@ -5068,14 +4382,11 @@ async def manual_check(customer_id: str, _: None = Depends(verify_key)):
 
 
 # ════════════════════════════════════════════════════════════════════
-# ENHANCED /run-crew — v13 route handled above (with agents 89/90/91)
-# The @app.post("/run-crew-v13") is defined earlier and includes
-# the new agents automatically via run_all_agents + extra agent calls
+# ENHANCED /run-crew — Adds new agents 89/90/91
 # ════════════════════════════════════════════════════════════════════
 
-# This endpoint is an alias that runs base 88 + new v13 agents in one call
-@app.post("/run-crew-v13-extended")
-async def run_crew_v13_extended(body: RunCrewRequest, _: None = Depends(verify_key)):
+@app.post("/run-crew-v13")
+async def run_crew_v13(body: RunCrewRequest, _: None = Depends(verify_key)):
     """
     Extended run-crew that includes new agents 89 (AI Max), 90 (LSA), 91 (Enhanced Conversions).
     Uses Keyword Planner if customer_id + credentials available.
@@ -5400,3 +4711,4 @@ async def health_v13():
             "data_manager_api_ready":   True,
         }
     }
+
