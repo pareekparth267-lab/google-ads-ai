@@ -9,3 +9,6 @@ venv/
 .groq_cache/
 campaigns.db
 .run_progress.json
+
+adsforge_leads.db
+campaigns.db
