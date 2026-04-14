@@ -1927,7 +1927,7 @@ async function runCrew() {
 
   try {
     // Start background job - no timeout
-    const jobResp = await apiPost('/start-job', body);
+    const jobResp = await apiPost('/run-crew-v13', body);
     const jobId = jobResp.job_id;
     clog('Job started: ' + jobId + ' - agents running in background...', 'info');
 
