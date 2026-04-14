@@ -661,7 +661,13 @@ input::placeholder,textarea::placeholder{color:var(--muted);}
     <div class="nav-item" onclick="nav('performance-dash',this)">
       <span class="ni">📊</span> Performance
     </div>
-
+    <div class="nav-section">New Agents</div>
+    <div class="nav-item" onclick="nav('ai-max',this)">
+      <span class="ni">🤖</span> AI Max (A89)
+    </div>
+    <div class="nav-item" onclick="nav('lsa',this)">
+      <span class="ni">📍</span> Local Services
+    </div>
     <div class="nav-item" onclick="nav('oauth',this)">
       <span class="ni">🔐</span> Google Auth
     </div>
@@ -728,7 +734,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);}
         <div class="phase-card phase-l"><div class="phase-letter">PHASE L</div><div class="phase-name">Reporting</div><div class="phase-count">A68–73 · Parallel</div></div>
         <div class="phase-card phase-m"><div class="phase-letter">PHASE M</div><div class="phase-name">Protection</div><div class="phase-count">A74–78 · Parallel</div></div>
         <div class="phase-card phase-n"><div class="phase-letter">PHASE N</div><div class="phase-name">Growth</div><div class="phase-count">A79–85 · Parallel</div></div>
-        
+        <div class="phase-card phase-o"><div class="phase-letter">PHASE O</div><div class="phase-name">🧠 Orchestrators</div><div class="phase-count">A86–88 · Sequential</div></div>
       </div>
 
       <!-- Form -->
@@ -1629,14 +1635,11 @@ DASHBOARD_API_KEY=<span style="color:var(--muted)">optional security key</span>
 // ─────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────
-let BACKEND = localStorage.getItem('backend') || 'https://google-ads-ai-zaok.onrender.com';
+let BACKEND = localStorage.getItem('backend') || 'http://localhost:8000';
 let lastResults = null;
-let _lazyRenderData = null;
-let _renderedTabs   = new Set();
-let _renderedPages  = new Set();  // tracks which sidebar pages have been populated
 
 // ─────────────────────────────────────────────
-// NAV — with lazy page rendering
+// NAV
 // ─────────────────────────────────────────────
 function nav(page, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1644,62 +1647,10 @@ function nav(page, el) {
   const pageEl = document.getElementById('page-' + page);
   if (pageEl) pageEl.classList.add('active');
   if (el) el.classList.add('active');
-  if (page === 'history')      loadHistory();
-  if (page === 'settings')     loadHealth();
+  if (page === 'history') loadHistory();
+  if (page === 'settings') loadHealth();
   if (page === 'live-monitor') loadAlerts();
-  if (page === 'oauth')        checkAuthStatus();
-
-  // Lazy page render — populate sidebar pages the first time they're visited
-  if (lastResults && !_renderedPages.has(page)) {
-    _renderedPages.add(page);
-    _renderPageData(page, lastResults);
-  }
-}
-
-// Render data into a specific sidebar page
-function _renderPageData(page, d) {
-  if (!d) return;
-  try {
-    switch(page) {
-      case 'keywords':
-        renderKeywordsPage(d.keywords, d.intent_clusters, d.negative_keywords);
-        break;
-      case 'adcopy':
-        renderAdCopyFull(d);
-        break;
-      case 'audiences':
-        renderAudiencesPage(d.audiences);
-        break;
-      case 'forecast':
-        renderROI(d.roi_forecast);
-        break;
-      case 'remarketing':
-        renderRemarketingPage(d.remarketing_strategy);
-        break;
-      case 'scripts':
-        renderScripts(d.ads_scripts);
-        break;
-      case 'competitors':
-        renderCompetitors(d.competitor_intelligence);
-        break;
-    }
-  } catch(e) {
-    console.warn('Page render error for', page, ':', e.message);
-  }
-}
-
-// Auto-populate all sidebar pages in the background after agents complete
-// Staggered with delays so no single stack overflow can block others
-function _autoPopulateAllPages(d) {
-  const pages = ['scripts','adcopy','competitors','audiences','remarketing','forecast','keywords'];
-  pages.forEach((page, i) => {
-    if (!_renderedPages.has(page)) {
-      setTimeout(() => {
-        _renderedPages.add(page);
-        _renderPageData(page, d);
-      }, (i + 1) * 300); // 300ms, 600ms, 900ms... staggered
-    }
-  });
+  if (page === 'oauth') checkAuthStatus();
 }
 
 // ─────────────────────────────────────────────
@@ -1784,8 +1735,10 @@ const AGENTS = [
   // Phase N: Scaling & Growth
   'Winner Scale','Mkt Expand','KW Expander','Comp Gap',
   'Profit ROAS','Cross Sync','Funnel Orch',
-  // Phase O agents removed (A86-88)
-  // v13 agents removed
+  // Phase O: Master Orchestrators
+  '🧠 Campaign Brain','⏱ Agent Sched','📡 Signal Agg',
+  // v13 New Agents
+  '🤖 AI Max','📍 Local Services','🔒 Enhanced Conv'
 ];
 
 function buildAgentGrid() {
@@ -1861,7 +1814,7 @@ async function runCrew() {
   const runCount = agentEnabled.filter(Boolean).length;
   btn.innerHTML = `<span class="spinner"></span> Running ${runCount} Agents...`;
 
-  const phases = ['a','b','c','d','e','f','bonus','g','h','i','j','k','l','m','n'];
+  const phases = ['a','b','c','d','e','f','bonus','g','h','i','j','k','l','m','n','o'];
   const phaseAgents = [
     [1,2,3],
     [4,5,6,7],
@@ -1878,13 +1831,14 @@ async function runCrew() {
     [68,69,70,71,72,73],
     [74,75,76,77,78],
     [79,80,81,82,83,84,85],
+    [86,87,88]
   ];
   const phaseLabels = [
     'Foundation','Keywords','Ad Creative','Campaign Structure',
     'Tracking & Automation','Compliance & Forecast','Bonus: AI Scaling',
     'Data & Intelligence','Creative Automation','Bidding & Budget',
     'Audience & Targeting','Campaign Types','Reporting & Alerts',
-    'Compliance & Protection','Scaling & Growth'
+    'Compliance & Protection','Scaling & Growth','🧠 Master Orchestrators'
   ];
 
   let pct = 0, phaseIdx = 0;
@@ -1950,14 +1904,6 @@ async function runCrew() {
       renderResults(data);
     } catch(renderErr) {
       clog('⚠️ UI rendering issue: ' + renderErr.message + ' — results still available via Download JSON', 'warn');
-      // Even if rendering crashed — show results page and publish section manually
-      document.getElementById('resultsEmpty').style.display   = 'none';
-      document.getElementById('resultsContent').style.display = 'block';
-      document.getElementById('res_title').textContent = data.business_name + ' — Campaign Results';
-      document.getElementById('res_sub').textContent   = data.target_location + ' · ' + (data.campaign_types||[]).join(', ');
-      try { showPublishSection(data); } catch(e) {}
-      // Still populate sidebar pages in background
-      try { _autoPopulateAllPages(data); } catch(e) {}
     }
     nav('results', document.querySelector('.nav-item:nth-child(2)'));
   } catch (e) {
@@ -1981,58 +1927,80 @@ function j(obj) {
   return syntaxHL(JSON.stringify(obj, null, 2));
 }
 
-const MAX_HL_CHARS = 8000; // truncate before regex to avoid stack overflow
-
 function syntaxHL(str) {
-  if (!str) return '';
-  // Truncate huge strings before running regex — prevents stack overflow
-  const truncated = str.length > MAX_HL_CHARS;
-  const safe = truncated ? str.slice(0, MAX_HL_CHARS) : str;
-  const result = safe
+  return str
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/"([^"]+)":/g,'<span class="jk">"$1"</span>:')
     .replace(/: "([^"]*)"/g,': <span class="js">"$1"</span>')
     .replace(/: (-?\d+\.?\d*)/g,': <span class="jn">$1</span>')
     .replace(/: (true|false)/g,': <span class="jb">$1</span>')
     .replace(/: null/g,': <span class="jx">null</span>');
-  return result + (truncated
-    ? `\n<span style="color:var(--muted);font-style:italic;">... [truncated — ${str.length.toLocaleString()} chars total. Click ⬇ Download JSON for full data]</span>`
-    : '');
 }
 
 function renderResults(d) {
-  // Store globally — tabs render lazily on first click
-  _lazyRenderData = d;
-  _renderedTabs   = new Set();
-
-  // ── Show results page FIRST, before any rendering ──────────────
-  // This way even if rendering crashes, the page is visible
-  document.getElementById('resultsEmpty').style.display   = 'none';
-  document.getElementById('resultsContent').style.display = 'block';
-  showPublishSection(d);
-
   document.getElementById('res_title').textContent = d.business_name + ' — Campaign Results';
-  document.getElementById('res_sub').textContent   = d.target_location + ' · ' + (d.campaign_types||[]).join(', ');
+  document.getElementById('res_sub').textContent = d.target_location + ' · ' + (d.campaign_types||[]).join(', ');
 
   const roi = d.roi_forecast || {};
-  const kwCount = Object.keys(d.keywords?.keywords_by_service || d.keywords?.keywords_by_theme || {}).length;
   document.getElementById('res_metrics').innerHTML = `
-    <div class="metric-card"><div class="metric-val">${kwCount||'—'}</div><div class="metric-label">Ad Groups</div></div>
-    <div class="metric-card"><div class="metric-val" style="color:var(--accent3)">${d.ad_copy?.headlines?.length||0}</div><div class="metric-label">Headlines</div></div>
-    <div class="metric-card"><div class="metric-val" style="color:var(--accent2)">${d.negative_keywords?.total_negative_count||0}</div><div class="metric-label">Negatives</div></div>
-    <div class="metric-card"><div class="metric-val" style="color:var(--accent4)">$${roi['90_day_revenue_forecast']||'—'}</div><div class="metric-label">90d Forecast</div></div>`;
+    <div class="metric-card"><div class="metric-val">${Object.keys(d.keywords?.keywords_by_service||{}).length || '—'}</div><div class="metric-label">Ad Groups</div></div>
+    <div class="metric-card"><div class="metric-val" style="color:var(--accent3)">${d.ad_copy?.headlines?.length || 0}</div><div class="metric-label">Headlines</div></div>
+    <div class="metric-card"><div class="metric-val" style="color:var(--accent2)">${d.negative_keywords?.total_negative_count || 0}</div><div class="metric-label">Negatives</div></div>
+    <div class="metric-card"><div class="metric-val" style="color:var(--accent4)">$${roi['90_day_revenue_forecast'] || '—'}</div><div class="metric-label">90d Forecast</div></div>`;
 
-  // Eagerly render only the first (active) tab — all others render on click
-  _renderedTabs.add('phase-a');
-  try { renderTab('phase-a', d); } catch(e) { console.warn('Phase-A:', e); }
+  // Phase A
+  document.getElementById('res_biz').innerHTML = renderSmartPanel(d.business_intelligence, 'business_intelligence');
+  document.getElementById('res_comp').innerHTML = renderSmartPanel(d.competitor_analysis, 'competitor_analysis');
+  document.getElementById('res_intent').innerHTML = renderSmartPanel(d.intent_map, 'intent_map');
+  // Phase B
+  renderKwTable(d.keywords);
+  renderNegatives(d.negative_keywords);
+  document.getElementById('res_clusters').innerHTML = renderSmartPanel(d.intent_clusters, 'intent_clusters');
+  // Phase C
+  renderAdCopy(d.ad_copy, d.business_name);
+  document.getElementById('res_pmax').innerHTML = renderSmartPanel(d.performance_max, 'performance_max');
+  document.getElementById('res_video').innerHTML = renderSmartPanel(d.video_scripts, 'video_scripts');
+  document.getElementById('res_ab').innerHTML = renderSmartPanel(d.ab_test_copy, 'ab_test_copy');
+  document.getElementById('res_multi').innerHTML = renderSmartPanel(d.multilingual, 'multilingual');
+  // Phase D
+  document.getElementById('res_strategy').innerHTML = renderSmartPanel(d.campaign_strategy, 'campaign_strategy');
+  renderBudget(d.budget_plan);
+  document.getElementById('res_bidding').innerHTML = renderSmartPanel(d.bidding_strategy, 'bidding_strategy');
+  document.getElementById('res_targeting').innerHTML = renderSmartPanel(d.targeting, 'targeting');
+  // Phase E
+  document.getElementById('res_tracking').innerHTML = renderTrackingPanel(d.conversion_tracking);
+  document.getElementById('res_qs').innerHTML = renderSmartPanel(d.quality_score, 'quality_score');
+  document.getElementById('res_anomaly').innerHTML = renderSmartPanel(d.anomaly_detection, 'anomaly_detection');
+  document.getElementById('res_extensions').innerHTML = renderSmartPanel(d.extensions, 'extensions');
+  document.getElementById('res_landing_pages').innerHTML = renderSmartPanel(d.landing_pages, 'landing_pages');
+  // Phase F
+  const pol = d.policy_report || 'No policy data';
+  const cls = pol.includes('CLEAN') ? 'success' : pol.includes('FLAG') ? 'warn' : 'info';
+  document.getElementById('res_policy').innerHTML = `<div class="ist ${cls}">${pol}</div>`;
+  document.getElementById('res_cro').innerHTML = renderSmartPanel(d.cro_audit, 'cro_audit');
+  renderROI(d.roi_forecast);
+  // Bonus
+  document.getElementById('res_budget_opt').innerHTML = renderSmartPanel(d.budget_optimizer, 'budget_optimizer');
+  document.getElementById('res_comp_spy').innerHTML = renderSmartPanel(d.competitor_intelligence, 'competitor_intelligence');
+  document.getElementById('res_remarketing').innerHTML = renderSmartPanel(d.remarketing_strategy, 'remarketing_strategy');
+  document.getElementById('res_reporter').innerHTML = renderSmartPanel(d.performance_reporter, 'performance_reporter');
+  document.getElementById('res_scaling').innerHTML = renderSmartPanel(d.scaling_advisor, 'scaling_advisor');
 
-  // Sidebar pages auto-populate in background with staggered delays
-  // so no single crash can block others (uses nav lazy render + setTimeout queue)
-  _autoPopulateAllPages(d);
+  // Extras
+  renderScripts(d.ads_scripts);
+  renderAdCopyFull(d);
+  renderCompetitors(d.competitor_intelligence);
+  renderAudiencesPage(d.audiences);
+  renderRemarketingPage(d.remarketing_strategy);
+  renderForecastPage(d.roi_forecast);
+  renderKeywordsPage(d.keywords, d.intent_clusters, d.negative_keywords);
+  renderAdGroupsTab(d);
+  renderLandingPagesTab(d.landing_pages);
+  renderAssetsTab(d.extensions, d.performance_max, d.ad_copy);
 
-  document.getElementById('resultsEmpty').style.display   = 'none';  // already set above — redundant but safe
+  document.getElementById('resultsEmpty').style.display = 'none';
   document.getElementById('resultsContent').style.display = 'block';
-  // showPublishSection already called above
+  showPublishSection(d);
 }
 
 function renderKwTable(kw) {
@@ -2169,62 +2137,19 @@ function copyScriptCode(idx) {
 }
 
 function renderAdCopyFull(d) {
-  const el = document.getElementById('adcopyContent');
-  if (!el) return;
   const ad = d.ad_copy, display = d.display_ads, calls = d.call_extensions, video = d.video_scripts;
-
-  // Build each section separately to avoid huge single innerHTML assignment
-  el.innerHTML = '';
-
-  // RSA Search Ads card
-  const rsaCard = document.createElement('div');
-  rsaCard.className = 'card mb16';
-  rsaCard.innerHTML = '<div class="card-header"><div class="card-title">📝 Search Ads — RSA (Agent 8)</div></div>';
-  if (ad?.headlines?.length) {
-    const preview = document.createElement('div');
-    preview.className = 'ad-preview';
-    preview.innerHTML = `<div class="ad-preview-label">Ad · ${escHtml(d.business_name||'')}</div>
-      <div class="ad-preview-title">${ad.headlines.slice(0,3).map(h=>escHtml(h)).join(' | ')}</div>
-      <div class="ad-preview-url">${escHtml((d.website_url||'').replace(/^https?:\/\//,''))}</div>
-      <div class="ad-preview-desc">${escHtml(ad.descriptions?.[0]||'')}</div>`;
-    rsaCard.appendChild(preview);
-    const hlDiv = document.createElement('div');
-    hlDiv.className = 'mt12';
-    hlDiv.innerHTML = (ad.headlines||[]).map(h => {
-      const over = h.length > 30;
-      return `<span class="hl-pill${over?' over':''}">${escHtml(h)} <span style="opacity:.4;">(${h.length})</span></span>`;
-    }).join('');
-    rsaCard.appendChild(hlDiv);
-    const descDiv = document.createElement('div');
-    descDiv.className = 'mt8';
-    descDiv.innerHTML = (ad.descriptions||[]).map(desc =>
-      `<span class="desc-pill">${escHtml(desc)} <span style="float:right;opacity:.4;font-family:var(--mono);font-size:10px;">${desc.length}/90</span></span>`
-    ).join('');
-    rsaCard.appendChild(descDiv);
-  }
-  el.appendChild(rsaCard);
-
-  // Display + Call-Only grid
-  const grid = document.createElement('div');
-  grid.className = 'grid2';
-  const displayCard = document.createElement('div');
-  displayCard.className = 'card';
-  displayCard.innerHTML = '<div class="card-header"><div class="card-title">🖼️ Display Ads (Agent 11)</div></div>';
-  displayCard.innerHTML += renderSmartPanel(display, 'display_ads');
-  const callCard = document.createElement('div');
-  callCard.className = 'card';
-  callCard.innerHTML = '<div class="card-header"><div class="card-title">📞 Call-Only Ads (Agent 14)</div></div>';
-  callCard.innerHTML += renderSmartPanel(calls, 'call_extensions');
-  grid.appendChild(displayCard);
-  grid.appendChild(callCard);
-  el.appendChild(grid);
-
-  // Video scripts
-  const videoCard = document.createElement('div');
-  videoCard.className = 'card mt16';
-  videoCard.innerHTML = '<div class="card-header"><div class="card-title">🎬 YouTube Video Scripts (Agent 12)</div></div>';
-  videoCard.innerHTML += renderSmartPanel(video, 'video_scripts');
-  el.appendChild(videoCard);
+  document.getElementById('adcopyContent').innerHTML = `
+    <div class="card mb16">
+      <div class="card-header"><div class="card-title">📝 Search Ads — RSA (Agent 8)</div></div>
+      ${document.getElementById('adPreviewWrap').innerHTML}
+      <div class="mt12">${document.getElementById('hlWrap').innerHTML}</div>
+      <div class="mt8">${document.getElementById('descWrap').innerHTML}</div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="card-header"><div class="card-title">🖼️ Display Ads (Agent 11)</div></div>${renderSmartPanel(display, 'display_ads')}</div>
+      <div class="card"><div class="card-header"><div class="card-title">📞 Call-Only Ads (Agent 14)</div></div>${renderSmartPanel(calls, 'call_extensions')}</div>
+    </div>
+    <div class="card mt16"><div class="card-header"><div class="card-title">🎬 YouTube Video Scripts (Agent 12)</div></div>${renderSmartPanel(video, 'video_scripts')}</div>`;
 }
 
 function renderCompetitors(data) {
@@ -2249,68 +2174,15 @@ function renderForecastPage(roi) {
   // handled in renderROI
 }
 
+// ─────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────
 function switchTab(id, el) {
   document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.rpanel').forEach(p => p.classList.remove('active'));
   if (el) el.classList.add('active');
-  document.getElementById('tab-' + id)?.classList.add('active');
-  // Lazy render: only build tab content the first time it's opened
-  if (_lazyRenderData && !_renderedTabs.has(id)) {
-    _renderedTabs.add(id);
-    try { renderTab(id, _lazyRenderData); } catch(e) { console.warn('Tab render error:', e); }
-  }
-}
-
-function renderTab(id, d) {
-  switch(id) {
-    case 'phase-a':
-      document.getElementById('res_biz').innerHTML    = renderSmartPanel(d.business_intelligence,'business_intelligence');
-      document.getElementById('res_comp').innerHTML   = renderSmartPanel(d.competitor_analysis,'competitor_analysis');
-      document.getElementById('res_intent').innerHTML = renderSmartPanel(d.intent_map,'intent_map');
-      break;
-    case 'phase-b':
-      renderKwTable(d.keywords);
-      renderNegatives(d.negative_keywords);
-      document.getElementById('res_clusters').innerHTML = renderSmartPanel(d.intent_clusters,'intent_clusters');
-      break;
-    case 'phase-c':
-      renderAdCopy(d.ad_copy, d.business_name);
-      document.getElementById('res_pmax').innerHTML  = renderSmartPanel(d.performance_max,'performance_max');
-      document.getElementById('res_video').innerHTML = renderSmartPanel(d.video_scripts,'video_scripts');
-      document.getElementById('res_ab').innerHTML    = renderSmartPanel(d.ab_test_copy,'ab_test_copy');
-      document.getElementById('res_multi').innerHTML = renderSmartPanel(d.multilingual,'multilingual');
-      break;
-    case 'phase-d':
-      document.getElementById('res_strategy').innerHTML = renderSmartPanel(d.campaign_strategy,'campaign_strategy');
-      renderBudget(d.budget_plan);
-      document.getElementById('res_bidding').innerHTML  = renderSmartPanel(d.bidding_strategy,'bidding_strategy');
-      document.getElementById('res_targeting').innerHTML= renderSmartPanel(d.targeting,'targeting');
-      break;
-    case 'phase-e':
-      document.getElementById('res_tracking').innerHTML     = renderTrackingPanel(d.conversion_tracking);
-      document.getElementById('res_qs').innerHTML           = renderSmartPanel(d.quality_score,'quality_score');
-      document.getElementById('res_anomaly').innerHTML      = renderSmartPanel(d.anomaly_detection,'anomaly_detection');
-      document.getElementById('res_extensions').innerHTML   = renderSmartPanel(d.extensions,'extensions');
-      document.getElementById('res_landing_pages').innerHTML= renderSmartPanel(d.landing_pages,'landing_pages');
-      break;
-    case 'phase-f':
-      const pol = d.policy_report || 'No policy data';
-      const cls = pol.includes('CLEAN')?'success':pol.includes('FLAG')?'warn':'info';
-      document.getElementById('res_policy').innerHTML = `<div class="ist ${cls}">${pol}</div>`;
-      document.getElementById('res_cro').innerHTML    = renderSmartPanel(d.cro_audit,'cro_audit');
-      renderROI(d.roi_forecast);
-      break;
-    case 'phase-bonus':
-      document.getElementById('res_budget_opt').innerHTML  = renderSmartPanel(d.budget_optimizer,'budget_optimizer');
-      document.getElementById('res_comp_spy').innerHTML    = renderSmartPanel(d.competitor_intelligence,'competitor_intelligence');
-      document.getElementById('res_remarketing').innerHTML = renderSmartPanel(d.remarketing_strategy,'remarketing_strategy');
-      document.getElementById('res_reporter').innerHTML    = renderSmartPanel(d.performance_reporter,'performance_reporter');
-      document.getElementById('res_scaling').innerHTML     = renderSmartPanel(d.scaling_advisor,'scaling_advisor');
-      break;
-    case 'adgroups':  renderAdGroupsTab(d);                                   break;
-    case 'landing':   renderLandingPagesTab(d.landing_pages);                 break;
-    case 'assets':    renderAssetsTab(d.extensions, d.performance_max, d.ad_copy); break;
-  }
+  else event?.currentTarget?.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
 }
 
 // ─────────────────────────────────────────────
@@ -2476,10 +2348,12 @@ function autoFillDemo() {
   document.getElementById('f_conversion_goal').value = 'Leads';
 }
 
+// Fetch from URL
 async function fetchFromUrl() {
   let url = document.getElementById('f_website_url').value.trim();
   const status = document.getElementById('fetchStatus');
   if (!url) { status.style.display='block'; status.style.color='var(--accent4)'; status.textContent='⚠️ Enter a URL first.'; return; }
+  // Auto-add https:// if missing
   if (!url.startsWith('http')) {
     url = 'https://' + url;
     document.getElementById('f_website_url').value = url;
@@ -2497,24 +2371,11 @@ async function fetchFromUrl() {
     if (data.location && data.location !== 'United States' && data.location.length > 2) {
       document.getElementById('f_target_location').value = data.location; filled++;
     }
-
-    // Show extracted services and seed keywords
-    const extras = [];
-    if (data.services?.length)      extras.push(`Services: ${data.services.slice(0,4).join(', ')}`);
-    if (data.seed_keywords?.length) extras.push(`Keywords found: ${data.seed_keywords.slice(0,5).join(', ')}`);
-    if (data.unique_value_propositions?.length) extras.push(`USPs: ${data.unique_value_propositions.slice(0,2).join(' · ')}`);
-
     const isUrlOnly = data.fetch_status === 'url_only';
     status.style.color = isUrlOnly ? 'var(--accent4)' : 'var(--accent3)';
-    status.innerHTML = (isUrlOnly
-      ? `⚠️ Site blocked direct access — filled ${filled} field(s) from domain name. `
-      : `✅ ${filled} fields auto-filled! `) +
-      (extras.length ? `<br><span style="color:var(--muted);font-size:11px;">${extras.join(' | ')}</span>` : '');
-
-    // Store seed keywords globally for agents to use
-    if (data.seed_keywords?.length) window._fetchedKeywords = data.seed_keywords;
-    if (data.services?.length)      window._fetchedServices = data.services;
-
+    status.textContent = isUrlOnly
+      ? `⚠️ Site blocked direct access — filled ${filled} field(s) from domain name. Check and correct below.`
+      : `✅ ${filled} fields auto-filled from website!`;
   } catch(e) {
     status.style.color='var(--danger)'; status.textContent='❌ ' + e.message;
   }
@@ -2543,7 +2404,8 @@ const AGENT_RESULT_KEYS = [
   'demand_gen','shopping_optimizer','local_campaigns','app_campaigns','specialty_ads','lead_forms','call_campaigns',
   'daily_pulse','burn_rate_alerts','ctr_alerts','conversion_spikes','waste_audit','executive_dashboard',
   'disapproval_fixes','trademark_guard','lp_monitor','billing_alerts','mcc_supervision',
-  'winner_scaling','market_expansion','keyword_expansion','competitor_gaps','profit_roas','cross_campaign_sync','funnel_orchestration'
+  'winner_scaling','market_expansion','keyword_expansion','competitor_gaps','profit_roas','cross_campaign_sync','funnel_orchestration',
+  'campaign_brain','agent_schedule','signal_aggregation'
 ];
 
 // Forbidden keyword patterns (mirrors quality_engine.py)
@@ -2653,66 +2515,37 @@ function setModalQuality(score) {
 
 function extractAllKeywords(data) {
   const kws = [];
-  if (!data || typeof data !== 'object') return kws;
-
   const tryExtract = (arr) => {
     if (!Array.isArray(arr)) return;
     arr.forEach(k => {
-      const t = typeof k === 'object' ? (k.keyword || k.term || k.text || '') : String(k);
-      if (t && t.length > 1) kws.push(t.toLowerCase().trim());
+      const t = typeof k === 'object' ? (k.keyword || k.term || '') : String(k);
+      if (t) kws.push(t);
     });
   };
-
-  // Direct arrays
-  if (data.keywords_by_service)   Object.values(data.keywords_by_service).forEach(tryExtract);
-  if (data.keywords_by_theme)     Object.values(data.keywords_by_theme).forEach(tryExtract);
-  if (data.brand_keywords)        tryExtract(data.brand_keywords);
-  if (data.non_brand_keywords)    tryExtract(data.non_brand_keywords);
-  if (data.competitor_keywords)   tryExtract(data.competitor_keywords);
-  if (data.brand_protection_keywords) tryExtract(data.brand_protection_keywords);
-  if (data.high_value_terms)      tryExtract(data.high_value_terms);
-  if (data.negative_list_expansion) tryExtract(data.negative_list_expansion);
-
-  // Nested under campaign objects (brand segmentation agent)
-  if (data.brand_campaign?.keywords)       tryExtract(data.brand_campaign.keywords);
-  if (data.non_brand_campaigns?.keywords)  tryExtract(data.non_brand_campaigns.keywords);
-
-  // Clusters
+  if (data.keywords_by_theme) Object.values(data.keywords_by_theme).forEach(tryExtract);
+  if (data.keywords_by_service) Object.values(data.keywords_by_service).forEach(tryExtract);
+  if (data.brand_keywords) tryExtract(data.brand_keywords);
+  if (data.non_brand_keywords) tryExtract(data.non_brand_keywords);
+  if (data.campaign_negatives) tryExtract(data.campaign_negatives);
   if (data.clusters) data.clusters.forEach(c => tryExtract(c.keywords || []));
-
-  // Expansion clusters
-  if (data.expansion_keyword_clusters) {
-    data.expansion_keyword_clusters.forEach(c => tryExtract(c.keywords || []));
-  }
-  if (data.long_tail_opportunities) tryExtract(data.long_tail_opportunities);
-  if (data.question_based_keywords) tryExtract(data.question_based_keywords);
-
-  // Competitor gaps
-  if (data.competitor_keyword_gaps) {
-    data.competitor_keyword_gaps.forEach(g => { if (g.keyword) kws.push(g.keyword); });
-  }
-
-  return [...new Set(kws)]; // deduplicate
+  if (data.high_value_terms) tryExtract(data.high_value_terms);
+  return kws;
 }
 
 function renderKeywordModalContent(data, agentNum) {
-  if (data?.error) {
-    return `<div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px;color:var(--danger);">
-      <strong>❌ Agent returned an error:</strong><br>${escHtml(data.error)}
-      <br><br><span style="color:var(--muted);font-size:11px;">Tip: Click ✏️ Edit Data to paste correct keyword data manually.</span>
-    </div>`;
-  }
   const allKws = extractAllKeywords(data);
   const kwChecks = allKws.map(kw => ({ kw, issues: checkKeyword(kw) }));
   const good = kwChecks.filter(k => k.issues.length === 0);
   const bad  = kwChecks.filter(k => k.issues.length > 0);
+
   const FIX_ADVICE = {
-    location:'Remove — set location in campaign geo-targeting instead',
-    price:'Remove — put in ad copy or promotion extension',
-    superlatives:'Remove — Google penalises these in keywords',
-    informational:'Remove — add to negative keywords list',
-    jobs:'Remove — add to negative keywords list'
+    location:      'Remove — set location in campaign geo-targeting instead',
+    price:         'Remove — put in ad copy or promotion extension',
+    superlatives:  'Remove — Google penalises these in keywords',
+    informational: 'Remove — add to negative keywords list',
+    jobs:          'Remove — add to negative keywords list'
   };
+
   let html = `<div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
     <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:10px 16px;text-align:center;">
       <div style="font-size:22px;font-weight:800;color:var(--accent3)">${good.length}</div>
@@ -2727,43 +2560,44 @@ function renderKeywordModalContent(data, agentNum) {
       <div style="font-size:10px;color:var(--muted);font-family:var(--mono)">TOTAL</div>
     </div>
   </div>`;
-  if (allKws.length === 0) {
-    html += `<div style="padding:12px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:8px;margin-bottom:14px;font-size:12px;color:var(--accent4);">
-      ℹ️ No keywords extracted — agent may have returned data in a different structure.<br>
-      <span style="color:var(--muted);">Raw data shown below. Use ✏️ Edit Data to fix.</span>
-    </div>`;
-    html += renderSmartPanel(data, 'keywords');
-    return html;
-  }
+
   if (bad.length > 0) {
     html += `<div style="font-size:11px;color:var(--danger);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px;">❌ KEYWORDS TO FIX</div>`;
     bad.forEach(({ kw, issues }) => {
       const cat = issues[0].cat;
-      html += `<div class="kw-check-row kw-bad"><div class="kw-check-icon">❌</div>
-        <div class="kw-check-text"><strong style="color:var(--text)">${escHtml(kw)}</strong>
+      const advice = FIX_ADVICE[cat] || 'Remove this word';
+      html += `<div class="kw-check-row kw-bad">
+        <div class="kw-check-icon">❌</div>
+        <div class="kw-check-text">
+          <strong style="color:var(--text)">${kw}</strong>
           <span style="font-size:10px;font-family:var(--mono);background:rgba(239,68,68,.15);color:var(--danger);border-radius:4px;padding:1px 6px;margin-left:6px;">${cat}</span>
-          <div class="kw-check-fix">💡 ${FIX_ADVICE[cat]||'Remove this word'}</div>
-        </div></div>`;
+          <div class="kw-check-fix">💡 ${advice}</div>
+        </div>
+      </div>`;
     });
     html += '<div style="height:16px;"></div>';
   }
+
   if (good.length > 0) {
     html += `<div style="font-size:11px;color:var(--accent3);font-family:var(--mono);letter-spacing:1px;margin-bottom:8px;">✅ CLEAN SERVICE-BASED KEYWORDS</div>`;
     html += '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;">';
     good.forEach(({ kw }) => {
-      html += `<span style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent3);font-family:var(--mono)">${escHtml(kw)}</span>`;
+      html += `<span style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent3);font-family:var(--mono)">${kw}</span>`;
     });
     html += '</div>';
   }
+
   if (bad.length > 0) {
-    html += `<div style="margin-top:12px;padding:10px 14px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);border-radius:8px;font-size:11px;color:var(--accent4);">
-      ⚠️ <strong>${bad.length} keyword(s) need fixing.</strong> Location → campaign settings. Price/offers → ad copy.
+    html += `<div style="margin-top:12px;padding:10px 14px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);border-radius:8px;font-size:11px;color:var(--accent4);line-height:1.7;">
+      ⚠️ <strong>${bad.length} keyword(s) need fixing:</strong> remove the flagged words above.<br>
+      Location targeting → campaign settings. Price/offers → ad copy. Superlatives → ad copy.
     </div>`;
-  } else {
-    html += `<div style="margin-top:12px;padding:10px 14px;background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:11px;color:var(--accent3);">
+  } else if (allKws.length > 0) {
+    html += `<div style="margin-top:12px;padding:10px 14px;background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:11px;color:var(--accent3);line-height:1.7;">
       ✅ All keywords are service-based and ready to publish to Google Ads.
     </div>`;
   }
+
   return html;
 }
 
@@ -3085,6 +2919,8 @@ const PHASE_DEFS = [
   { id:'L', label:'Reporting',  agents:[68,69,70,71,72,73], color:'#06b6d4' },
   { id:'M', label:'Protection', agents:[74,75,76,77,78], color:'#ef4444' },
   { id:'N', label:'Growth',     agents:[79,80,81,82,83,84,85], color:'#6366f1' },
+  { id:'O', label:'Orchestrators', agents:[86,87,88], color:'#8b5cf6' },
+  { id:'V13', label:'v13 New', agents:[89,90,91], color:'#10b981' },
 ];
 
 // Presets — groups of agents for common use cases
@@ -3459,6 +3295,7 @@ function renderResults(d) {
   // Populate AI Max page
   if (d.ai_max) {
     const el = document.getElementById('aimaxContent');
+    if (el) el.innerHTML = renderSmartPanel(d.ai_max, 'ai_max');
   }
   // Populate LSA page
   if (d.local_services_ads) {
@@ -3575,14 +3412,13 @@ function renderSmartPanel(data, key) {
         if (v.length > 20) html += `<span style="font-size:11px;color:var(--muted);">+${v.length-20} more</span>`;
         html += `</div>`;
       } else if (typeof v[0] === 'object') {
-        // Table-style for object arrays — limit to 8 rows max
+        // Table-style for object arrays
         const cols = Object.keys(v[0] || {}).slice(0,5);
-        const rows = v.slice(0,8);
         html += `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:11px;">
           <thead><tr>${cols.map(c=>`<th style="text-align:left;padding:4px 8px;border-bottom:1px solid var(--border);font-family:var(--mono);color:var(--muted);font-size:9px;letter-spacing:.5px;">${c.replace(/_/g,' ').toUpperCase()}</th>`).join('')}</tr></thead>
-          <tbody>${rows.map(row=>`<tr>${cols.map(c=>`<td style="padding:5px 8px;border-bottom:1px solid rgba(22,32,48,.5);color:var(--text);">${escHtml(String(row[c]??''))}</td>`).join('')}</tr>`).join('')}</tbody>
+          <tbody>${v.slice(0,10).map(row=>`<tr>${cols.map(c=>`<td style="padding:5px 8px;border-bottom:1px solid rgba(22,32,48,.5);color:var(--text);">${escHtml(String(row[c]||''))}</td>`).join('')}</tr>`).join('')}</tbody>
         </table></div>`;
-        if (v.length > 8) html += `<div style="font-size:10px;color:var(--muted);padding:4px 0;">+${v.length-8} more rows</div>`;
+        if (v.length > 10) html += `<div style="font-size:10px;color:var(--muted);padding:4px 0;">+${v.length-10} more items</div>`;
       } else {
         html += `<div class="json-viewer" style="font-size:11px;max-height:120px;overflow-y:auto;">${syntaxHL(JSON.stringify(v.slice(0,5),null,2))}</div>`;
       }
@@ -3595,7 +3431,7 @@ function renderSmartPanel(data, key) {
             <div style="font-size:12px;font-weight:600;color:var(--accent);">${Array.isArray(sv)?sv.length+' items':typeof sv==='object'?'Object':escHtml(String(sv))}</div>
           </div>`).join('') + `</div>`;
       } else {
-        html += `<div class="json-viewer" style="font-size:11px;max-height:150px;overflow-y:auto;">${syntaxHL(JSON.stringify(v,null,1).slice(0,2000))}</div>`;
+        html += `<div class="json-viewer" style="font-size:11px;max-height:150px;overflow-y:auto;">${syntaxHL(JSON.stringify(v,null,2))}</div>`;
       }
     } else if (typeof v === 'boolean') {
       html += `<span style="font-size:12px;font-weight:700;color:${v?'var(--accent3)':'var(--danger)'};">${v ? '✅ Yes' : '❌ No'}</span>`;
@@ -3634,79 +3470,72 @@ function renderKeywordsPage(kw, clusters, negatives) {
   if (!kw) { el.innerHTML = '<div class="card"><div class="empty"><div class="empty-icon">🔑</div><div class="empty-text">No keyword data returned</div></div></div>'; return; }
   const services = kw.keywords_by_service || kw.keywords_by_theme || {};
   const groupKeys = Object.keys(services);
-  if (!groupKeys.length) { el.innerHTML = '<div class="card"><div class="empty"><div class="empty-icon">🔑</div><div class="empty-text">No keyword groups found in agent data</div></div></div>'; return; }
-
-  // Build HTML in chunks to avoid massive single string assignment
-  const parts = [];
+  let html = '';
+  // Summary row
   const total = groupKeys.reduce((a,k) => a + (services[k]||[]).length, 0);
   const negCount = (negatives?.campaign_level_negatives||[]).length;
-
-  parts.push(`<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+  html += `<div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
     <div class="metric-card"><div class="metric-val" style="color:var(--accent)">${groupKeys.length}</div><div class="metric-label">Ad Groups</div></div>
     <div class="metric-card"><div class="metric-val" style="color:var(--accent3)">${total}</div><div class="metric-label">Keywords</div></div>
     <div class="metric-card"><div class="metric-val" style="color:var(--danger)">${negCount}</div><div class="metric-label">Negatives</div></div>
-  </div>`);
-
-  // Per-group tables — limit to 20 rows each to prevent overflow
+  </div>`;
+  // Per-group tables
   groupKeys.forEach(svc => {
-    const kws = (services[svc] || []).slice(0, 20); // max 20 rows per group
-    const allKws = services[svc] || [];
+    const kws = services[svc] || [];
     const clean = kws.filter(k => { const t = typeof k==='string'?k:(k.keyword||''); return checkKeyword(t).length===0; });
-    const pct = allKws.length>0 ? Math.round(allKws.filter(k => {const t=typeof k==='string'?k:(k.keyword||''); return checkKeyword(t).length===0;}).length/allKws.length*100) : 100;
-    const ahrefsUrl = `https://ahrefs.com/keywords-explorer?input=${encodeURIComponent(kws.slice(0,3).map(k=>typeof k==='string'?k:(k.keyword||'')).join(','))}&mode=prefix`;
-
-    let rows = '';
-    kws.forEach(k => {
-      const t = typeof k==='string'?k:(k.keyword||'');
-      const mt = typeof k==='string'?'PHRASE':(k.match_type||'PHRASE');
-      const vol = k.estimated_volume||'';
-      const cpc = k.estimated_cpc ? `$${k.estimated_cpc}` : '';
-      const issues = checkKeyword(t);
-      const aUrl = `https://ahrefs.com/keywords-explorer?input=${encodeURIComponent(t)}&mode=exact`;
-      const statusIcon = issues.length===0 ? '✅' : `❌ ${issues[0].cat}`;
-      rows += `<tr><td class="kw-kw" style="${issues.length>0?'color:var(--danger)':''}">${escHtml(t)}</td><td><span class="mb-badge mb-${mt}">${mt}</span></td><td style="color:var(--muted);font-size:11px;">${vol}</td><td style="font-family:var(--mono);font-size:11px;">${cpc}</td><td>${statusIcon}</td><td><a href="${aUrl}" target="_blank" style="color:var(--accent);font-size:11px;text-decoration:none;">🔍</a></td></tr>`;
-    });
-
-    parts.push(`<div class="card mb16"><div class="card-header">
-      <div><div class="card-title">${escHtml(svc)}</div><div class="card-sub">${allKws.length} keywords · ${pct}% clean${allKws.length>20?' (showing first 20)':''}</div></div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <span style="font-size:11px;padding:3px 10px;border-radius:12px;font-weight:700;background:${pct>=90?'rgba(16,185,129,.12)':pct>=70?'rgba(245,158,11,.12)':'rgba(239,68,68,.12)'};color:${pct>=90?'var(--accent3)':pct>=70?'var(--accent4)':'var(--danger)'};">${pct}%</span>
-        <a href="${ahrefsUrl}" target="_blank" class="btn btn-ghost btn-sm" style="font-size:10px;">🔍 Ahrefs</a>
-      </div></div>
-      <div style="overflow-x:auto;"><table class="kw-table"><thead><tr><th>Keyword</th><th>Match Type</th><th>Volume</th><th>CPC</th><th>Status</th><th>Ahrefs</th></tr></thead><tbody>${rows}</tbody></table></div>
-    </div>`);
+    const pct = kws.length>0 ? Math.round(clean.length/kws.length*100) : 100;
+    const ahrefsUrl = `https://ahrefs.com/keywords-explorer?input=${encodeURIComponent(kws.slice(0,5).map(k=>typeof k==='string'?k:(k.keyword||'')).join(','))}&mode=prefix`;
+    html += `<div class="card mb16">
+      <div class="card-header">
+        <div><div class="card-title">${escHtml(svc)}</div><div class="card-sub">${kws.length} keywords · ${pct}% clean</div></div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span style="font-size:11px;padding:3px 10px;border-radius:12px;font-weight:700;background:${pct>=90?'rgba(16,185,129,.12)':pct>=70?'rgba(245,158,11,.12)':'rgba(239,68,68,.12)'};color:${pct>=90?'var(--accent3)':pct>=70?'var(--accent4)':'var(--danger)'};">${pct}%</span>
+          <a href="${ahrefsUrl}" target="_blank" class="btn btn-ghost btn-sm" style="font-size:10px;">🔍 Ahrefs</a>
+        </div>
+      </div>
+      <div style="overflow-x:auto;"><table class="kw-table">
+        <thead><tr><th>Keyword</th><th>Match Type</th><th>Volume</th><th>CPC</th><th>Status</th><th>Ahrefs</th></tr></thead>
+        <tbody>${kws.map(k => {
+          const t = typeof k==='string'?k:(k.keyword||'');
+          const mt = typeof k==='string'?'PHRASE':(k.match_type||'PHRASE');
+          const vol = k.estimated_volume||'';
+          const cpc = k.estimated_cpc ? `$${k.estimated_cpc}` : '';
+          const issues = checkKeyword(t);
+          const aUrl = `https://ahrefs.com/keywords-explorer?input=${encodeURIComponent(t)}&mode=exact`;
+          const statusIcon = issues.length===0 ? '<span style="color:var(--accent3)">✅</span>' : `<span style="color:var(--danger)" title="${issues.map(i=>i.cat).join(', ')}">❌ ${issues[0].cat}</span>`;
+          return `<tr>
+            <td class="kw-kw" style="${issues.length>0?'color:var(--danger)':''}">${escHtml(t)}</td>
+            <td><span class="mb-badge mb-${mt}">${mt}</span></td>
+            <td style="color:var(--muted);font-size:11px;">${vol}</td>
+            <td style="font-family:var(--mono);font-size:11px;">${cpc}</td>
+            <td>${statusIcon}</td>
+            <td><a href="${aUrl}" target="_blank" style="color:var(--accent);font-size:11px;text-decoration:none;">🔍</a></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>
+    </div>`;
   });
-
   // Negatives
-  if (negatives?.campaign_level_negatives?.length) {
-    const negs = negatives.campaign_level_negatives.slice(0, 50);
-    parts.push(`<div class="card mb16"><div class="card-header"><div class="card-title">Negative Keywords</div><div class="card-sub">${negatives.campaign_level_negatives.length} blocking irrelevant traffic${negatives.estimated_waste_saved?` · 💰 Saved: ${negatives.estimated_waste_saved}`:''}</div></div>
+  if (negatives) {
+    const negs = negatives.campaign_level_negatives || [];
+    html += `<div class="card mb16">
+      <div class="card-header"><div class="card-title">Negative Keywords</div><div class="card-sub">${negs.length} blocking irrelevant traffic${negatives.estimated_waste_saved?` · 💰 Saved: ${negatives.estimated_waste_saved}`:''}</div></div>
       <div style="display:flex;flex-wrap:wrap;gap:5px;">${negs.map(k=>`<span class="tag r">${escHtml(k)}</span>`).join('')}</div>
-    </div>`);
+    </div>`;
   }
-
   // Clusters
   if (clusters?.clusters?.length) {
-    const clusterHtml = clusters.clusters.slice(0,4).map(c=>`
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--accent4);">${escHtml(c.cluster_name||c.theme||'Cluster')}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:4px;">${(c.keywords||[]).slice(0,5).map(kk=>`<span style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:1px 7px;font-size:10px;color:var(--accent4);">${escHtml(typeof kk==='string'?kk:(kk.keyword||''))}</span>`).join('')}</div>
-      </div>`).join('');
-    parts.push(`<div class="card"><div class="card-header"><div class="card-title">Intent Clusters (A7)</div><div class="card-sub">${clusters.clusters.length} clusters</div></div>
-      <div class="grid2">${clusterHtml}</div></div>`);
+    html += `<div class="card">
+      <div class="card-header"><div class="card-title">Intent Clusters (A7)</div><div class="card-sub">${clusters.clusters.length} clusters identified</div></div>
+      <div class="grid2">${clusters.clusters.slice(0,6).map(c=>`
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;">
+          <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--accent4);">${escHtml(c.cluster_name||c.theme||'Cluster')}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;">${(c.keywords||[]).slice(0,6).map(kk=>`<span style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:1px 7px;font-size:10px;color:var(--accent4);">${escHtml(typeof kk==='string'?kk:(kk.keyword||''))}</span>`).join('')}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
   }
-
-  // Assign each part separately to avoid single massive innerHTML assignment
-  el.innerHTML = '';
-  const wrapper = document.createElement('div');
-  parts.forEach(p => {
-    try {
-      const div = document.createElement('div');
-      div.innerHTML = p;
-      wrapper.appendChild(div);
-    } catch(e) { console.warn('Keyword section error:', e); }
-  });
-  el.appendChild(wrapper);
+  el.innerHTML = html || '<div class="card"><div class="empty"><div class="empty-icon">🔑</div><div class="empty-text">No keyword data</div></div></div>';
 }
 
 // ═══════════════════════════════════════════════════════════
