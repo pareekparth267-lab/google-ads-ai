@@ -1,3 +1,4 @@
+import re
 # -*- coding: utf-8 -*-
 """
 ╔══════════════════════════════════════════════════════════════════╗
@@ -787,7 +788,7 @@ Return JSON: {{
   "scaling_triggers": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=1500,
         agent_num=17
     )
 
@@ -2352,7 +2353,7 @@ def agent_81_keyword_expander(d: RunCrewRequest) -> dict:
     log.info("▶ Agent 81: Keyword Expander")
     return ai_json(
         "You are a keyword expansion and opportunity discovery expert for Google Ads.",
-        f"""Discover keyword expansion opportunities for {d.business_name} ({d.business_type}) in {d.target_location}.
+        f"""Discover keyword expansion for {d.business_name} ({d.business_type}). ZERO location words - no city names, no state, no near me, no local. Pure service keywords only.
 Return JSON: {{
   "expansion_keyword_clusters": [
     {{
