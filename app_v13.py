@@ -63,7 +63,7 @@ GROQ_MODEL       = GROQ_MODEL_SMART   # default (kept for any legacy references)
 
 # Agents 1-35 are "core" and get the smart model.
 # Agents 36-88 are "extended" and get the fast model (higher TPM).
-SMART_AGENT_LIMIT = 35
+SMART_AGENT_LIMIT = 7
 
 # ── Token-bucket rate limiter ─────────────────────────────────────
 # 70b model:  6,000 TPM  → gap = 60/8  = 7.5s per call at 800 tokens avg
