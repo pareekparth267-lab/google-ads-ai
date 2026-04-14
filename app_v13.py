@@ -619,7 +619,7 @@ Return JSON: {{
   }}
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=11
     )
 
@@ -648,7 +648,7 @@ Return JSON: {{
   }}
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=12
     )
 
@@ -666,7 +666,7 @@ Return JSON: {{
   "merchant_center_checklist": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=13
     )
 
@@ -692,7 +692,7 @@ Return JSON: {{
   "recommended_extensions": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=14
     )
 
@@ -730,7 +730,7 @@ Return JSON: {{
   "minimum_test_duration_days": number
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=15
     )
 
@@ -756,7 +756,7 @@ Return JSON: {{
   "geo_targeting_recommendation": ""
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=16
     )
 
@@ -810,7 +810,7 @@ Return JSON: {{
   "break_even_point": {{}}
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=18
     )
 
@@ -833,7 +833,7 @@ Return JSON: {{
   "portfolio_strategies": []
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=19
     )
 
@@ -856,7 +856,7 @@ Return JSON: {{
   "life_events": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=20
     )
 
@@ -886,7 +886,7 @@ Return JSON: {{
   }}
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=21
     )
 
@@ -912,7 +912,7 @@ Return JSON: {{
   "value_based_bidding_setup": {{}}
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=22
     )
 
@@ -956,7 +956,7 @@ Return JSON: {{
   ]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=23
     )
 
@@ -979,7 +979,7 @@ Return JSON: {{
   "estimated_cpc_reduction_pct": number
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=24
     )
 
@@ -1003,7 +1003,7 @@ Return JSON: {{
   "alert_channels": ["email","slack"]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=25
     )
 
@@ -1024,7 +1024,7 @@ Return JSON: {{
   "promotion_extension": {{"promotion":"","amount":"","occasion":"","start_date":"","end_date":""}}
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=26
     )
 
@@ -1052,7 +1052,7 @@ Return JSON: {{
   "conversion_elements_checklist": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=27
     )
 
@@ -1094,7 +1094,7 @@ Return JSON: {{
   "target_cvr_after_cro": "Y%"
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=29
     )
 
@@ -1121,7 +1121,7 @@ Return JSON: {{
   "upside_scenarios": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=30
     )
 
@@ -1141,7 +1141,7 @@ Return JSON: {{
   "competitor_budget_estimates": []
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=31
     )
 
@@ -1161,7 +1161,7 @@ Return JSON: {{
   "recommended_counter_strategies": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=32
     )
 
@@ -1181,7 +1181,7 @@ Return JSON: {{
   "win_back_campaigns": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=33
     )
 
@@ -1207,7 +1207,7 @@ Return JSON: {{
   }}
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=34
     )
 
@@ -1230,7 +1230,7 @@ Return JSON: {{
   "six_month_roadmap": [...]
 }}"""
     ,
-        max_tokens=700,
+        max_tokens=900,
         agent_num=35
     )
 
