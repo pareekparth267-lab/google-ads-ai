@@ -661,13 +661,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);}
     <div class="nav-item" onclick="nav('performance-dash',this)">
       <span class="ni">📊</span> Performance
     </div>
-    <div class="nav-section">New Agents</div>
-    <div class="nav-item" onclick="nav('ai-max',this)">
-      <span class="ni">🤖</span> AI Max (A89)
-    </div>
-    <div class="nav-item" onclick="nav('lsa',this)">
-      <span class="ni">📍</span> Local Services
-    </div>
+
     <div class="nav-item" onclick="nav('oauth',this)">
       <span class="ni">🔐</span> Google Auth
     </div>
@@ -1791,8 +1785,7 @@ const AGENTS = [
   'Winner Scale','Mkt Expand','KW Expander','Comp Gap',
   'Profit ROAS','Cross Sync','Funnel Orch',
   // Phase O agents removed (A86-88)
-  // v13 New Agents
-  '🤖 AI Max','📍 Local Services','🔒 Enhanced Conv'
+  // v13 agents removed
 ];
 
 function buildAgentGrid() {
@@ -3092,7 +3085,6 @@ const PHASE_DEFS = [
   { id:'L', label:'Reporting',  agents:[68,69,70,71,72,73], color:'#06b6d4' },
   { id:'M', label:'Protection', agents:[74,75,76,77,78], color:'#ef4444' },
   { id:'N', label:'Growth',     agents:[79,80,81,82,83,84,85], color:'#6366f1' },
-  { id:'V13', label:'v13 New', agents:[89,90,91], color:'#10b981' },
 ];
 
 // Presets — groups of agents for common use cases
@@ -3467,7 +3459,6 @@ function renderResults(d) {
   // Populate AI Max page
   if (d.ai_max) {
     const el = document.getElementById('aimaxContent');
-    if (el) el.innerHTML = renderSmartPanel(d.ai_max, 'ai_max');
   }
   // Populate LSA page
   if (d.local_services_ads) {
