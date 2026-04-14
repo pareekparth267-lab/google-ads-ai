@@ -7,6 +7,7 @@
 ╚══════════════════════════════════════════════════════════════════╝
 """
 
+import re
 import os
 import json
 import time
@@ -422,9 +423,8 @@ def ai_text(system: str, user: str, max_tokens: int = 400) -> str:
 
 def _strip_location_keywords(kw_data: dict, target_location: str) -> dict:
     """
-    Remove location-based keywords from keyword data.
-    Google Ads best practice: location targeting belongs in campaign settings,
-    not in keywords. This strips city/state/location terms from keyword lists.
+    Remove ALL location-based keywords from keyword data.
+    Google Ads best practice: location targeting belongs in campaign geo-settings, not keywords.
     """
     if not kw_data or not isinstance(kw_data, dict):
         return kw_data
@@ -432,19 +432,42 @@ def _strip_location_keywords(kw_data: dict, target_location: str) -> dict:
     # Build location terms to strip
     location_terms = set()
     if target_location:
+        # Add full location and each word
         parts = target_location.lower().replace(',', ' ').split()
-        location_terms.update(parts)
+        location_terms.update(p for p in parts if len(p) > 2)
         location_terms.add(target_location.lower())
-    # Common location suffixes to strip
-    location_suffixes = ['near me', 'nearby', 'local', 'in my area', 'around me',
-                         'closest', 'nearest']
-    location_terms.update(location_suffixes)
+
+    # Always strip these patterns regardless of location
+    ALWAYS_STRIP = [
+        'near me', 'nearby', 'local', 'in my area', 'around me',
+        'closest', 'nearest', 'close to me', 'in my city',
+        'in [city]', 'in [location]', '[city]', '[location]',
+    ]
+
+    # Common US state abbreviations and words
+    GEO_PATTERNS = re.compile(
+        r'\b(near me|nearby|local|around me|closest|nearest|'
+        r'fl|ca|tx|ny|az|ga|wa|or|co|nv|ut|nm|id|mt|wy|nd|sd|'
+        r'mn|ia|mo|ar|la|ms|al|tn|ky|wv|va|nc|sc|'
+        r'clearwater|tampa|orlando|miami|jacksonville|'
+        r'safety harbor|dunedin|largo|pinellas|'
+        r'in \w+|near \w+)\b',
+        re.IGNORECASE
+    )
 
     def is_location_kw(kw_text: str) -> bool:
-        kw_lower = kw_text.lower()
+        kw_lower = kw_text.lower().strip()
+        # Check location terms from target location
         for term in location_terms:
-            if term and term in kw_lower:
+            if term and len(term) > 2 and term in kw_lower:
                 return True
+        # Check always-strip patterns
+        for term in ALWAYS_STRIP:
+            if term.lower() in kw_lower:
+                return True
+        # Check geo patterns
+        if GEO_PATTERNS.search(kw_lower):
+            return True
         return False
 
     def clean_list(kw_list):
@@ -466,7 +489,6 @@ def _strip_location_keywords(kw_data: dict, target_location: str) -> dict:
     result = {}
     for key, val in kw_data.items():
         if isinstance(val, dict):
-            # keywords_by_service or keywords_by_theme
             result[key] = {svc: clean_list(kws) for svc, kws in val.items()}
         elif isinstance(val, list):
             result[key] = clean_list(val)
@@ -2948,9 +2970,20 @@ async def run_all_agents(d: RunCrewRequest, resume_from: dict | None = None) -> 
         agent_85_funnel_orchestrator,
     ], "Phase N: Scaling & Growth")
     winner_scale, mkt_expand, kw_expand, comp_gap, profit_roas, cross_sync, funnel_orch = n_results
-    # Strip location terms from keyword expansion (best practice: location → campaign settings)
+    # Strip location terms from ALL keyword results — service-based keywords only
+    for _var_name, _var in [('keywords', keywords), ('brand_seg', brand_seg),
+                             ('clusters', clusters), ('kw_expand', kw_expand), ('comp_gap', comp_gap)]:
+        pass  # stripping done inline below
+    if isinstance(keywords,  dict) and not keywords.get('error'):
+        keywords  = _strip_location_keywords(keywords,  d.target_location)
+    if isinstance(brand_seg, dict) and not brand_seg.get('error'):
+        brand_seg = _strip_location_keywords(brand_seg, d.target_location)
+    if isinstance(clusters,  dict) and not clusters.get('error'):
+        clusters  = _strip_location_keywords(clusters,  d.target_location)
     if isinstance(kw_expand, dict) and not kw_expand.get('error'):
         kw_expand = _strip_location_keywords(kw_expand, d.target_location)
+    if isinstance(comp_gap,  dict) and not comp_gap.get('error'):
+        comp_gap  = _strip_location_keywords(comp_gap,  d.target_location)
 
     # ── Phase O: Master Orchestrators (86–88) ───────────────────
     log.info("═══ Phase O: Master Orchestrators ═══")
@@ -5301,5 +5334,5 @@ async def health_v13():
             "real_time_monitoring":     True,
             "fixed_sitelinks_v17":      True,
             "data_manager_api_ready":   True,
-        } 
-    } 
+        }
+    }
