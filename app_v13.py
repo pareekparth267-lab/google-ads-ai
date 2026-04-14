@@ -1258,7 +1258,7 @@ Return JSON: {{
   "expected_roas_lift": "X%"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=36
     )
 
@@ -1280,7 +1280,7 @@ Return JSON: {{
   "estimated_profit_improvement": "X%"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=37
     )
 
@@ -1301,7 +1301,7 @@ Return JSON: {{
   "estimated_cpa_improvement": "X%"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=38
     )
 
@@ -1324,7 +1324,7 @@ Return JSON: {{
   "estimated_budget_needed_for_top_impression": number
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=39
     )
 
@@ -1349,7 +1349,7 @@ Return JSON: {{
   "implementation_steps": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=40
     )
 
@@ -1370,7 +1370,7 @@ Return JSON: {{
   "estimated_revenue_from_ltv_bidding": "X% improvement"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=41
     )
 
@@ -1391,7 +1391,7 @@ Return JSON: {{
   "pre_peak_preparation_checklist": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=42
     )
 
@@ -1417,7 +1417,7 @@ Return JSON: {{
   "ab_test_priority_list": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=43
     )
 
@@ -1446,7 +1446,7 @@ Return JSON: {{
   "responsive_display_ad_specs": {{}}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=44
     )
 
@@ -1468,7 +1468,7 @@ Return JSON: {{
   "performance_max_video_guidelines": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=45
     )
 
@@ -1495,7 +1495,7 @@ Return JSON: {{
   "winner_promotion_criteria": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=46
     )
 
@@ -1521,7 +1521,7 @@ Return JSON: {{
   "advance_preparation_timeline": {{}}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=47
     )
 
@@ -1543,7 +1543,7 @@ Return JSON: {{
   "competitive_advantage_statements": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=48
     )
 
@@ -1570,7 +1570,7 @@ Return JSON: {{
   "estimated_cpa_improvement": "X%"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=49
     )
 
@@ -1591,7 +1591,7 @@ Return JSON: {{
   "estimated_performance_lift": "X%"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=50
     )
 
@@ -1614,7 +1614,7 @@ Return JSON: {{
   "pre_event_budget_increase_plan": {{}}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=51
     )
 
@@ -1636,7 +1636,7 @@ Return JSON: {{
   "rebalancing_triggers": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=52
     )
 
@@ -1661,7 +1661,7 @@ Return JSON: {{
   "gtm_implementation_notes": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=53
     )
 
@@ -1683,7 +1683,7 @@ Return JSON: {{
   "monitoring_dashboard_kpis": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=54
     )
 
@@ -1708,7 +1708,7 @@ Return JSON: {{
   "gdpr_ccpa_compliance_notes": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=55
     )
 
@@ -1729,7 +1729,7 @@ Return JSON: {{
   "expected_cpa_vs_remarketing": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=56
     )
 
@@ -1752,7 +1752,7 @@ Return JSON: {{
   "combined_audience_segments": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=57
     )
 
@@ -1774,7 +1774,7 @@ Return JSON: {{
   "rationale": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=58
     )
 
@@ -1804,7 +1804,7 @@ Return JSON: {{
   "estimated_conversion_lift": "X%"
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=59
     )
 
@@ -1829,7 +1829,7 @@ Return JSON: {{
   "monitoring_alerts_setup": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=60
     )
 
@@ -1863,7 +1863,7 @@ Return JSON: {{
   "budget_recommendation": number
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=61
     )
 
@@ -1886,7 +1886,7 @@ Return JSON: {{
   "shopping_vs_pmax_recommendation": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=62
     )
 
@@ -1911,7 +1911,7 @@ Return JSON: {{
   "store_visit_conversion_setup": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=63
     )
 
@@ -1936,7 +1936,7 @@ Return JSON: {{
   "bid_optimization_timeline": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=64
     )
 
@@ -1960,7 +1960,7 @@ Return JSON: {{
   "performance_expectations": {{}}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=65
     )
 
@@ -1988,7 +1988,7 @@ Return JSON: {{
   "quality_vs_volume_tradeoffs": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=66
     )
 
@@ -2013,7 +2013,7 @@ Return JSON: {{
   "estimated_calls_per_day": number
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=67
     )
 
@@ -2042,7 +2042,7 @@ Return JSON: {{
   "automated_insights_prompts": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=68
     )
 
@@ -2068,7 +2068,7 @@ Return JSON: {{
   "emergency_pause_criteria": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=69
     )
 
@@ -2093,7 +2093,7 @@ Return JSON: {{
   "escalation_protocol": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=70
     )
 
@@ -2115,7 +2115,7 @@ Return JSON: {{
   "data_reconciliation_process": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=71
     )
 
@@ -2134,7 +2134,7 @@ Return JSON: {{
   "estimated_monthly_savings": number
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=72
     )
 
@@ -2159,7 +2159,7 @@ Return JSON: {{
   "red_amber_green_thresholds": {{"ctr":"2%","cpa":"","roas":"3x"}}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=73
     )
 
@@ -2184,7 +2184,7 @@ Return JSON: {{
   "escalation_to_google_support_criteria": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=74
     )
 
@@ -2204,7 +2204,7 @@ Return JSON: {{
   "monitoring_tools_recommendation": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=75
     )
 
@@ -2230,7 +2230,7 @@ Return JSON: {{
   "tools_recommended": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=76
     )
 
@@ -2255,7 +2255,7 @@ Return JSON: {{
   "billing_health_score_formula": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=77
     )
 
@@ -2281,7 +2281,7 @@ Return JSON: {{
   "automated_rules_cross_account": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=78
     )
 
@@ -2309,7 +2309,7 @@ Return JSON: {{
   "projected_scaled_revenue": number
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=79
     )
 
@@ -2338,7 +2338,7 @@ Return JSON: {{
   "pilot_campaign_design": {{}}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=80
     )
 
@@ -2366,7 +2366,7 @@ Return JSON: {{
   "weekly_expansion_cadence": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=81
     )
 
@@ -2387,7 +2387,7 @@ Return JSON: {{
   "strategic_plays": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=82
     )
 
@@ -2411,7 +2411,7 @@ Return JSON: {{
   "quarterly_roas_scaling_targets": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=83
     )
 
@@ -2433,7 +2433,7 @@ Return JSON: {{
   "campaign_coordination_schedule": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=84
     )
 
@@ -2463,7 +2463,7 @@ Return JSON: {{
   "estimated_full_funnel_roas": number
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=85
     )
 
@@ -2493,7 +2493,7 @@ Return JSON: {{
   "risk_mitigation_plan": [...]
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=86
     )
 
@@ -2520,7 +2520,7 @@ Return JSON: {{
   "estimated_automation_hours_saved_monthly": number
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=87
     )
 
@@ -2553,7 +2553,7 @@ Return JSON: {{
   "next_review_date": ""
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=88
     )
 
@@ -3983,7 +3983,7 @@ Return JSON: {{
   "brand_safety_notes": "..."
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=89
     )
 
@@ -4077,7 +4077,7 @@ Return JSON: {{
   }}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=90
     )
 
@@ -4126,7 +4126,7 @@ Return JSON: {{
   }}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=91
     )
 
@@ -4246,7 +4246,7 @@ Return JSON: {{
   }}
 }}"""
     ,
-        max_tokens=600,
+        max_tokens=800,
         agent_num=91
     )
 
