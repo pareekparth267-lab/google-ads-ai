@@ -1,0 +1,64 @@
+{
+  "billing_anomaly_rules": [
+    {
+      "anomaly_type": "Daily Spend Exceeds Budget",
+      "detection_method": "Compare daily spend with daily budget",
+      "alert_threshold": "$50.0",
+      "immediate_action": "Pause ads to prevent further overspend"
+    },
+    {
+      "anomaly_type": "Unusual Spend Patterns",
+      "detection_method": "Anomaly detection algorithm on spend history",
+      "alert_threshold": "3 standard deviations above average spend",
+      "immediate_action": "Investigate and adjust targeting or ad copy"
+    },
+    {
+      "anomaly_type": "Invalid Clicks",
+      "detection_method": "Machine learning model on click data",
+      "alert_threshold": "0.1% invalid clicks",
+      "immediate_action": "Request credits from Google Ads"
+    },
+    {
+      "anomaly_type": "Unusual Device or Location Patterns",
+      "detection_method": "Anomaly detection algorithm on device and location data",
+      "alert_threshold": "10% of traffic from unusual devices or locations",
+      "immediate_action": "Adjust targeting or ad copy to reduce unusual traffic"
+    }
+  ],
+  "daily_spend_reconciliation_process": [
+    {
+      "reconciliation_method": "Daily budget vs. actual spend",
+      "reporting_frequency": "Daily",
+      "threshold": "$50.0"
+    }
+  ],
+  "invalid_click_monitoring": {
+    "detection_signals": [
+      {
+        "signal_name": "High Invalid Click Rate",
+        "signal_threshold": "0.1%",
+        "signal_action": "Request credits from Google Ads"
+      }
+    ],
+    "reporting_to_google_process": "Daily",
+    "credit_request_threshold": 0.1
+  },
+  "budget_cap_enforcement_checks": [
+    {
+      "enforcement_method": "Daily budget vs. actual spend",
+      "enforcement_frequency": "Daily",
+      "threshold": "$50.0"
+    }
+  ],
+  "account_security_checklist": [
+    {
+      "security_check": "Two-factor authentication enabled",
+      "status": "Enabled"
+    },
+    {
+      "security_check": "Account access restricted to authorized personnel",
+      "status": "Enabled"
+    }
+  ],
+  "billing_health_score_formula": "((daily_spend / daily_budget) * 100) + (invalid_click_rate / 100)"
+}

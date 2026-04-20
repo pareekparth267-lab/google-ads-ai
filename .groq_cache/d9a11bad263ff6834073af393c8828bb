@@ -1,0 +1,31 @@
+{
+  "burn_rate_thresholds": {
+    "overspend_alert_pct": 120,
+    "underspend_alert_pct": 80,
+    "check_frequency": "hourly"
+  },
+  "automated_rules": [
+    {
+      "rule_name": "Daily Overspend Alert",
+      "trigger": "Daily budget overspend by 20%",
+      "action": "Send alert to Slack and pause campaign",
+      "campaigns_affected": ["Garage Door Repair", "Garage Door Installation"]
+    },
+    {
+      "rule_name": "Weekly Underspend Alert",
+      "trigger": "Weekly budget underspend by 30%",
+      "action": "Send alert to Slack and adjust bids",
+      "campaigns_affected": ["Garage Door Maintenance"]
+    }
+  ],
+  "monthly_pacing_strategy": "Even monthly spend across 30 days",
+  "end_of_month_budget_plan": "Pause campaigns 2 days before end of month",
+  "google_ads_script_for_burn_rate": "function burnRateCalculator() { ... }",
+  "slack_email_alert_template": "Daily Overspend Alert: {{ campaign_name }} has overspent by {{ overspend_pct }}%",
+  "emergency_pause_criteria": [
+    {
+      "overspend_threshold": 150,
+      "pause_campaigns": ["Garage Door Repair", "Garage Door Installation"]
+    }
+  ]
+}

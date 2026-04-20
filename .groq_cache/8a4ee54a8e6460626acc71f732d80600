@@ -1,0 +1,76 @@
+{
+  "seasonal_calendar": [
+    {
+      "season": "Spring",
+      "months": ["March", "April", "May"],
+      "creative_theme": "Renewal and Refreshment",
+      "headline_adjustments": [
+        "Get your garage door ready for spring!",
+        "Spring into savings with our garage door repair services",
+        "Renew your garage door with our expert installation services"
+      ],
+      "offer_suggestions": [
+        "10% off garage door repair services",
+        "Free garage door inspection with repair services",
+        "Discounted garage door installation packages"
+      ],
+      "budget_multiplier": 1.2,
+      "switch_date": "March 1st"
+    },
+    {
+      "season": "Summer",
+      "months": ["June", "July", "August"],
+      "creative_theme": "Summer Fun and Safety",
+      "headline_adjustments": [
+        "Beat the heat with our garage door maintenance services",
+        "Stay safe this summer with our garage door repair services",
+        "Upgrade your garage door for the summer season"
+      ],
+      "offer_suggestions": [
+        "20% off garage door maintenance services",
+        "Free safety inspection with garage door repair services",
+        "Discounted garage door upgrade packages"
+      ],
+      "budget_multiplier": 1.1,
+      "switch_date": "June 1st"
+    },
+    {
+      "season": "Fall",
+      "months": ["September", "October", "November"],
+      "creative_theme": "Preparation and Maintenance",
+      "headline_adjustments": [
+        "Get your garage door ready for the fall season",
+        "Prevent costly repairs with our garage door maintenance services",
+        "Expert garage door repair services for the fall season"
+      ],
+      "offer_suggestions": [
+        "15% off garage door maintenance services",
+        "Free garage door inspection with repair services",
+        "Discounted garage door installation packages"
+      ],
+      "budget_multiplier": 1.05,
+      "switch_date": "September 1st"
+    },
+    {
+      "season": "Winter",
+      "months": ["December", "January", "February"],
+      "creative_theme": "Safety and Protection",
+      "headline_adjustments": [
+        "Stay safe this winter with our garage door repair services",
+        "Protect your garage door from harsh winter weather",
+        "Expert garage door maintenance services for the winter season"
+      ],
+      "offer_suggestions": [
+        "25% off garage door repair services",
+        "Free safety inspection with garage door repair services",
+        "Discounted garage door upgrade packages"
+      ],
+      "budget_multiplier": 1.15,
+      "switch_date": "December 1st"
+    }
+  ],
+  "holiday_campaigns": [
+    {
+      "holiday": "Independence Day",
+      "start_date": "June 25th",
+      "

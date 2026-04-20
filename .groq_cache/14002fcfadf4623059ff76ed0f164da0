@@ -1,0 +1,70 @@
+{
+  "top_competitors": [
+    {
+      "name": "Garage Door Medics",
+      "estimated_ad_spend": "$5,000 - $10,000",
+      "strengths": [
+        "Strong online presence",
+        "Wide range of services offered",
+        "Positive customer reviews"
+      ],
+      "weaknesses": [
+        "Limited service area",
+        "Higher prices compared to competitors"
+      ],
+      "ad_copy_patterns": [
+        "Emergency garage door repair",
+        "Same-day service",
+        "Lifetime warranty"
+      ]
+    },
+    {
+      "name": "Precision Garage Door",
+      "estimated_ad_spend": "$3,000 - $6,000",
+      "strengths": [
+        "National brand recognition",
+        "Wide range of products offered",
+        "Professional website"
+      ],
+      "weaknesses": [
+        "Higher prices due to national brand",
+        "Less personalized service"
+      ],
+      "ad_copy_patterns": [
+        "Garage door installation",
+        "Garage door maintenance",
+        "Free estimates"
+      ]
+    },
+    {
+      "name": "Arizona Garage Door",
+      "estimated_ad_spend": "$1,500 - $3,000",
+      "strengths": [
+        "Local business with personalized service",
+        "Competitive pricing",
+        "Positive customer reviews"
+      ],
+      "weaknesses": [
+        "Limited online presence",
+        "Smaller service area"
+      ],
+      "ad_copy_patterns": [
+        "Garage door repair",
+        "Garage door installation",
+        "Family-owned business"
+      ]
+    }
+  ],
+  "competitive_gaps": [
+    "Opportunity to offer eco-friendly garage door options",
+    "Gap in the market for smart garage door technology",
+    "Limited focus on customer education and DIY resources"
+  ],
+  "recommended_differentiators": [
+    "Emphasize eco-friendly and energy-efficient garage door options",
+    "Offer smart garage door technology and integration with popular smart home systems",
+    "Create a comprehensive resource center for customer education and DIY tutorials"
+  ],
+  "average_competitor_cpc": 12.50,
+  "market_saturation": "medium"
+}

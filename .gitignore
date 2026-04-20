@@ -1,14 +1,6 @@
-﻿fix_*.py
-check_*.py
-add_*.py
-test.txt
+﻿venv/
 __pycache__/
 *.pyc
-venv/
 .env
-.groq_cache/
-campaigns.db
-.run_progress.json
-
-adsforge_leads.db
-campaigns.db
+*.db
+*.log

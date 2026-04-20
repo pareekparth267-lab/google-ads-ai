@@ -1,0 +1,76 @@
+{
+  "cannibalization_risks": [
+    {
+      "campaign_pair": "Search - Garage Door Repair vs Performance Max - Garage Door Repair",
+      "risk_type": "keyword",
+      "severity": "high",
+      "fix": "Create a shared keyword list for both campaigns and set up a bid strategy to avoid cannibalization"
+    },
+    {
+      "campaign_pair": "Display - Garage Door Maintenance vs Search - Garage Door Maintenance",
+      "risk_type": "placement",
+      "severity": "medium",
+      "fix": "Create a shared placement list for both campaigns to avoid overlapping ads"
+    },
+    {
+      "campaign_pair": "Performance Max - Garage Door Installation vs Display - Garage Door Installation",
+      "risk_type": "audience",
+      "severity": "low",
+      "fix": "Monitor audience overlap between both campaigns and adjust targeting as needed"
+    }
+  ],
+  "negative_keyword_sharing_plan": [
+    {
+      "campaign": "Search - Garage Door Repair",
+      "negative_keyword_list": ["garage door repair cost", "garage door repair near me"]
+    },
+    {
+      "campaign": "Performance Max - Garage Door Repair",
+      "negative_keyword_list": ["garage door repair cost", "garage door repair near me"]
+    }
+  ],
+  "audience_exclusion_cross_campaign": [
+    {
+      "campaign": "Display - Garage Door Maintenance",
+      "audience_exclusion_list": ["garage door owners who have recently purchased a new garage door"]
+    },
+    {
+      "campaign": "Search - Garage Door Maintenance",
+      "audience_exclusion_list": ["garage door owners who have recently purchased a new garage door"]
+    }
+  ],
+  "budget_priority_hierarchy": [
+    {
+      "campaign": "Search - Garage Door Repair",
+      "priority": 1
+    },
+    {
+      "campaign": "Performance Max - Garage Door Repair",
+      "priority": 2
+    },
+    {
+      "campaign": "Display - Garage Door Repair",
+      "priority": 3
+    }
+  ],
+  "portfolio_synergy_opportunities": [
+    {
+      "campaign": "Search - Garage Door Repair",
+      "opportunity": "Share budget with Performance Max - Garage Door Repair to increase overall ROI"
+    },
+    {
+      "campaign": "Display - Garage Door Repair",
+      "opportunity": "Share audience targeting with Search - Garage Door Repair to increase ad relevance"
+    }
+  ],
+  "shared_negative_lists": [
+    {
+      "list_name": "Garage Door Repair Negative Keywords",
+      "campaigns": ["Search - Garage Door Repair", "Performance Max - Garage Door Repair"]
+    },
+    {
+      "list_name": "Garage Door Maintenance Negative Keywords",
+      "campaigns": ["Search - Garage Door Maintenance", "Display - Garage Door Maintenance"]
+    }
+  ],
+  "campaign

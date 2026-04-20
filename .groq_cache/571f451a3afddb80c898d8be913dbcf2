@@ -1,0 +1,30 @@
+{
+  "master_strategy_summary": "Quick Response Garage Door Service campaign aims to increase leads in Phoenix, AZ by leveraging Search, Performance Max, and Display ads.",
+  "top_priority_actions": [
+    {"priority":1,"action":"Optimize Search Ads for high-converting keywords (e.g., 'garage door repair Phoenix AZ')","expected_impact":"Increase lead conversions by 20%","timeline":"Week 1-2","owner":"human"},
+    {"priority":2,"action":"Create and target high-performing Display Ads for garage door-related interests","expected_impact":"Boost brand awareness and drive 15% more leads","timeline":"Week 3-4","owner":"automation"},
+    {"priority":3,"action":"Set up Performance Max campaigns for automated ad rotation and optimization","expected_impact":"Enhance ad relevance and drive 10% more conversions","timeline":"Week 5-6","owner":"automation"},
+    {"priority":4,"action":"Develop and publish engaging content (blog posts, videos, etc.) to establish thought leadership in garage door services","expected_impact":"Increase trust and drive 5% more leads","timeline":"Ongoing","owner":"human"}
+  ],
+  "agent_activation_sequence": [
+    {"agent_name":"Search Ads Optimizer","activation_time":"2024-04-15","activation_status":"active"},
+    {"agent_name":"Display Ads Creator","activation_time":"2024-04-22","activation_status":"active"},
+    {"agent_name":"Performance Max Campaign Manager","activation_time":"2024-05-01","activation_status":"active"}
+  ],
+  "30_day_game_plan": [
+    {"day":1,"action":"Launch Search Ads campaign","budget_allocation":100},
+    {"day":7,"action":"Create and publish Display Ads","budget_allocation":50},
+    {"day":14,"action":"Set up Performance Max campaigns","budget_allocation":100},
+    {"day":21,"action":"Analyze and optimize Search Ads performance","budget_allocation":50},
+    {"day":28,"action":"Develop and publish new content","budget_allocation":0}
+  ],
+  "60_day_game_plan": [
+    {"day":31,"action":"Enhance Display Ads targeting and ad creative","budget_allocation":75},
+    {"day":42,"action":"Optimize Performance Max campaigns for better ROI","budget_allocation":100},
+    {"day":56,"action":"Create and publish influencer content","budget_allocation":25},
+    {"day":60,"action":"Analyze and refine campaign performance","budget_allocation":50}
+  ],
+  "90_day_game_plan": [
+    {"day":91,"action":"Develop and execute a retargeting campaign","budget_allocation":75},
+    {"day":105,"action":"Enhance Search Ads targeting and ad creative","budget_allocation":100},
+    {"day":119,"action":"Create and publish user-generated content","budget_allocation":25

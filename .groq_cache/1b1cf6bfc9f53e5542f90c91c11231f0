@@ -1,0 +1,43 @@
+{
+  "kpi_dashboard": {
+    "primary_kpis": [
+      "Conversion Rate",
+      "Cost per Conversion",
+      "Return on Ad Spend (ROAS)",
+      "Customer Acquisition Cost (CAC)"
+    ],
+    "secondary_kpis": [
+      "Click-Through Rate (CTR)",
+      "Average Cost per Click (CPC)",
+      "Impression Share",
+      "Average Position"
+    ],
+    "vanity_metrics_to_ignore": [
+      "Total Impressions",
+      "Total Clicks"
+    ]
+  },
+  "weekly_report_template": {
+    "sections": [
+      "Campaign Overview",
+      "Ad Group Performance",
+      "Keyword Performance",
+      "Device and Location Performance"
+    ],
+    "data_sources": [
+      "Google Ads API",
+      "Google Analytics"
+    ]
+  },
+  "monthly_review_checklist": [
+    "Review campaign budget and adjust as needed",
+    "Analyze ad group and keyword performance",
+    "Assess device and location targeting",
+    "Evaluate landing page performance and user experience",
+    "Review conversion tracking and attribution modeling"
+  ],
+  "stakeholder_reporting": {
+    "executive_summary_format": "1-page summary of key performance metrics and recommendations",
+    "agency_report_format": "Detailed report including data visualizations, campaign analysis, and optimization strategies"
+  }
+}

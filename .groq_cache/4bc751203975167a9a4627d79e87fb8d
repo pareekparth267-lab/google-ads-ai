@@ -1,0 +1,70 @@
+{
+  "demographic_bid_adjustments": {
+    "age_groups": {
+      "18-24": 0.8,
+      "25-34": 1.0,
+      "35-44": 1.2,
+      "45-54": 1.1,
+      "55-64": 0.9,
+      "65+": 0.7
+    },
+    "gender": {
+      "male": 1.0,
+      "female": 1.1,
+      "unknown": 0.0
+    },
+    "household_income": {
+      "top10%": 1.2,
+      "11-20%": 1.1,
+      "21-30%": 1.0,
+      "lower50%": 0.9
+    }
+  },
+  "target_demographic_profile": {
+    "age": "35-44",
+    "gender": "male",
+    "household_income": "top10%",
+    "location": "Phoenix, AZ",
+    "interests": ["Home Improvement", "Maintenance", "Repair"]
+  },
+  "exclusion_demographics": [
+    {
+      "age": "65+",
+      "gender": "female",
+      "household_income": "lower50%",
+      "location": "Tucson, AZ"
+    },
+    {
+      "age": "18-24",
+      "gender": "male",
+      "household_income": "top10%",
+      "location": "Scottsdale, AZ"
+    }
+  ],
+  "estimated_efficiency_gain": "12%",
+  "testing_plan": [
+    {
+      "demographic": {
+        "age": "35-44",
+        "gender": "male",
+        "household_income": "top10%",
+        "location": "Phoenix, AZ"
+      },
+      "bid_adjustment": 1.2,
+      "budget": 1000,
+      "duration": "1 week"
+    },
+    {
+      "demographic": {
+        "age": "25-34",
+        "gender": "female",
+        "household_income": "11-20%",
+        "location": "Phoenix, AZ"
+      },
+      "bid_adjustment": 1.1,
+      "budget": 500,
+      "duration": "2 weeks"
+    }
+  ],
+  "rationale": "Based on historical data, we expect a 12% efficiency gain by targeting males aged 35-44 with a household income in the top 10% in Phoenix, AZ. We will exclude females aged 65+ with a household income in the lower 50% in Tucson, AZ, and males aged 18-24 with a household income in the top 10% in Scottsdale, AZ."
+}

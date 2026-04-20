@@ -1,0 +1,54 @@
+{
+  "headlines": [
+    "Garage Door Fix",
+    "Quick Repair",
+    "Door Experts",
+    "Phoenix Pros",
+    "Fast Service",
+    "Garage Door Help",
+    "Repair Now",
+    "Door Install",
+    "Garage Solution",
+    "AZ Garage Doors",
+    "Fix My Door",
+    "Garage Repair",
+    "Door Service",
+    "Phoenix Garage",
+    "Quick Fix"
+  ],
+  "descriptions": [
+    "Get fast garage door repair",
+    "Expert installation services",
+    "Trust our maintenance pros",
+    "Call now for a free quote"
+  ],
+  "sitelinks": [
+    {
+      "title": "Schedule Service",
+      "description1": "Book your appointment",
+      "description2": "Get a free quote today",
+      "final_url_path": "/schedule"
+    }
+  ],
+  "callouts": [
+    "24/7 Emergency Service",
+    "Free Quotes Available",
+    "Licensed and Insured",
+    "Same Day Appointments",
+    "Expert Technicians",
+    "Competitive Pricing",
+    "All Major Brands",
+    "Satisfaction Guaranteed"
+  ],
+  "structured_snippets": {
+    "header": "Services",
+    "values": [
+      "Garage Door Repair",
+      "Garage Door Installation",
+      "Garage Door Maintenance",
+      "Spring Replacement",
+      "Opener Installation"
+    ]
+  },
+  "price_extensions": []
+}

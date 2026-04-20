@@ -1,0 +1,64 @@
+{
+  "demand_gen_campaigns": [
+    {
+      "name": "Quick Response Garage Door Service Awareness Campaign",
+      "channels": ["YouTube","Gmail","Discover"],
+      "goal": "Increase brand awareness and drive website traffic",
+      "budget_percentage": 30,
+      "audience_targeting": [
+        {
+          "target_audience": "Homeowners aged 25-55 in urban and suburban areas",
+          "interests": ["Home improvement", "DIY", "Home maintenance"]
+        },
+        {
+          "target_audience": "Homeowners with garage doors installed in the last 5 years",
+          "behaviors": ["Recent homebuyers", "Homeowners with high household income"]
+        }
+      ],
+      "creative_requirements": {
+        "video_specs": "1080p, 60fps, 3-second ad duration",
+        "image_specs": "1080x1920 pixels, RGB color mode",
+        "headlines": [
+          "Don't let a broken garage door ruin your day!",
+          "Expert garage door repair and installation services",
+          "Keep your garage door running smoothly with Quick Response"
+        ]
+      }
+    },
+    {
+      "name": "Quick Response Garage Door Service Consideration Campaign",
+      "channels": ["YouTube","Gmail","Discover"],
+      "goal": "Drive leads and increase consideration for garage door services",
+      "budget_percentage": 40,
+      "audience_targeting": [
+        {
+          "target_audience": "Homeowners who have shown interest in garage door repair and installation",
+          "behaviors": ["Homeowners who have searched for garage door services online"]
+        },
+        {
+          "target_audience": "Homeowners with garage doors installed in the last 5 years",
+          "interests": ["Home improvement", "DIY", "Home maintenance"]
+        }
+      ],
+      "creative_requirements": {
+        "video_specs": "1080p, 60fps, 3-second ad duration",
+        "image_specs": "1080x1920 pixels, RGB color mode",
+        "headlines": [
+          "Get a free quote for garage door repair and installation",
+          "Expert technicians with 5-star ratings and reviews",
+          "Trust Quick Response for all your garage door needs"
+        ]
+      }
+    },
+    {
+      "name": "Quick Response Garage Door Service Conversion Campaign",
+      "channels": ["YouTube","Gmail","Discover"],
+      "goal": "Drive conversions and increase sales for garage door services",
+      "budget_percentage": 30,
+      "audience_targeting": [
+        {
+          "target_audience": "Homeowners who have shown interest in garage door repair and installation",
+          "behaviors": ["Homeowners who have searched for garage door services online"]
+        },
+        {
+          "target_audience": "Homeowners with garage doors installed in the last

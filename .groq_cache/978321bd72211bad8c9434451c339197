@@ -1,0 +1,148 @@
+{
+  "asset_groups": [
+    {
+      "name": "Garage Door Repair",
+      "final_urls": [
+        "https://quickresponsegaragedoor.com/repair"
+      ],
+      "headlines": [
+        "Fast Garage Door Repair",
+        "Expert Repair Services",
+        "Get Back on Track",
+        "Reliable Garage Door Fix",
+        "Quick Response Repair"
+      ],
+      "long_headlines": [
+        "Fast Garage Door Repair Services",
+        "Expert Garage Door Repair Solutions",
+        "Get Your Garage Door Fixed Today",
+        "Reliable Garage Door Repair Experts",
+        "Quick Response Garage Door Repair"
+      ],
+      "descriptions": [
+        "Get your garage door fixed quickly and efficiently with our expert repair services.",
+        "Our team of professionals will get your garage door back on track in no time.",
+        "Don't let a broken garage door disrupt your daily routine, call us for fast repair.",
+        "Our reliable garage door repair services will give you peace of mind.",
+        "Trust our experts to fix your garage door quickly and affordably."
+      ],
+      "business_name": "Quick Response Garage Door Service",
+      "call_to_action": "CALL_NOW",
+      "images_needed": [
+        "A photo of a broken garage door with a red X marked through it, next to a photo of a fixed garage door with a green checkmark",
+        "An image of a technician in a uniform with a toolbox, standing in front of a garage door",
+        "A before-and-after collage of a garage door repair job",
+        "A picture of a garage door with a prominent display of the company's logo and contact information",
+        "A photo of a satisfied customer standing in front of their newly repaired garage door"
+      ],
+      "audience_signals": [
+        "people who have searched for garage door repair online",
+        "homeowners with garage doors",
+        "individuals who have shown interest in home maintenance and repair"
+      ],
+      "themes": [
+        "urgency",
+        "convenience",
+        "reliability",
+        "expertise",
+        "affordability"
+      ]
+    },
+    {
+      "name": "Garage Door Installation",
+      "final_urls": [
+        "https://quickresponsegaragedoor.com/installation"
+      ],
+      "headlines": [
+        "New Garage Door Installation",
+        "Expert Installation Services",
+        "Transform Your Garage",
+        "Top-Quality Garage Doors",
+        "Quick Response Installation"
+      ],
+      "long_headlines": [
+        "New Garage Door Installation Services",
+        "Expert Garage Door Installation Solutions",
+        "Transform Your Garage with a New Door",
+        "Top-Quality Garage Door Installation Experts",
+        "Quick Response Garage Door Installation"
+      ],
+      "descriptions": [
+        "Get a brand new garage door installed quickly and efficiently with our expert installation services.",
+        "Our team of professionals will help you choose the perfect garage door for your home.",
+        "Don't settle for an old, outdated garage door, call us for a new installation.",
+        "Our reliable garage door installation services will give you peace of mind.",
+        "Trust our experts to install your new garage door quickly and affordably."
+      ],
+      "business_name": "Quick Response Garage Door Service",
+      "call_to_action": "GET_QUOTE",
+      "images_needed": [
+        "A photo of a new garage door being installed, with a technician in the background",
+        "An image of a variety of garage door styles and materials",
+        "A before-and-after collage of a garage door installation job",
+        "A picture of a garage door with a prominent display of the company's logo and contact information",
+        "A photo of a satisfied customer standing in front of their newly installed garage door"
+      ],
+      "audience_signals": [
+        "people who have searched for garage door installation online",
+        "homeowners who are renovating or building a new home",
+        "individuals who have shown interest in home improvement and construction"
+      ],
+      "themes": [
+        "quality",
+        "style",
+        "convenience",
+        "expertise",
+        "affordability"
+      ]
+    },
+    {
+      "name": "Garage Door Maintenance",
+      "final_urls": [
+        "https://quickresponsegaragedoor.com/maintenance"
+      ],
+      "headlines": [
+        "Garage Door Maintenance Services",
+        "Preventative Maintenance",
+        "Extend the Life of Your Garage Door",
+        "Regular Maintenance for a Smooth Operation",
+        "Quick Response Maintenance"
+      ],
+      "long_headlines": [
+        "Garage Door Maintenance Services for a Smooth Operation",
+        "Preventative Maintenance for Your Garage Door",
+        "Extend the Life of Your Garage Door with Regular Maintenance",
+        "Regular Maintenance for a Safe and Reliable Garage Door",
+        "Quick Response Garage Door Maintenance"
+      ],
+      "descriptions": [
+        "Keep your garage door running smoothly and safely with our preventative maintenance services.",
+        "Our team of professionals will help you avoid costly repairs with regular maintenance.",
+        "Don't wait until it's too late, schedule a maintenance check for your garage door today.",
+        "Our reliable garage door maintenance services will give you peace of mind.",
+        "Trust our experts to keep your garage door in top condition."
+      ],
+      "business_name": "Quick Response Garage Door Service",
+      "call_to_action": "LEARN_MORE",
+      "images_needed": [
+        "A photo of a technician performing maintenance on a garage door",
+        "An image of a garage door with a calendar or schedule in the background",
+        "A before-and-after collage of a garage door maintenance job",
+        "A picture of a garage door with a prominent display of the company's logo and contact information",
+        "A photo of a satisfied customer standing in front of their well-maintained garage door"
+      ],
+      "audience_signals": [
+        "people who have searched for garage door maintenance online",
+        "homeowners with garage doors",
+        "individuals who have shown interest in home maintenance and repair"
+      ],
+      "themes": [
+        "prevention",
+        "convenience",
+        "reliability",
+        "expertise",
+        "safety"
+      ]
+    }
+  ]
+}

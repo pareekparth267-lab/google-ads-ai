@@ -1,0 +1,56 @@
+{
+  "funnel_stages": [
+    {
+      "stage": "Awareness",
+      "campaign_types": ["Search"],
+      "budget_percentage": 30,
+      "kpis": ["Impressions", "Clicks", "Cost"],
+      "targeting": "Location: Los Angeles, CA; Language: English; Device: Desktop, Mobile",
+      "messaging_theme": "Introduce Quick Response Garage Door Service as a reliable and professional garage door repair and installation company"
+    },
+    {
+      "stage": "Consideration",
+      "campaign_types": ["Display", "Video"],
+      "budget_percentage": 40,
+      "kpis": ["Impressions", "Clicks", "Cost", "View-through Rate", "Completed Views"],
+      "targeting": "Location: Los Angeles, CA; Language: English; Device: Desktop, Mobile; Interests: Home improvement, DIY projects",
+      "messaging_theme": "Highlight Quick Response Garage Door Service's expertise in garage door repair, installation, and maintenance"
+    },
+    {
+      "stage": "Conversion",
+      "campaign_types": ["Shopping", "Call-only"],
+      "budget_percentage": 20,
+      "kpis": ["Conversions", "Conversion Value", "Cost per Conversion", "Return on Ad Spend"],
+      "targeting": "Location: Los Angeles, CA; Language: English; Device: Desktop, Mobile; Search queries: garage door repair, garage door installation",
+      "messaging_theme": "Encourage users to contact Quick Response Garage Door Service for a quote or to schedule a service"
+    },
+    {
+      "stage": "Retention",
+      "campaign_types": ["App Install", "App Engagement"],
+      "budget_percentage": 10,
+      "kpis": ["App Installs", "App Engagement", "Cost per App Install", "Return on Ad Spend"],
+      "targeting": "Location: Los Angeles, CA; Language: English; Device: Mobile; Users who have installed the Quick Response Garage Door Service app",
+      "messaging_theme": "Reward loyal customers and encourage them to continue using the Quick Response Garage Door Service app"
+    }
+  ],
+  "cross_funnel_audience_flow": [
+    {
+      "source": "Awareness",
+      "destination": "Consideration",
+      "audience": "Users who have engaged with Quick Response Garage Door Service's Awareness ads"
+    },
+    {
+      "source": "Consideration",
+      "destination": "Conversion",
+      "audience": "Users who have engaged with Quick Response Garage Door Service's Consideration ads"
+    },
+    {
+      "source": "Conversion",
+      "destination": "Retention",
+      "audience": "Users who have converted with Quick Response Garage Door Service"
+    }
+  ],
+  "touchpoint_sequence": [
+    {
+      "stage": "Awareness",
+      "touchpoints": ["

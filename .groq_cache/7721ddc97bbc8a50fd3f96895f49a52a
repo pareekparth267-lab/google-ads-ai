@@ -1,0 +1,74 @@
+{
+  "monitoring_checks": [
+    {
+      "check": "Landing page availability",
+      "frequency": "every 5 minutes",
+      "alert_threshold": "2 consecutive failures",
+      "action_on_failure": "Notify team via email and Slack"
+    },
+    {
+      "check": "Page speed (mobile)",
+      "frequency": "every 15 minutes",
+      "alert_threshold": "LCP > 3 seconds",
+      "action_on_failure": "Run page speed optimization script"
+    },
+    {
+      "check": "Page speed (desktop)",
+      "frequency": "every 15 minutes",
+      "alert_threshold": "LCP > 2 seconds",
+      "action_on_failure": "Run page speed optimization script"
+    },
+    {
+      "check": "CLS (mobile)",
+      "frequency": "every 15 minutes",
+      "alert_threshold": "CLS > 0.25",
+      "action_on_failure": "Run visual optimization script"
+    },
+    {
+      "check": "CLS (desktop)",
+      "frequency": "every 15 minutes",
+      "alert_threshold": "CLS > 0.20",
+      "action_on_failure": "Run visual optimization script"
+    },
+    {
+      "check": "SSL certificate validity",
+      "frequency": "every 1 hour",
+      "alert_threshold": "Certificate expires in < 30 days",
+      "action_on_failure": "Renew SSL certificate"
+    },
+    {
+      "check": "Landing page content changes",
+      "frequency": "every 1 hour",
+      "alert_threshold": "Content changes detected",
+      "action_on_failure": "Verify content changes with team"
+    },
+    {
+      "check": "Google Ads landing page approval status",
+      "frequency": "every 1 hour",
+      "alert_threshold": "Approval status is 'disapproved'",
+      "action_on_failure": "Resolve disapproval issues with Google Ads"
+    }
+  ],
+  "page_speed_requirements": {
+    "mobile_lcp_target_seconds": 2.5,
+    "desktop_lcp_target_seconds": 2.0,
+    "cls_threshold": 0.15
+  },
+  "uptime_monitoring_setup": "Uptime monitoring set up with status page and incident management",
+  "quality_score_impact_checks": [
+    {
+      "check": "Average position in Google Ads",
+      "frequency": "every 1 hour",
+      "alert_threshold": "Average position < 1.5",
+      "action_on_failure": "Optimize ad copy and targeting"
+    },
+    {
+      "check": "Conversion rate in Google Ads",
+      "frequency": "every 1 hour",
+      "alert_threshold": "Conversion rate < 2%",
+      "action_on_failure": "Optimize landing page and ad copy"
+    }
+  ],
+  "automated_pause_triggers": [
+    {
+      "trigger

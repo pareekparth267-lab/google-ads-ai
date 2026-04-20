@@ -1,0 +1,72 @@
+{
+  "waste_categories": [
+    {
+      "category": "Irrelevant Search Queries",
+      "estimated_waste_pct": 20,
+      "diagnosis": "Quick Response Garage Door Service is receiving a high volume of irrelevant search queries, such as 'garage door repair near me' and 'garage door installation cost'. These queries are unlikely to convert into customers.",
+      "fix": "Add negative keywords 'near me', 'cost', 'price', and 'free estimate' to the campaign.",
+      "priority": "high"
+    },
+    {
+      "category": "Low-Quality Clicks",
+      "estimated_waste_pct": 15,
+      "diagnosis": "The ad group is receiving a high volume of low-quality clicks from users who are not interested in garage door repair services. This is indicated by a low average position and a high bounce rate.",
+      "fix": "Improve ad copy and landing page to better match user intent. Consider adding more specific targeting options, such as location and device targeting.",
+      "priority": "medium"
+    },
+    {
+      "category": "Duplicate Ads",
+      "estimated_waste_pct": 5,
+      "diagnosis": "There are duplicate ads in the ad group, which can lead to wasted spend and decreased ad relevance.",
+      "fix": "Remove duplicate ads and ensure that all ads are unique and relevant to the target audience.",
+      "priority": "low"
+    }
+  ],
+  "immediate_savings_opportunities": [
+    {
+      "opportunity": "Pause underperforming ad groups",
+      "estimated_savings": "$10.00"
+    },
+    {
+      "opportunity": "Increase bid modifiers for high-performing locations",
+      "estimated_savings": "$5.00"
+    }
+  ],
+  "weekly_audit_checklist": [
+    {
+      "check": "Review ad group performance and pause underperforming ad groups"
+    },
+    {
+      "check": "Monitor keyword performance and add negative keywords as needed"
+    },
+    {
+      "check": "Review ad copy and landing page for relevance and user experience"
+    }
+  ],
+  "negative_keyword_gaps": [
+    {
+      "keyword": "garage door repair near me",
+      "estimated_waste_pct": 30
+    },
+    {
+      "keyword": "garage door installation cost",
+      "estimated_waste_pct": 25
+    }
+  ],
+  "quality_score_waste": [
+    {
+      "ad_group": "Garage Door Repair",
+      "estimated_waste_pct": 10
+    },
+    {
+      "ad_group": "Garage Door Installation",
+      "estimated_waste_pct": 8
+    }
+  ],
+  "placement_waste": [
+    {
+      "placement": "Mobile - Other",
+      "estimated_waste_pct": 12
+    },
+    {
+      "placement":

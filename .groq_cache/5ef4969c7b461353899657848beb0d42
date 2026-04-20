@@ -1,0 +1,93 @@
+{
+  "remarketing_audiences": [
+    {
+      "name": "Users who visited the website",
+      "membership_duration_days": 180,
+      "targeting_rule": "Visitors of a page",
+      "bid_adjustment": 20
+    },
+    {
+      "name": "Users who contacted Quick Response Garage Door Service",
+      "membership_duration_days": 180,
+      "targeting_rule": "Conversion trackers",
+      "bid_adjustment": 30
+    },
+    {
+      "name": "Users who abandoned their shopping cart",
+      "membership_duration_days": 30,
+      "targeting_rule": "Visitors of a page who did not convert",
+      "bid_adjustment": 15
+    }
+  ],
+  "customer_match": {
+    "description": "Target existing customers and lookalike audiences",
+    "upload_fields": [
+      "Email",
+      "Phone number",
+      "Physical address"
+    ]
+  },
+  "similar_audiences": [
+    {
+      "name": "Similar to users who visited the website",
+      "targeting_rule": "Similar to visitors of a page"
+    },
+    {
+      "name": "Similar to users who contacted Quick Response Garage Door Service",
+      "targeting_rule": "Similar to conversion trackers"
+    }
+  ],
+  "in_market_audiences": [
+    "Home improvement",
+    "Home maintenance",
+    "Home repair"
+  ],
+  "custom_intent_audiences": [
+    {
+      "name": "Garage door repair intent",
+      "keywords": [
+        "garage door repair",
+        "garage door fix",
+        "broken garage door"
+      ],
+      "urls": [
+        "https://www.quickresponsegaragedoor.com/repair",
+        "https://www.homedepot.com/garage-door-repair"
+      ]
+    },
+    {
+      "name": "Garage door installation intent",
+      "keywords": [
+        "garage door installation",
+        "new garage door",
+        "garage door replacement"
+      ],
+      "urls": [
+        "https://www.quickresponsegaragedoor.com/installation",
+        "https://www.lowes.com/garage-door-installation"
+      ]
+    },
+    {
+      "name": "Garage door maintenance intent",
+      "keywords": [
+        "garage door maintenance",
+        "garage door tune-up",
+        "garage door inspection"
+      ],
+      "urls": [
+        "https://www.quickresponsegaragedoor.com/maintenance",
+        "https://www.angieslist.com/garage-door-maintenance"
+      ]
+    }
+  ],
+  "affinity_audiences": [
+    "Homeowners",
+    "DIY enthusiasts",
+    "Home improvement enthusiasts"
+  ],
+  "life_events": [
+    "Recently moved",
+    "New homeowner",
+    "Home renovation"
+  ]
+}

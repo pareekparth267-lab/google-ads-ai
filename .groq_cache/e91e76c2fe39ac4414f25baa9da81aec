@@ -1,0 +1,24 @@
+{
+  "skippable_instream": {
+    "duration_seconds": 30,
+    "hook_5s": "Is a broken garage door disrupting your daily routine?",
+    "full_script": "Are you tired of dealing with a garage door that won't open or close properly? At Quick Response Garage Door Service, our team of experts provides fast and reliable garage door repair, installation, and maintenance services in Phoenix, AZ. From broken springs to faulty openers, we'll get your garage door working smoothly and safely. Our technicians are fully trained and equipped to handle any garage door issue, and we offer competitive pricing and a satisfaction guarantee. Don't let a broken garage door leave you stranded - call Quick Response Garage Door Service today!",
+    "call_to_action": "Call (555) 123-4567 now to schedule your garage door service"
+  },
+  "non_skippable_15s": {
+    "script": "Quick Response Garage Door Service - fast, reliable, and affordable garage door repair, installation, and maintenance in Phoenix, AZ. Call (555) 123-4567 now!",
+    "call_to_action": "Call (555) 123-4567"
+  },
+  "bumper_6s": [
+    {"script":"Garage door broken?","message_focus":"Problem agitation"},
+    {"script":"Quick Response Garage Door Service - fast and reliable!","message_focus":"Brand introduction"},
+    {"script":"Call (555) 123-4567 now!","message_focus":"Call to action"}
+  ],
+  "discovery_ads": {
+    "title": "Garage Door Repair and Installation in Phoenix, AZ",
+    "description_lines": [
+      "Get fast and reliable garage door repair, installation, and maintenance services from Quick Response Garage Door Service.",
+      "Call (555) 123-4567 now to schedule your appointment and get a free quote!"
+    ]
+  }
+}

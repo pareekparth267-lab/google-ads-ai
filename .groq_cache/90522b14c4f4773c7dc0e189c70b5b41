@@ -1,0 +1,70 @@
+{
+  "ctr_benchmarks_by_campaign_type": {
+    "search": "2.5%",
+    "display": "0.8%",
+    "pmax": "1.2%",
+    "shopping": "1.8%"
+  },
+  "drop_detection_rules": [
+    {
+      "metric": "ctr",
+      "drop_threshold_pct": 30,
+      "time_window_days": 7,
+      "action": "Notify team lead via email and Slack"
+    },
+    {
+      "metric": "ctr",
+      "drop_threshold_pct": 40,
+      "time_window_days": 14,
+      "action": "Schedule a call with the account manager to discuss campaign performance"
+    },
+    {
+      "metric": "ctr",
+      "drop_threshold_pct": 50,
+      "time_window_days": 30,
+      "action": "Pause the campaign and review ad copy, targeting, and bidding strategy"
+    }
+  ],
+  "root_cause_investigation_checklist": [
+    {
+      "question": "Have there been any recent changes to ad copy or targeting?",
+      "possible_answers": ["Yes", "No"],
+      "next_steps": ["Review ad copy and targeting for any recent changes", "Continue to the next question"]
+    },
+    {
+      "question": "Are there any issues with the landing page or website?",
+      "possible_answers": ["Yes", "No"],
+      "next_steps": ["Review the landing page for any issues", "Continue to the next question"]
+    },
+    {
+      "question": "Are there any issues with bidding strategy?",
+      "possible_answers": ["Yes", "No"],
+      "next_steps": ["Review bidding strategy for any issues", "Continue to the next question"]
+    }
+  ],
+  "recovery_action_playbook": [
+    {
+      "step": "Review ad copy and targeting for any issues",
+      "action": "Update ad copy and targeting as needed"
+    },
+    {
+      "step": "Review bidding strategy for any issues",
+      "action": "Update bidding strategy as needed"
+    },
+    {
+      "step": "Review the landing page for any issues",
+      "action": "Update the landing page as needed"
+    }
+  ],
+  "automated_alert_script": "python script to monitor CTR and send alerts via email and Slack",
+  "escalation_protocol": [
+    {
+      "threshold": 50,
+      "action": "Notify account manager and team lead via email and Slack"
+    },
+    {
+      "threshold": 70,
+      "action": "Schedule a call with the account manager and team lead to discuss campaign performance"
+    }
+  ]
+}

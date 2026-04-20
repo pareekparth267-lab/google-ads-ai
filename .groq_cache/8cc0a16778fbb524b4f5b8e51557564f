@@ -1,0 +1,96 @@
+{
+  "automated_pause_rules": [
+    {
+      "rule": "Low conversion rate",
+      "trigger_condition": {
+        "type": "conversion_rate",
+        "value": 0.05,
+        "comparison": "<",
+        "window": "7_days"
+      },
+      "action": "pause",
+      "review_period_days": 7
+    },
+    {
+      "rule": "High cost-per-conversion",
+      "trigger_condition": {
+        "type": "cost_per_conversion",
+        "value": 200.0,
+        "comparison": ">",
+        "window": "7_days"
+      },
+      "action": "pause",
+      "review_period_days": 7
+    },
+    {
+      "rule": "High cost-per-click",
+      "trigger_condition": {
+        "type": "cost_per_click",
+        "value": 10.0,
+        "comparison": ">",
+        "window": "7_days"
+      },
+      "action": "reduce_bid",
+      "review_period_days": 7
+    },
+    {
+      "rule": "Low click-through rate",
+      "trigger_condition": {
+        "type": "click_through_rate",
+        "value": 0.05,
+        "comparison": "<",
+        "window": "7_days"
+      },
+      "action": "pause",
+      "review_period_days": 7
+    },
+    {
+      "rule": "High bounce rate",
+      "trigger_condition": {
+        "type": "bounce_rate",
+        "value": 0.7,
+        "comparison": ">",
+        "window": "7_days"
+      },
+      "action": "pause",
+      "review_period_days": 7
+    },
+    {
+      "rule": "Zero conversions",
+      "trigger_condition": {
+        "type": "conversions",
+        "value": 0,
+        "comparison": "=",
+        "window": "7_days"
+      },
+      "action": "pause",
+      "review_period_days": 7
+    },
+    {
+      "rule": "Zero clicks",
+      "trigger_condition": {
+        "type": "clicks",
+        "value": 0,
+        "comparison": "=",
+        "window": "7_days"
+      },
+      "action": "pause",
+      "review_period_days": 7
+    }
+  ],
+  "budget_protection_thresholds": {
+    "daily_budget": 50.0,
+    "max_daily_spend": 50.0
+  },
+  "keyword_level_cpc_caps": [
+    {
+      "keyword": "garage door repair",
+      "cpc_cap": 5.0
+    },
+    {
+      "keyword": "garage door installation",
+      "cpc_cap": 5.0
+    },
+    {
+      "keyword": "garage door maintenance",
+      "cpc_cap":

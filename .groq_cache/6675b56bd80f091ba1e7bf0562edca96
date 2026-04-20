@@ -1,0 +1,81 @@
+{
+  "creative_scoring_criteria": [
+    {
+      "criterion": "Relevance",
+      "weight": 0.3,
+      "description": "How well does the ad copy match the user's search query?"
+    },
+    {
+      "criterion": "Unique Selling Proposition (USP)",
+      "weight": 0.2,
+      "description": "Does the ad copy clearly communicate the unique benefits of Quick Response Garage Door Service?"
+    },
+    {
+      "criterion": "Call-to-Action (CTA)",
+      "weight": 0.15,
+      "description": "Is the CTA clear, concise, and actionable?"
+    },
+    {
+      "criterion": "Emotional Connection",
+      "weight": 0.15,
+      "description": "Does the ad copy evoke an emotional response from the user?"
+    },
+    {
+      "criterion": "Brand Identity",
+      "weight": 0.1,
+      "description": "Does the ad copy align with the Quick Response Garage Door Service brand identity?"
+    },
+    {
+      "criterion": "Keyword Usage",
+      "weight": 0.1,
+      "description": "Are relevant keywords used in the ad copy?"
+    }
+  ],
+  "headline_effectiveness_rules": [
+    {
+      "rule": "Headline Length",
+      "threshold": 15,
+      "description": "Headlines should be at least 15 characters long to be effective."
+    },
+    {
+      "rule": "Headline Keywords",
+      "threshold": 2,
+      "description": "Headlines should include at least 2 relevant keywords."
+    },
+    {
+      "rule": "Headline Uppercase",
+      "threshold": 0,
+      "description": "Headlines should not contain excessive uppercase letters."
+    }
+  ],
+  "description_effectiveness_rules": [
+    {
+      "rule": "Description Length",
+      "threshold": 70,
+      "description": "Descriptions should be at least 70 characters long to be effective."
+    },
+    {
+      "rule": "Description Keywords",
+      "threshold": 3,
+      "description": "Descriptions should include at least 3 relevant keywords."
+    },
+    {
+      "rule": "Description Uppercase",
+      "threshold": 0,
+      "description": "Descriptions should not contain excessive uppercase letters."
+    }
+  ],
+  "predicted_ctr_boosters": [
+    {
+      "pattern": "Garage Door Repair near me",
+      "boost": 0.15,
+      "description": "Including location-based keywords can improve ad relevance and CTR."
+    },
+    {
+      "pattern": "Emergency Garage Door Service",
+      "boost": 0.1,
+      "description": "Using urgency-based keywords can increase ad engagement."
+    },
+    {
+      "pattern": "Garage Door Installation and Maintenance",
+      "

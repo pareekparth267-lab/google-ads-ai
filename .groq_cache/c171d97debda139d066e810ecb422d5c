@@ -1,0 +1,41 @@
+{
+  "trademark_risks_in_ad_copy": [
+    "Using phrases like 'Quick Response Garage Door Service' in ad copy",
+    "Mentioning competitor names or similar services in ad copy",
+    "Using generic terms like 'Garage Door Repair' without proper trademark clearance"
+  ],
+  "competitor_trademark_usage_rules": [
+    {
+      "competitor_name": "Quick Response Garage Door Service",
+      "trademark_status": "active",
+      "usage_rules": "Do not use competitor's trademarked name in ad copy, but may use generic terms like 'Garage Door Repair'"
+    },
+    {
+      "competitor_name": "Garage Door Solutions",
+      "trademark_status": "active",
+      "usage_rules": "Do not use competitor's trademarked name in ad copy, but may use generic terms like 'Garage Door Installation'"
+    }
+  ],
+  "protected_terms_to_avoid": [
+    "Quick Response",
+    "Garage Door Solutions",
+    "DoorPro",
+    "Easy Fix Garage Doors"
+  ],
+  "trademark_authorization_process": "Submit a trademark authorization request to Google Ads, including proof of trademark registration and a description of the authorized usage.",
+  "brand_bidding_policy_summary": "To ensure a safe and competitive bidding environment, Quick Response Garage Door Service must comply with Google Ads' brand bidding policy, which prohibits bidding on competitor's trademarks and generic terms without proper trademark clearance.",
+  "defensive_trademark_actions": [
+    "Monitor ad copy for competitor trademark usage",
+    "Report potential trademark infringement to Google Ads",
+    "Use competitor trademark usage rules to inform ad copy creation"
+  ],
+  "legal_disclaimer_requirements": [
+    "Include a clear and conspicuous disclaimer in ad copy stating that Quick Response Garage Door Service is not affiliated with any other company",
+    "Use a standard disclaimer template approved by Google Ads"
+  ],
+  "monitoring_tools_recommendation": [
+    "Google Ads' Trademark Infringement Tool",
+    "Trademarkia's Brand Monitoring Tool",
+    "Google Alerts for competitor trademark usage"
+  ]
+}

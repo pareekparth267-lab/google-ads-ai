@@ -1,0 +1,102 @@
+{
+  "dashboard_layout": {
+    "sections": [
+      {
+        "title": "Overview",
+        "widgets": [
+          {
+            "type": "table",
+            "title": "Top 5 Cities by Service Requests",
+            "data_source": "Google Ads Conversion Data"
+          },
+          {
+            "type": "gauge",
+            "title": "Conversion Rate",
+            "data_source": "Google Ads Conversion Data"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Repair",
+        "widgets": [
+          {
+            "type": "bar_chart",
+            "title": "Monthly Repair Service Requests by City",
+            "data_source": "Google Ads Conversion Data"
+          },
+          {
+            "type": "pie_chart",
+            "title": "Repair Service Requests by Type (Emergency/Non-Emergency)",
+            "data_source": "Google Ads Conversion Data"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Installation",
+        "widgets": [
+          {
+            "type": "line_chart",
+            "title": "Monthly Installation Service Requests by City",
+            "data_source": "Google Ads Conversion Data"
+          },
+          {
+            "type": "scatter_plot",
+            "title": "Installation Service Requests by Day of Week",
+            "data_source": "Google Ads Conversion Data"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Maintenance",
+        "widgets": [
+          {
+            "type": "stacked_bar_chart",
+            "title": "Monthly Maintenance Service Requests by City",
+            "data_source": "Google Ads Conversion Data"
+          },
+          {
+            "type": "heatmap",
+            "title": "Maintenance Service Requests by Month and City",
+            "data_source": "Google Ads Conversion Data"
+          }
+        ]
+      }
+    ],
+    "primary_metrics": [
+      {
+        "name": "Conversion Rate",
+        "target": 0.05,
+        "current": 0.03
+      },
+      {
+        "name": "Average Order Value",
+        "target": 500,
+        "current": 450
+      },
+      {
+        "name": "Cost Per Acquisition",
+        "target": 100,
+        "current": 120
+      }
+    ],
+    "charts": [
+      {
+        "title": "Monthly Service Requests by City",
+        "chart_type": "bar_chart",
+        "data_source": "Google Ads Conversion Data",
+        "time_period": "monthly"
+      },
+      {
+        "title": "Quarterly Service Requests by City",
+        "chart_type": "line_chart",
+        "data_source": "Google Ads Conversion Data",
+        "time_period": "quarterly"
+      }
+    ]
+  },
+  "client_report_template": {
+    "frequency": "weekly",
+    "sections": [
+      {
+        "title": "Service Requests",
+        "

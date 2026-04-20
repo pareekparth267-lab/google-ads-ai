@@ -1,0 +1,90 @@
+{
+  "high_value_search_terms": [
+    {
+      "term": "garage door repair phoenix az",
+      "estimated_volume": "high",
+      "commercial_intent": 0.8,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door installation phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.7,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door maintenance phoenix az",
+      "estimated_volume": "low",
+      "commercial_intent": 0.9,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door opener repair phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.8,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door spring replacement phoenix az",
+      "estimated_volume": "low",
+      "commercial_intent": 0.9,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door cable repair phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.8,
+      "action": "add_as_keyword"
+    }
+  ],
+  "new_keyword_opportunities": [
+    {
+      "term": "garage door repair near me phoenix az",
+      "estimated_volume": "high",
+      "commercial_intent": 0.8
+    },
+    {
+      "term": "garage door installation cost phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.7
+    },
+    {
+      "term": "garage door maintenance schedule phoenix az",
+      "estimated_volume": "low",
+      "commercial_intent": 0.9
+    },
+    {
+      "term": "garage door opener installation phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.8
+    },
+    {
+      "term": "garage door spring replacement cost phoenix az",
+      "estimated_volume": "low",
+      "commercial_intent": 0.9
+    }
+  ],
+  "search_themes_discovered": [
+    {
+      "theme": "garage door repair phoenix az",
+      "subthemes": [
+        "garage door opener repair phoenix",
+        "garage door cable repair phoenix"
+      ]
+    },
+    {
+      "theme": "garage door installation phoenix",
+      "subthemes": [
+        "garage door installation cost phoenix",
+        "garage door opener installation phoenix"
+      ]
+    },
+    {
+      "theme": "garage door maintenance phoenix az",
+      "subthemes": [
+        "garage door maintenance schedule phoenix az",
+        "garage door spring replacement phoenix az"
+      ]
+    }
+  ],
+  "irrelevant_terms_to_neg

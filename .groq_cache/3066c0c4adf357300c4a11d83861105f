@@ -1,0 +1,49 @@
+{
+  "call_campaign_structure": {
+    "campaign_types": ["Call-Only","Call Extensions on Search"],
+    "bidding": "Cost-Per-Call (CPC)",
+    "target_cpa_per_call": 15.00,
+    "call_duration_threshold_seconds": 120
+  },
+  "call_tracking_setup": [
+    {
+      "call_tracking_number": "+1 (602) 123-4567",
+      "call_tracking_service": "Google Call Extensions",
+      "call_tracking_url": "https://quickresponsegaragedoor.com/call-tracking"
+    }
+  ],
+  "call_recording_recommendation": "Enable call recording to improve call quality scoring and optimize call campaigns",
+  "call_schedule": {
+    "daily_budget": 100.00,
+    "start_date": "2024-03-01",
+    "end_date": "2024-12-31",
+    "time_of_day": "9:00 AM - 7:00 PM",
+    "days_of_week": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+  },
+  "call_quality_scoring": [
+    {
+      "metric": "Call Duration",
+      "target": 120
+    },
+    {
+      "metric": "Call Converse Rate",
+      "target": 0.8
+    }
+  ],
+  "voicemail_strategy": "Play a pre-recorded voicemail message after 30 seconds of ringing",
+  "call_to_lead_handoff_process": [
+    {
+      "step": "Answer call and greet customer",
+      "responsibility": "Quick Response Garage Door Service"
+    },
+    {
+      "step": "Qualify lead and schedule service",
+      "responsibility": "Quick Response Garage Door Service"
+    },
+    {
+      "step": "Transfer lead to sales team",
+      "responsibility": "Quick Response Garage Door Service"
+    }
+  ],
+  "estimated_calls_per_day": 25
+}

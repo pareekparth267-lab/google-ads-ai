@@ -1,0 +1,76 @@
+{
+  "campaign_level_negatives": [
+    "free",
+    "DIY",
+    "tutorial",
+    "YouTube",
+    "blog",
+    "review",
+    "rating",
+    "comparison",
+    "price",
+    "cost",
+    "estimate",
+    "quote",
+    "auction",
+    "discount",
+    "coupon",
+    "sale",
+    "clearance",
+    "liquidation",
+    "used",
+    "refurbished",
+    "rental",
+    "lease"
+  ],
+  "ad_group_level_negatives": {
+    "Garage Door Repair": [
+      "installation",
+      "maintenance",
+      "opener",
+      "spring",
+      "cable",
+      "roller"
+    ],
+    "Garage Door Installation": [
+      "repair",
+      "maintenance",
+      "parts",
+      "accessories"
+    ],
+    "Garage Door Maintenance": [
+      "repair",
+      "installation",
+      "schedule",
+      "routine"
+    ]
+  },
+  "competitor_brand_negatives": [
+    "Wayne Dalton",
+    "Amarr",
+    "Clopay",
+    "LiftMaster",
+    "Chamberlain"
+  ],
+  "informational_negatives": [
+    "what is",
+    "how to",
+    "definition",
+    "wiki",
+    "wikipedia",
+    "FAQ",
+    "forum",
+    "discussion"
+  ],
+  "job_seeker_negatives": [
+    "job",
+    "career",
+    "employment",
+    "salary",
+    "benefits",
+    "training",
+    "certification"
+  ],
+  "estimated_waste_saved": "$500-$1000 per month",
+  "total_negative_count": 74
+}

@@ -1,0 +1,58 @@
+{
+  "waste_categories": [
+    {
+      "category": "Irrelevant Search Queries",
+      "estimated_waste_pct": 20,
+      "diagnosis": "The account is receiving a significant number of irrelevant search queries, such as 'garage door repair near me' and 'garage door installation cost'. This is likely due to a lack of negative keywords and a broad match type.",
+      "fix": "Implement a comprehensive negative keyword list, including location-based and generic keywords. Consider switching to phrase or exact match types.",
+      "priority": "high"
+    },
+    {
+      "category": "Poor Ad Targeting",
+      "estimated_waste_pct": 15,
+      "diagnosis": "The account is targeting a broad range of locations, including irrelevant cities and states. This is likely due to a lack of geotargeting and a broad match type.",
+      "fix": "Implement geotargeting to focus on specific locations, such as cities and states. Consider using location extensions to improve ad relevance.",
+      "priority": "medium"
+    },
+    {
+      "category": "Low-Quality Ad Copy",
+      "estimated_waste_pct": 10,
+      "diagnosis": "The account's ad copy is generic and lacks relevance to the target audience. This is likely due to a lack of ad copy testing and optimization.",
+      "fix": "Develop targeted ad copy that speaks to the needs and pain points of the target audience. Consider A/B testing ad copy to improve performance.",
+      "priority": "low"
+    }
+  ],
+  "immediate_savings_opportunities": [
+    {
+      "opportunity": "Pause underperforming ad groups",
+      "savings": "$15.00"
+    },
+    {
+      "opportunity": "Increase bid on high-performing ad groups",
+      "savings": "$10.00"
+    }
+  ],
+  "weekly_audit_checklist": [
+    "Monitor search query reports for irrelevant queries",
+    "Review ad copy performance and A/B test ad copy",
+    "Implement geotargeting and location extensions"
+  ],
+  "negative_keyword_gaps": [
+    "garage door repair near me",
+    "garage door installation cost",
+    "garage door maintenance services"
+  ],
+  "quality_score_waste": [
+    {
+      "ad_group": "Garage Door Repair",
+      "estimated_waste_pct": 30,
+      "diagnosis": "The ad group has a low quality score due to a lack of ad copy testing and optimization.",
+      "fix": "Develop targeted ad copy that speaks to the needs and pain points of the target audience. Consider A/B testing ad copy to improve performance.",
+      "priority": "high"
+    }
+  ],
+  "placement_waste": [
+    {
+      "placement": "Google Search Network",
+      "estimated_waste_pct": 25,
+      "di

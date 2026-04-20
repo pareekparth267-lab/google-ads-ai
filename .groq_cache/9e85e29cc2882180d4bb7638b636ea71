@@ -1,0 +1,82 @@
+{
+  "lead_form_config": {
+    "headline": "Get a Quote for Garage Door Repair, Installation, or Maintenance",
+    "description": "Quick Response Garage Door Service provides fast and reliable garage door solutions. Fill out the form below to get a quote.",
+    "questions": [
+      {
+        "question": "What is your garage door issue?",
+        "type": "multiple_choice",
+        "required": true,
+        "options": [
+          {"text": "Garage door won't open or close"},
+          {"text": "Garage door is noisy"},
+          {"text": "Garage door is damaged"},
+          {"text": "Other (please specify)"}
+        ]
+      },
+      {
+        "question": "What type of service are you looking for?",
+        "type": "multiple_choice",
+        "required": true,
+        "options": [
+          {"text": "Repair"},
+          {"text": "Installation"},
+          {"text": "Maintenance"},
+          {"text": "Other (please specify)"}
+        ]
+      },
+      {
+        "question": "What is your preferred schedule for the service?",
+        "type": "short_answer",
+        "required": true
+      },
+      {
+        "question": "What is your name?",
+        "type": "short_answer",
+        "required": true
+      },
+      {
+        "question": "What is your phone number?",
+        "type": "short_answer",
+        "required": true
+      },
+      {
+        "question": "What is your email address?",
+        "type": "short_answer",
+        "required": true
+      }
+    ],
+    "cta_text": "Get a Quote",
+    "post_submit_cta": {
+      "text": "Thank you for submitting your quote request. We will contact you soon.",
+      "action": {
+        "type": "redirect",
+        "url": "https://www.quickresponsegaragedoor.com/thank-you"
+      }
+    }
+  },
+  "lead_qualification_fields": [
+    {
+      "field": "Garage door issue",
+      "operator": "IS_NOT",
+      "value": "Other (please specify)"
+    },
+    {
+      "field": "Service type",
+      "operator": "IS",
+      "value": "Installation"
+    }
+  ],
+  "crm_webhook_integration_plan": "Integrate with Salesforce CRM",
+  "follow_up_automation_recommendation": "Set up a follow-up automation to send a quote to leads within 2 hours of submission",
+  "a_b_test_variations": [
+    {
+      "variation": "A",
+      "questions": [
+        {
+          "question": "What is your garage door issue?",
+          "type": "multiple_choice",
+          "required": true,
+          "options": [
+            {"text": "Garage door won't open or close"},
+            {"text": "Garage door is noisy"},

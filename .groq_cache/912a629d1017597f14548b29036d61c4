@@ -1,0 +1,117 @@
+{
+  "landing_pages": [
+    {
+      "keyword_theme": "Garage Door Repair Phoenix",
+      "headline": "Fast & Reliable Garage Door Repair in Phoenix, AZ",
+      "subheadline": "Get your garage door fixed today with our expert technicians",
+      "hero_cta": "Schedule Repair Now",
+      "trust_signals": [
+        "BBB Accredited",
+        "5-Star Rated on Google",
+        "Licensed & Insured"
+      ],
+      "above_fold_elements": [
+        "Hero Image: Broken Garage Door",
+        "Headline & Subheadline",
+        "Hero CTA",
+        "Trust Signals"
+      ],
+      "form_fields": [
+        "Name",
+        "Phone Number",
+        "Email",
+        "Service Needed (Repair, Installation, Maintenance)"
+      ],
+      "page_speed_targets": {
+        "fcp_seconds": 1.5,
+        "lcp_seconds": 2.5
+      }
+    },
+    {
+      "keyword_theme": "Garage Door Installation Phoenix",
+      "headline": "Professional Garage Door Installation in Phoenix, AZ",
+      "subheadline": "Get a new garage door installed by our expert technicians",
+      "hero_cta": "Get a Free Quote",
+      "trust_signals": [
+        "Manufacturer Certified",
+        "Warranty Available",
+        "Energy Efficiency Expertise"
+      ],
+      "above_fold_elements": [
+        "Hero Image: New Garage Door Installation",
+        "Headline & Subheadline",
+        "Hero CTA",
+        "Trust Signals"
+      ],
+      "form_fields": [
+        "Name",
+        "Phone Number",
+        "Email",
+        "Garage Door Type (Residential, Commercial)"
+      ],
+      "page_speed_targets": {
+        "fcp_seconds": 1.5,
+        "lcp_seconds": 2.5
+      }
+    },
+    {
+      "keyword_theme": "Garage Door Maintenance Phoenix",
+      "headline": "Preventative Garage Door Maintenance in Phoenix, AZ",
+      "subheadline": "Keep your garage door running smoothly with our maintenance services",
+      "hero_cta": "Schedule Maintenance Now",
+      "trust_signals": [
+        "Regularly Scheduled Maintenance",
+        "Extended Warranty Options",
+        "Priority Scheduling"
+      ],
+      "above_fold_elements": [
+        "Hero Image: Garage Door Maintenance Technician",
+        "Headline & Subheadline",
+        "Hero CTA",
+        "Trust Signals"
+      ],
+      "form_fields": [
+        "Name",
+        "Phone Number",
+        "Email",
+        "Maintenance Frequency (Monthly, Quarterly, Annually)"
+      ],
+      "page_speed_targets": {
+        "fcp_seconds": 1.5,
+        "lcp_seconds": 2.5
+      }
+    }
+  ],
+  "personalization_rules": [
+    {
+      "rule": "Location-Based Personalization",
+      "condition": "User is from Phoenix, AZ",
+      "action": "Display Phoenix-specific content and trust signals"
+    },
+    {
+      "rule": "Device-Based Personalization",
+      "condition": "User is on a mobile device",
+      "action": "Display mobile-friendly layout and CTAs"
+    }
+  ],
+  "a_b_test_elements": [
+    {
+      "element": "Hero CTA",
+      "variation": "Schedule Repair Now" vs "Get a Free Quote",
+      "goal": "Conversion Rate"
+    },
+    {
+      "element": "Trust Signals",
+      "variation": "BBB Accredited" vs "5-Star Rated on Google",
+      "goal": "Conversion Rate"
+    }
+  ],
+  "conversion_elements_checklist": [
+    "Clear and Prominent Headline",
+    "Relevant and High-Quality Hero Image",
+    "Visible and Accessible CTA",
+    "Trust Signals and Social Proof",
+    "Simple and Intuitive Form Fields",
+    "Fast Page Load Speed"
+  ]
+}

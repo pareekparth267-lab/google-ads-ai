@@ -1,0 +1,95 @@
+{
+  "landing_pages": [
+    {
+      "keyword_theme": "Garage Door Repair Phoenix",
+      "headline": "Fast & Reliable Garage Door Repair in Phoenix, AZ",
+      "subheadline": "Get back to your daily routine with our quick response garage door repair services",
+      "hero_cta": "Schedule Repair Now",
+      "trust_signals": [
+        "Licensed, Bonded, and Insured",
+        "5-Star Rated on Google",
+        "24/7 Emergency Service"
+      ],
+      "above_fold_elements": [
+        "Hero Image: A photo of a technician repairing a garage door",
+        "Headline and Subheadline",
+        "Hero CTA",
+        "Trust Signals"
+      ],
+      "form_fields": [
+        "Name",
+        "Phone Number",
+        "Email",
+        "Service Needed (Repair, Installation, Maintenance)"
+      ],
+      "page_speed_targets": {
+        "fcp_seconds": 1.5,
+        "lcp_seconds": 2.5
+      }
+    },
+    {
+      "keyword_theme": "Garage Door Installation Phoenix",
+      "headline": "Professional Garage Door Installation in Phoenix, AZ",
+      "subheadline": "Transform your home with our high-quality garage door installation services",
+      "hero_cta": "Get a Free Quote",
+      "trust_signals": [
+        "Expert Technicians with 10+ Years of Experience",
+        "Wide Selection of Garage Door Brands",
+        "Warranty on All Installations"
+      ],
+      "above_fold_elements": [
+        "Hero Image: A photo of a new garage door installation",
+        "Headline and Subheadline",
+        "Hero CTA",
+        "Trust Signals"
+      ],
+      "form_fields": [
+        "Name",
+        "Phone Number",
+        "Email",
+        "Type of Garage Door Needed (Residential, Commercial)"
+      ],
+      "page_speed_targets": {
+        "fcp_seconds": 1.5,
+        "lcp_seconds": 2.5
+      }
+    },
+    {
+      "keyword_theme": "Garage Door Maintenance Phoenix",
+      "headline": "Preventative Garage Door Maintenance in Phoenix, AZ",
+      "subheadline": "Keep your garage door running smoothly with our maintenance services",
+      "hero_cta": "Schedule Maintenance Now",
+      "trust_signals": [
+        "Regular Maintenance to Prevent Breakdowns",
+        "Extended Garage Door Lifespan",
+        "Priority Scheduling for Maintenance Customers"
+      ],
+      "above_fold_elements": [
+        "Hero Image: A photo of a technician performing maintenance on a garage door",
+        "Headline and Subheadline",
+        "Hero CTA",
+        "Trust Signals"
+      ],
+      "form_fields": [
+        "Name",
+        "Phone Number",
+        "Email",
+        "Type of Maintenance Needed (Tune-Up, Inspection)"
+      ],
+      "page_speed_targets": {
+        "fcp_seconds": 1.5,
+        "lcp_seconds": 2.5
+      }
+    }
+  ],
+  "personalization_rules": [
+    {
+      "rule": "Location-Based Personalization",
+      "description": "Display the nearest service location to the user"
+    },
+    {
+      "rule": "Device-Based Personalization",
+      "description": "Optimize the landing page for mobile or desktop devices"
+    },
+    {
+      "rule": "Time-Based

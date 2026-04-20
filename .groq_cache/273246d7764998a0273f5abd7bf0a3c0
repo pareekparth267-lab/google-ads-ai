@@ -1,0 +1,62 @@
+{
+  "seasonality_adjustment_calendar": [
+    {
+      "event": "Garage Door Repair",
+      "date_range": "Every Monday, Tuesday, Wednesday, Thursday, Friday",
+      "adjustment_pct": 10,
+      "apply_to": ["Garage Door Repair"],
+      "advance_setup_days": 7
+    },
+    {
+      "event": "Garage Door Installation",
+      "date_range": "Every 1st and 15th of the month",
+      "adjustment_pct": 20,
+      "apply_to": ["Garage Door Installation"],
+      "advance_setup_days": 14
+    },
+    {
+      "event": "Garage Door Maintenance",
+      "date_range": "Every 3rd Saturday of the month",
+      "adjustment_pct": 15,
+      "apply_to": ["Garage Door Maintenance"],
+      "advance_setup_days": 21
+    },
+    {
+      "event": "Summer Vacation",
+      "date_range": "June 15th to August 31st",
+      "adjustment_pct": -15,
+      "apply_to": ["Garage Door Repair", "Garage Door Installation", "Garage Door Maintenance"],
+      "advance_setup_days": 30
+    },
+    {
+      "event": "Holiday Season",
+      "date_range": "December 1st to January 15th",
+      "adjustment_pct": -20,
+      "apply_to": ["Garage Door Repair", "Garage Door Installation", "Garage Door Maintenance"],
+      "advance_setup_days": 45
+    }
+  ],
+  "google_seasonality_tool_usage": {
+    "when_to_use": "Use the Google Seasonality Tool to analyze historical data and identify patterns in garage door service demand.",
+    "how_to_apply": "Apply seasonality adjustments to specific campaigns and ad groups based on historical data and event calendars.",
+    "adjustment_duration": "Adjustments can be applied for a specific date range or for the entire campaign duration."
+  },
+  "smart_bidding_seasonality_tips": [
+    "Use Smart Bidding strategies like Target CPA or Target ROAS to adjust bids based on seasonality and event calendars.",
+    "Monitor and adjust bids in real-time to optimize performance during peak and off-peak seasons.",
+    "Use automated bidding strategies to handle seasonality adjustments and minimize manual intervention."
+  ],
+  "historical_spike_events": [
+    {
+      "event": "Severe Weather",
+      "date": "February 2022",
+      "impact": "30% increase in garage door repair requests"
+    },
+    {
+      "event": "Holiday Weekend",
+      "date": "July 2021",
+      "impact": "25% increase in garage door installation requests"
+    }
+  ],
+  "pre_event_budget_increase_plan": {
+    "budget_allocation": "Increase budget by 20% for 2 weeks prior to

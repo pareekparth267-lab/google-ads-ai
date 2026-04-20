@@ -1,0 +1,57 @@
+{
+  "sitelinks": [
+    {"title":"Garage Door Repair", "description1":"Get your garage door fixed quickly and efficiently", "description2":"Our expert technicians are available 24/7", "url":"https://quickresponsegaragedoor.com/repair"},
+    {"title":"Garage Door Installation", "description1":"Install a new garage door with our professional team", "description2":"We offer a wide range of styles and materials", "url":"https://quickresponsegaragedoor.com/installation"},
+    {"title":"Garage Door Maintenance", "description1":"Keep your garage door running smoothly with regular maintenance", "description2":"Our maintenance services include lubrication and inspection", "url":"https://quickresponsegaragedoor.com/maintenance"}
+  ],
+  "callouts": [
+    "24/7 Emergency Service",
+    "Fast and Reliable Repairs",
+    "Free Estimates and Consultations",
+    "Wide Range of Garage Door Styles",
+    "High-Quality Materials and Products",
+    "Professional and Experienced Technicians",
+    "Competitive Pricing and Discounts",
+    "Satisfaction Guaranteed"
+  ],
+  "structured_snippets": {
+    "header":"Services",
+    "values":[
+      "Garage Door Repair",
+      "Garage Door Installation",
+      "Garage Door Maintenance",
+      "Spring Replacement",
+      "Opener Installation",
+      "Roller Replacement"
+    ]
+  },
+  "call_extension": {
+    "phone":"(602) 123-4567",
+    "call_only":false
+  },
+  "location_extension": {
+    "address":"123 Main St",
+    "city":"Phoenix, AZ"
+  },
+  "price_extension": [
+    {"header":"Garage Door Repair", "price":"$75", "unit":"service call", "description":"Our standard service call fee"},
+    {"header":"Garage Door Installation", "price":"$500", "unit":"single car garage door", "description":"Our starting price for a single car garage door installation"},
+    {"header":"Garage Door Maintenance", "price":"$100", "unit":"annual maintenance package", "description":"Our annual maintenance package includes lubrication and inspection"}
+  ],
+  "image_extension": [
+    {"image_concept":"Garage Door", "url_path":"https://quickresponsegaragedoor.com/images/garage-door.jpg"},
+    {"image_concept":"Technician", "url_path":"https://quickresponsegaragedoor.com/images/technician.jpg"}
+  ],
+  "lead_form_extension": {
+    "headline":"Get a Free Quote",
+    "description":"Fill out the form below to get a free quote for your garage door needs",
+    "fields":["name","email","phone"]
+  },
+  "promotion_extension": {
+    "promotion":"10% Off",
+    "amount":"10",
+    "occasion":"Summer Sale",
+    "start_date":"2024-06-01",
+    "end_date":"2024-08-31"
+  }
+}

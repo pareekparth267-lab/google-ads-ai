@@ -1,0 +1,61 @@
+{
+  "customer_match_lists": [
+    {
+      "list_name": "Quick Response Garage Door Service - Customer Email List",
+      "data_type": "email",
+      "estimated_size": 5000,
+      "use_case": "Target customers who have previously contacted us for garage door services",
+      "bid_adjustment": 20
+    },
+    {
+      "list_name": "Quick Response Garage Door Service - Customer Phone List",
+      "data_type": "phone",
+      "estimated_size": 2000,
+      "use_case": "Target customers who have previously contacted us for garage door services",
+      "bid_adjustment": 15
+    },
+    {
+      "list_name": "Quick Response Garage Door Service - Customer Address List",
+      "data_type": "address",
+      "estimated_size": 10000,
+      "use_case": "Target customers who have previously contacted us for garage door services",
+      "bid_adjustment": 10
+    },
+    {
+      "list_name": "Quick Response Garage Door Service - Garage Door Repair Interest List",
+      "data_type": "email|phone|address",
+      "estimated_size": 15000,
+      "use_case": "Target customers who have shown interest in garage door repair services",
+      "bid_adjustment": 25
+    },
+    {
+      "list_name": "Quick Response Garage Door Service - Garage Door Installation Interest List",
+      "data_type": "email|phone|address",
+      "estimated_size": 10000,
+      "use_case": "Target customers who have shown interest in garage door installation services",
+      "bid_adjustment": 20
+    },
+    {
+      "list_name": "Quick Response Garage Door Service - Garage Door Maintenance Interest List",
+      "data_type": "email|phone|address",
+      "estimated_size": 8000,
+      "use_case": "Target customers who have shown interest in garage door maintenance services",
+      "bid_adjustment": 15
+    }
+  ],
+  "upload_schedule": "Weekly uploads of customer lists on Tuesdays at 10am EST",
+  "data_preparation_checklist": [
+    "Ensure all customer data is up-to-date and accurate",
+    "Verify that customer data is in a format compatible with Google Ads",
+    "Remove any duplicate or invalid customer data",
+    "Ensure that customer data is properly encrypted and anonymized for GDPR and CCPA compliance"
+  ],
+  "match_rate_optimization_tips": [
+    "Use a combination of customer lists to improve match rates",
+    "Regularly update and refresh customer lists to ensure accuracy",
+    "Use Google Ads' built-in match rate optimization tools to identify and fix issues",
+    "Monitor and adjust bid adjustments based on match rate performance"
+  ],
+  "campaign_application_plan": [
+    "Create separate campaigns for each customer list to target specific interests and behaviors",
+    "Use customer lists to create targeted

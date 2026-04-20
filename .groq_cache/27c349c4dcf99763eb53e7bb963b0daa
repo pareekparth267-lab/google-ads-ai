@@ -1,0 +1,84 @@
+{
+  "winner_criteria": [
+    {
+      "metric": "Conversion Rate",
+      "threshold": 2.5,
+      "minimum_data_period_days": 7,
+      "confidence_level": "95%"
+    },
+    {
+      "metric": "Return on Ad Spend (ROAS)",
+      "threshold": 300,
+      "minimum_data_period_days": 14,
+      "confidence_level": "90%"
+    }
+  ],
+  "scaling_playbook": [
+    {
+      "step": 1,
+      "action": "Increase Budget by 20%",
+      "budget_increase_pct": 20,
+      "wait_days": 3,
+      "success_criteria": "Conversion Rate > 3.0"
+    },
+    {
+      "step": 2,
+      "action": "Increase Budget by 30%",
+      "budget_increase_pct": 30,
+      "wait_days": 7,
+      "success_criteria": "ROAS > 350"
+    },
+    {
+      "step": 3,
+      "action": "Increase Budget by 40%",
+      "budget_increase_pct": 40,
+      "wait_days": 14,
+      "success_criteria": "Conversion Rate > 4.0 and ROAS > 400"
+    }
+  ],
+  "automated_scaling_rules": [
+    {
+      "rule": "If Conversion Rate > 2.5 and ROAS > 250, then Increase Budget by 10%",
+      "budget_increase_pct": 10,
+      "wait_days": 3
+    },
+    {
+      "rule": "If Conversion Rate > 3.5 and ROAS > 450, then Increase Budget by 50%",
+      "budget_increase_pct": 50,
+      "wait_days": 7
+    }
+  ],
+  "loser_sunset_criteria": [
+    {
+      "metric": "Conversion Rate",
+      "threshold": 1.5,
+      "minimum_data_period_days": 7,
+      "confidence_level": "80%"
+    },
+    {
+      "metric": "ROAS",
+      "threshold": 150,
+      "minimum_data_period_days": 14,
+      "confidence_level": "70%"
+    }
+  ],
+  "budget_reallocation_matrix": {
+    "loser_budget_reallocation_pct": 50,
+    "winner_budget_reallocation_pct": 30
+  },
+  "scaling_risk_guardrails": [
+    {
+      "risk_metric": "Conversion Rate",
+      "risk_threshold": 0.5,
+      "budget_decrease_pct": 20,
+      "wait_days": 3
+    },
+    {
+      "risk_metric": "ROAS",
+      "risk_threshold": 100,
+      "budget_decrease_pct": 30,
+      "wait_days": 7
+    }
+  ],
+  "projected_scaled_revenue": 15000.0
+}

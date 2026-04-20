@@ -1,0 +1,66 @@
+{
+  "seed_audience_recommendations": [
+    {
+      "seed_list": "Quick Response Garage Door Service customers who have purchased garage door repair services within the last 6 months",
+      "quality_score": 80,
+      "expansion_approach": "Lookalike expansion with a 1% overlap",
+      "estimated_reach": "10,000 - 20,000 users"
+    },
+    {
+      "seed_list": "Quick Response Garage Door Service customers who have purchased garage door installation services within the last 12 months",
+      "quality_score": 85,
+      "expansion_approach": "Lookalike expansion with a 2% overlap",
+      "estimated_reach": "20,000 - 40,000 users"
+    },
+    {
+      "seed_list": "Quick Response Garage Door Service customers who have engaged with garage door maintenance services within the last 3 months",
+      "quality_score": 90,
+      "expansion_approach": "Lookalike expansion with a 3% overlap",
+      "estimated_reach": "40,000 - 60,000 users"
+    }
+  ],
+  "similar_audience_tiers": [
+    {
+      "tier": "Tier 1",
+      "description": "Highly similar users with a strong affinity for Quick Response Garage Door Service",
+      "overlap_percentage": 1,
+      "estimated_reach": "5,000 - 10,000 users"
+    },
+    {
+      "tier": "Tier 2",
+      "description": "Moderately similar users with a moderate affinity for Quick Response Garage Door Service",
+      "overlap_percentage": 2,
+      "estimated_reach": "10,000 - 20,000 users"
+    },
+    {
+      "tier": "Tier 3",
+      "description": "Less similar users with a weak affinity for Quick Response Garage Door Service",
+      "overlap_percentage": 3,
+      "estimated_reach": "20,000 - 40,000 users"
+    }
+  ],
+  "performance_max_audience_signals": [
+    {
+      "signal": "Purchase history of garage door repair services",
+      "weight": 30
+    },
+    {
+      "signal": "Purchase history of garage door installation services",
+      "weight": 25
+    },
+    {
+      "signal": "Engagement with garage door maintenance services",
+      "weight": 20
+    },
+    {
+      "signal": "Device type (desktop or mobile)",
+      "weight": 15
+    },
+    {
+      "signal": "Location (city or region)",
+      "weight": 10
+    }
+  ],
+  "expansion_settings_recommendation": "Use a 1% overlap for Tier 1, 2% overlap for Tier 2, and 3% overlap for Tier 3",
+  "funnel_position_mapping": {
+    "aware

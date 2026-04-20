@@ -1,0 +1,34 @@
+{
+  "feed_optimization_checklist": [
+    {"check":"Validate and correct product data in Merchant Center"},
+    {"check":"Ensure all products have a unique ID"},
+    {"check":"Verify product titles, descriptions, and images"},
+    {"check":"Set up and validate product groups"},
+    {"check":"Configure and validate product attributes"}
+  ],
+  "product_segmentation_strategy": [
+    {"segment":"Garage Door Repair","criteria":"product_id: contains 'repair'","bid_strategy":"Target ROAS","target_roas":2.5},
+    {"segment":"Garage Door Installation","criteria":"product_id: contains 'installation'","bid_strategy":"Target ROAS","target_roas":3.0},
+    {"segment":"Garage Door Maintenance","criteria":"product_id: contains 'maintenance'","bid_strategy":"Target ROAS","target_roas":2.0}
+  ],
+  "smart_shopping_vs_standard": "Smart Shopping is recommended for this campaign due to the variety of products and services offered.",
+  "merchant_center_health_checklist": [
+    {"check":"Verify that all products are enabled and active"},
+    {"check":"Check for any product data errors or warnings"},
+    {"check":"Ensure that all product groups are set up and validated"},
+    {"check":"Verify that all product attributes are configured and validated"}
+  ],
+  "title_optimization_formula": "Use a combination of product name, price, and brand to create unique and compelling titles.",
+  "custom_label_strategy": {
+    "label1": {"name":"Garage Door Repair","value":1.0},
+    "label2": {"name":"Garage Door Installation","value":1.5},
+    "label3": {"name":"Garage Door Maintenance","value":0.5}
+  },
+  "competitive_price_monitoring": "Monitor and adjust bids to stay competitive with other advertisers in the space.",
+  "seasonal_feed_updates": [
+    {"update":"Update product prices and availability for seasonal fluctuations"},
+    {"update":"Add or remove products based on seasonal demand"},
+    {"update":"Update product titles and descriptions to reflect seasonal promotions"}
+  ],
+  "shopping_vs_pmax_recommendation": "Shopping ads are recommended over Pmax due to the visual nature of garage door products and services."
+}

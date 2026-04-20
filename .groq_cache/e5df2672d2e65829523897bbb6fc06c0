@@ -1,0 +1,25 @@
+{
+  "scripts": [
+    {
+      "name": "Budget Pacer",
+      "trigger": "Hourly",
+      "description": "Pause campaigns if daily budget pacing is off",
+      "code": "function main() {\n  var campaigns = AdsApp.campaigns().get();\n  while (campaigns.hasNext()) {\n    var campaign = campaigns.next();\n    var budget = campaign.getBudget();\n    var cost = campaign.getStatsFor('TODAY').getCost();\n    var pacing = cost / budget.getAmount();\n    if (pacing > 1.2 || pacing < 0.8) {\n      campaign.pause();\n      Logger.log('Campaign ' + campaign.getName() + ' paused due to pacing issue.');\n    }\n  }\n}"
+    },
+    {
+      "name": "Quality Score Monitor",
+      "trigger": "Daily",
+      "description": "Alert if QS drops below threshold",
+      "code": "function main() {\n  var threshold = 5;\n  var lowQSKeywords = AdsApp.keywords().withCondition('QualityScore < ' + threshold).get();\n  if (lowQSKeywords.totalNumEntities() > 0) {\n    var subject = 'Low Quality Score Keywords Found';\n    var body = 'The following keywords have a low quality score: ';\n    while (lowQSKeywords.hasNext()) {\n      var keyword = lowQSKeywords.next();\n      body += keyword.getText() + ', ';\n    }\n    MailApp.sendEmail('your_email@example.com', subject, body);\n  }\n}"
+    },
+    {
+      "name": "Search Term Auto-Negatives",
+      "trigger": "Weekly",
+      "description": "Auto-add irrelevant search terms as negatives",
+      "code": "function main() {\n  var campaigns = AdsApp.campaigns().get();\n  while (campaigns.hasNext()) {\n    var campaign = campaigns.next();\n    var query = AdsApp.searchQueries().withCondition('ConversionValue = 0').withCondition('Cost > 0').forCampaign(campaign).get();\n    while (query.hasNext()) {\n      var searchQuery = query.next();\n      var searchQueryText = searchQuery.getQuery();\n      var negativeKeywordList = campaign.negativeKeywordLists().get().next();\n      negativeKeywordList.addNegativeKeyword(searchQueryText);\n      Logger.log('Added ' + searchQueryText + ' as negative keyword.');\n    }\n  }\n}"
+    },
+    {
+      "name": "Bid Adjustment Automator",
+      "trigger": "Daily",
+      "description": "Auto-adjust bids by hour/device performance",
+      "code": "function main() {\n  var campaigns = AdsApp.campaigns().get();\n  while (campaigns.hasNext()) {\n    var campaign = campaigns.next();\n    var adGroups = campaign.adGroups().get();\n    while (adGroups.hasNext()) {\n      var adGroup = adGroups.next();\n      var stats = adGroup.getStatsFor('THIS_MONTH');\n      var mobileStats = adGroup.getStatsFor('THIS_MONTH').withCondition('Device = MOBILE');\n      var desktopStats = ad

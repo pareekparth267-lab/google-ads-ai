@@ -1,0 +1,73 @@
+{
+  "micro_conversions": [
+    {
+      "action": "Schedule Service",
+      "type": "Form Submission",
+      "tracking_method": "Google Tag Manager",
+      "value_assigned": 1,
+      "smart_bidding_signal_strength": "high"
+    },
+    {
+      "action": "Download Brochure",
+      "type": "Click",
+      "tracking_method": "Google Tag Manager",
+      "value_assigned": 0.5,
+      "smart_bidding_signal_strength": "med"
+    },
+    {
+      "action": "Call to Action (CTA) Click",
+      "type": "Click",
+      "tracking_method": "Google Tag Manager",
+      "value_assigned": 0.25,
+      "smart_bidding_signal_strength": "low"
+    },
+    {
+      "action": "Service Request Form Completion",
+      "type": "Form Completion",
+      "tracking_method": "Google Tag Manager",
+      "value_assigned": 2,
+      "smart_bidding_signal_strength": "high"
+    }
+  ],
+  "conversion_funnel_mapping": [
+    {
+      "micro_conversion": "Schedule Service",
+      "conversion": "Leads"
+    },
+    {
+      "micro_conversion": "Download Brochure",
+      "conversion": "Leads"
+    },
+    {
+      "micro_conversion": "Call to Action (CTA) Click",
+      "conversion": "Leads"
+    },
+    {
+      "micro_conversion": "Service Request Form Completion",
+      "conversion": "Leads"
+    }
+  ],
+  "smart_bidding_warmup_plan": {
+    "phase_1": {
+      "duration_days": 7,
+      "strategy": "Target Cost Per Acquisition (CPA)",
+      "micro_conversions_used": ["Schedule Service", "Download Brochure"]
+    },
+    "phase_2": {
+      "duration_days": 14,
+      "strategy": "Enhanced Cost Per Click (ECPC)",
+      "conversion_shift": "Shift 20% of budget to highest-performing micro-conversions"
+    },
+    "phase_3": {
+      "duration_days": 21,
+      "strategy": "Target Return on Ad Spend (ROAS)"
+    }
+  },
+  "minimum_conversions_threshold": 10,
+  "data_collection_estimate": "4-6 weeks",
+  "gtm_implementation_notes": [
+    "Implement Google Tag Manager to track micro-conversions",
+    "Verify micro-conversion tracking through Google Tag Manager",
+    "Configure Google Tag Manager to send data to Google Ads"
+  ]
+}

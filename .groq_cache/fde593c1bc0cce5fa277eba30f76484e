@@ -1,0 +1,68 @@
+{
+  "seed_audience_recommendations": [
+    {
+      "seed_list": "Existing customers",
+      "quality_score": 85,
+      "expansion_approach": "Lookalike expansion with interest-based targeting",
+      "estimated_reach": "10% of the seed audience"
+    },
+    {
+      "seed_list": "Garage door repair service users",
+      "quality_score": 78,
+      "expansion_approach": "Custom affinity targeting",
+      "estimated_reach": "5% of the seed audience"
+    },
+    {
+      "seed_list": "Homeowners with recent garage door purchases",
+      "quality_score": 92,
+      "expansion_approach": "Lookalike expansion with purchase-based targeting",
+      "estimated_reach": "15% of the seed audience"
+    }
+  ],
+  "similar_audience_tiers": [
+    {
+      "tier_name": "Tier 1 (High-value lookalikes)",
+      "description": "Highly similar to the seed audience, with a high likelihood of conversion",
+      "reach": "5%",
+      "conversion_rate": "2.5%"
+    },
+    {
+      "tier_name": "Tier 2 (Medium-value lookalikes)",
+      "description": "Moderately similar to the seed audience, with a medium likelihood of conversion",
+      "reach": "10%",
+      "conversion_rate": "1.5%"
+    },
+    {
+      "tier_name": "Tier 3 (Low-value lookalikes)",
+      "description": "Less similar to the seed audience, with a low likelihood of conversion",
+      "reach": "20%",
+      "conversion_rate": "0.5%"
+    }
+  ],
+  "performance_max_audience_signals": [
+    {
+      "signal_name": "High-value purchase history",
+      "signal_description": "Users with high-value purchases in the garage door repair and installation category",
+      "signal_score": "90"
+    },
+    {
+      "signal_name": "Recent garage door repair service usage",
+      "signal_description": "Users who have recently used garage door repair services",
+      "signal_score": "80"
+    },
+    {
+      "signal_name": "High-value homeownership",
+      "signal_description": "Users who own high-value homes",
+      "signal_score": "95"
+    }
+  ],
+  "expansion_settings_recommendation": "Use a minimum of 3 signals for expansion, with a maximum of 5 signals per audience",
+  "funnel_position_mapping": {
+    "Awareness": "Tier 1 and Tier 2 lookalikes",
+    "Consideration": "Tier 2 and Tier 3 lookalikes",
+    "Conversion": "Existing customers and high-value lookalikes"
+  },
+  "testing_framework": [
+    {
+      "test_name": "Lookalike expansion with interest-based targeting",
+      "test

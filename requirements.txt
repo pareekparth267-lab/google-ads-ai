@@ -1,7 +1,11 @@
+# AdsForge AI — Requirements
+# pip install -r requirements.txt
+
 fastapi
 uvicorn[standard]
-pydantic
 httpx
+pydantic
 python-multipart
 
-google-ads
+# Optional: if you want Google Ads official SDK (not required - app uses REST API)
+# google-ads

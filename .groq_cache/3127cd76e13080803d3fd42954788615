@@ -1,0 +1,31 @@
+{
+  "recommended_attribution_model": "Data-Driven Attribution (DDA)",
+  "model_comparison": [
+    {"model":"Last Click","pros":["Easy to implement","Fast results"],"cons":["Ignores all other interactions","Can lead to over-attribution of credit to the last click"],"best_for":"Small campaigns with few interactions"},
+    {"model":"First Click","pros":["Gives credit to the first interaction"],"cons":["Ignores all other interactions","Can lead to under-attribution of credit to subsequent clicks"],"best_for":"Campaigns with a clear funnel"},
+    {"model":"Linear Attribution","pros":["Gives equal credit to all interactions"],"cons":["Can lead to over-attribution of credit to multiple interactions","Does not account for the value of each interaction"],"best_for":"Simple campaigns with equal-value interactions"},
+    {"model":"Time Decay Attribution","pros":["Gives more credit to recent interactions"],"cons":["Can lead to under-attribution of credit to older interactions","Does not account for the value of each interaction"],"best_for":"Campaigns with a clear timeline of interactions"},
+    {"model":"Data-Driven Attribution (DDA)","pros":["Accurately models the conversion process","Gives credit to all interactions based on their value"],"cons":["Requires a large amount of data","Can be complex to implement"],"best_for":"Large campaigns with complex interactions"}
+  ],
+  "cross_channel_attribution_plan": {
+    "channels": [
+      {"channel":"Google Ads","weight":0.5},
+      {"channel":"Facebook Ads","weight":0.3},
+      {"channel":"Email Marketing","weight":0.2}
+    ],
+    "weights": {
+      "Google Ads": 0.5,
+      "Facebook Ads": 0.3,
+      "Email Marketing": 0.2
+    }
+  },
+  "view_through_conversion_window": 30,
+  "click_conversion_window": 7,
+  "estimated_true_roas_vs_reported": "+15%",
+  "implementation_steps": [
+    "Set up conversion tracking for all channels",
+    "Configure the Data-Driven Attribution model in Google Ads",
+    "Assign weights to each channel based on their value",
+    "Monitor and adjust the attribution model as needed"
+  ]
+}

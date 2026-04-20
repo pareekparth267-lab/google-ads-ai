@@ -1,0 +1,82 @@
+{
+  "micro_conversions": [
+    {
+      "action": "Garage Door Repair Quote Request",
+      "type": "Form Submission",
+      "tracking_method": "Event Tracking",
+      "value_assigned": 0.5,
+      "smart_bidding_signal_strength": "high"
+    },
+    {
+      "action": "Garage Door Installation Quote Request",
+      "type": "Form Submission",
+      "tracking_method": "Event Tracking",
+      "value_assigned": 0.7,
+      "smart_bidding_signal_strength": "high"
+    },
+    {
+      "action": "Garage Door Maintenance Scheduling",
+      "type": "Event",
+      "tracking_method": "Google Tag Manager",
+      "value_assigned": 0.3,
+      "smart_bidding_signal_strength": "med"
+    },
+    {
+      "action": "Garage Door Repair Phone Call",
+      "type": "Call",
+      "tracking_method": "Google Tag Manager",
+      "value_assigned": 0.8,
+      "smart_bidding_signal_strength": "high"
+    },
+    {
+      "action": "Garage Door Installation Phone Call",
+      "type": "Call",
+      "tracking_method": "Google Tag Manager",
+      "value_assigned": 0.9,
+      "smart_bidding_signal_strength": "high"
+    }
+  ],
+  "conversion_funnel_mapping": [
+    {
+      "micro_conversion": "Garage Door Repair Quote Request",
+      "conversion": "Lead"
+    },
+    {
+      "micro_conversion": "Garage Door Installation Quote Request",
+      "conversion": "Lead"
+    },
+    {
+      "micro_conversion": "Garage Door Maintenance Scheduling",
+      "conversion": "Lead"
+    },
+    {
+      "micro_conversion": "Garage Door Repair Phone Call",
+      "conversion": "Lead"
+    },
+    {
+      "micro_conversion": "Garage Door Installation Phone Call",
+      "conversion": "Lead"
+    }
+  ],
+  "smart_bidding_warmup_plan": {
+    "phase_1": {
+      "duration_days": 14,
+      "strategy": "Target CPA",
+      "micro_conversions_used": ["Garage Door Repair Quote Request", "Garage Door Installation Quote Request"]
+    },
+    "phase_2": {
+      "duration_days": 7,
+      "strategy": "Target ROAS",
+      "conversion_shift": "Increase conversions by 15%"
+    },
+    "phase_3": {
+      "duration_days": 7,
+      "strategy": "Maximize Conversions"
+    }
+  },
+  "minimum_conversions_threshold": 10,
+  "data_collection_estimate": "4-6 weeks",
+  "gtm_implementation_notes": [
+    "Set up event tracking for form submissions and calls",
+    "Set up Google Tag Manager to track events and calls",
+    "Verify data collection using Google Ads

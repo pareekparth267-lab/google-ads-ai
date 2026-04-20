@@ -1,0 +1,84 @@
+{
+  "high_value_search_terms": [
+    {
+      "term": "garage door repair phoenix az",
+      "estimated_volume": "high",
+      "commercial_intent": 0.8,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door installation phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.7,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door maintenance cost phoenix",
+      "estimated_volume": "low",
+      "commercial_intent": 0.9,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door repair services phoenix az",
+      "estimated_volume": "high",
+      "commercial_intent": 0.85,
+      "action": "add_as_keyword"
+    },
+    {
+      "term": "garage door installation prices phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.75,
+      "action": "add_as_keyword"
+    }
+  ],
+  "new_keyword_opportunities": [
+    {
+      "term": "garage door repair near me phoenix",
+      "estimated_volume": "high",
+      "commercial_intent": 0.8
+    },
+    {
+      "term": "24 hour garage door repair phoenix",
+      "estimated_volume": "med",
+      "commercial_intent": 0.7
+    },
+    {
+      "term": "garage door installation companies phoenix",
+      "estimated_volume": "low",
+      "commercial_intent": 0.9
+    }
+  ],
+  "search_themes_discovered": [
+    "garage door repair phoenix az",
+    "garage door installation phoenix",
+    "garage door maintenance phoenix",
+    "garage door services phoenix az"
+  ],
+  "irrelevant_terms_to_negate": [
+    "garage door sales phoenix",
+    "garage door rental phoenix",
+    "garage door accessories phoenix"
+  ],
+  "long_tail_goldmines": [
+    {
+      "term": "garage door repair phoenix az emergency",
+      "estimated_volume": "low",
+      "commercial_intent": 0.9
+    },
+    {
+      "term": "garage door installation phoenix over 30 years old",
+      "estimated_volume": "med",
+      "commercial_intent": 0.75
+    }
+  ],
+  "match_type_optimization_tips": [
+    {
+      "tip": "Use exact match for 'garage door repair phoenix az' and 'garage door installation phoenix'",
+      "description": "High commercial intent and high volume"
+    },
+    {
+      "tip": "Use phrase match for 'garage door maintenance phoenix'",
+      "description": "Medium commercial intent and medium volume"
+    }
+  ],
+  "estimated_cpa_improvement": "

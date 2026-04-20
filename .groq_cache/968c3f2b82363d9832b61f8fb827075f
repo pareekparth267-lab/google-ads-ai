@@ -1,0 +1,117 @@
+{
+  "daily_report_template": {
+    "sections": [
+      {
+        "title": "Quick Response Garage Door Service Daily Pulse Report",
+        "description": "Daily performance metrics for Quick Response Garage Door Service",
+        "components": [
+          {
+            "component_type": "heading",
+            "level": 1,
+            "text": "Daily Pulse Report"
+          },
+          {
+            "component_type": "table",
+            "data": [
+              [
+                "Date",
+                "Total Impressions",
+                "Total Clicks",
+                "Conversion Rate",
+                "Average Cost-Per-Click (CPC)",
+                "Total Spend"
+              ]
+            ],
+            "columns": [
+              {
+                "header": "Date"
+              },
+              {
+                "header": "Total Impressions"
+              },
+              {
+                "header": "Total Clicks"
+              },
+              {
+                "header": "Conversion Rate"
+              },
+              {
+                "header": "Average Cost-Per-Click (CPC)"
+              },
+              {
+                "header": "Total Spend"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Repair Performance",
+        "description": "Performance metrics for Garage Door Repair services",
+        "components": [
+          {
+            "component_type": "chart",
+            "chart_type": "bar",
+            "data": [
+              {
+                "label": "Last Week",
+                "value": 100
+              },
+              {
+                "label": "Last Month",
+                "value": 120
+              },
+              {
+                "label": "Last Year",
+                "value": 90
+              }
+            ],
+            "title": "Garage Door Repair Performance"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Installation Performance",
+        "description": "Performance metrics for Garage Door Installation services",
+        "components": [
+          {
+            "component_type": "chart",
+            "chart_type": "line",
+            "data": [
+              {
+                "label": "Last Week",
+                "value": 80
+              },
+              {
+                "label": "Last Month",
+                "value": 100
+              },
+              {
+                "label": "Last Year",
+                "value": 70
+              }
+            ],
+            "title": "Garage Door Installation Performance"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Maintenance Performance",
+        "description": "Performance metrics for Garage Door Maintenance services",
+        "components": [
+          {
+            "component_type": "chart",
+            "chart_type": "pie",
+            "data": [
+              {
+                "label": "Last Week",
+                "value": 60
+              },
+              {
+                "label": "Last Month",
+                "value": 70
+              },
+              {
+                "label": "Last Year",
+                "value": 50
+              }

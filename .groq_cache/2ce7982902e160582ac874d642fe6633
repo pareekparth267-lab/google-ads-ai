@@ -1,0 +1,75 @@
+{
+  "expansion_keyword_clusters": [
+    {
+      "theme": "Garage Door Repair in Phoenix",
+      "keywords": [
+        "garage door repair phoenix az",
+        "garage door service phoenix",
+        "phoenix garage door repair near me",
+        "garage door fix phoenix az",
+        "emergency garage door repair phoenix"
+      ],
+      "estimated_monthly_volume": 2100,
+      "competition": "medium",
+      "recommended_match_type": "exact match",
+      "priority": "high"
+    },
+    {
+      "theme": "Garage Door Installation in Phoenix",
+      "keywords": [
+        "garage door installation phoenix az",
+        "new garage door installation phoenix",
+        "garage door replacement phoenix",
+        "garage door installation cost phoenix",
+        "garage door installation services phoenix"
+      ],
+      "estimated_monthly_volume": 1500,
+      "competition": "high",
+      "recommended_match_type": "phrase match",
+      "priority": "medium"
+    },
+    {
+      "theme": "Garage Door Maintenance in Phoenix",
+      "keywords": [
+        "garage door maintenance phoenix az",
+        "garage door tune up phoenix",
+        "garage door lubrication phoenix",
+        "garage door safety inspection phoenix",
+        "garage door maintenance services phoenix"
+      ],
+      "estimated_monthly_volume": 1200,
+      "competition": "low",
+      "recommended_match_type": "broad match",
+      "priority": "low"
+    }
+  ],
+  "long_tail_opportunities": [
+    "garage door repair for roll up doors phoenix",
+    "garage door installation for sectional doors phoenix",
+    "garage door maintenance for chain drive doors phoenix",
+    "emergency garage door repair for wooden doors phoenix",
+    "garage door installation for steel doors phoenix"
+  ],
+  "question_based_keywords": [
+    "what is the average cost of garage door repair in phoenix",
+    "how to maintain a garage door in phoenix",
+    "what are the common problems with garage doors in phoenix",
+    "how to choose a garage door installation company in phoenix",
+    "what is the best type of garage door for phoenix weather"
+  ],
+  "competitor_gap_keywords": [
+    "garage door repair phoenix az 85001",
+    "garage door installation phoenix az 85004",
+    "garage door maintenance phoenix az 85012"
+  ],
+  "trending_keywords": [
+    "smart garage door openers phoenix",
+    "garage door security systems phoenix",
+    "garage door insulation phoenix",
+    "garage door weatherstripping phoenix",
+    "garage door safety sensors phoenix"
+  ],
+  "negative_list_expansion": [
+    "-garage door repair phoenix az 85001",
+    "-garage door installation phoenix az 85004",
+    "-garage door maintenance phoenix az

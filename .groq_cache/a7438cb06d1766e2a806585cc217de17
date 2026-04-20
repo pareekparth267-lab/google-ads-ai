@@ -1,0 +1,36 @@
+{
+  "unique_selling_points": [
+    "24/7 Emergency Garage Door Repair",
+    "Same-Day Service Guarantee",
+    "Licensed and Insured Technicians",
+    "Free Estimates and Consultations",
+    "Lifetime Warranty on Parts and Labor"
+  ],
+  "target_customer_profile": {
+    "age_range": "35-65",
+    "income": "middle to upper-middle class",
+    "pain_points": [
+      "Broken or malfunctioning garage door",
+      "Security concerns due to faulty garage door",
+      "Noise and disruption from a faulty garage door",
+      "Difficulty finding a reliable and trustworthy garage door service",
+      "Concerns about safety and liability"
+    ]
+  },
+  "seasonal_trends": [
+    "Summer: Increased demand for garage door maintenance and repair due to extreme heat",
+    "Monsoon Season (July-September): Increased demand for garage door repair due to storm damage",
+    "Winter: Increased demand for garage door installation and replacement due to cold weather"
+  ],
+  "price_positioning": "mid",
+  "key_services": [
+    "Garage Door Repair",
+    "Garage Door Installation",
+    "Garage Door Maintenance",
+    "Spring Replacement",
+    "Opener Installation and Repair",
+    "Panel Replacement"
+  ],
+  "estimated_avg_ticket": 250,
+  "google_ads_opportunity_score": 8
+}

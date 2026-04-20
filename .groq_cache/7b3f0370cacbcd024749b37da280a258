@@ -1,0 +1,67 @@
+{
+  "crm_upload_strategy": {
+    "data_fields_to_upload": [
+      "customer_id",
+      "name",
+      "email",
+      "phone_number",
+      "service_history",
+      "installation_date",
+      "maintenance_schedule"
+    ],
+    "upload_frequency": "Daily",
+    "estimated_match_rate": "80%",
+    "hashing_requirements": [
+      {
+        "field": "customer_id",
+        "hashing_algorithm": "SHA-256",
+        "salt": "random_string"
+      }
+    ]
+  },
+  "customer_match_segments": [
+    {
+      "name": "Frequent Customers",
+      "criteria": "Customers who have made 3+ service requests within the last 12 months",
+      "estimated_size": 1000,
+      "bid_adjustment": "+20%"
+    },
+    {
+      "name": "New Customers",
+      "criteria": "Customers who have made 1 service request within the last 3 months",
+      "estimated_size": 500,
+      "bid_adjustment": "+10%"
+    },
+    {
+      "name": "High-Value Customers",
+      "criteria": "Customers who have spent $1000+ on services within the last 12 months",
+      "estimated_size": 200,
+      "bid_adjustment": "+30%"
+    }
+  ],
+  "data_enrichment_opportunities": [
+    {
+      "opportunity": "Enhance customer service history by integrating with repair order data",
+      "impact": "Improved targeting and ad relevance"
+    },
+    {
+      "opportunity": "Integrate with installation and maintenance schedules to provide personalized recommendations",
+      "impact": "Increased conversions and customer satisfaction"
+    }
+  ],
+  "privacy_compliance_checklist": [
+    {
+      "requirement": "Obtain explicit customer consent for data sharing",
+      "status": "In Progress"
+    },
+    {
+      "requirement": "Implement data minimization and retention policies",
+      "status": "Completed"
+    },
+    {
+      "requirement": "Conduct regular data audits and security assessments",
+      "status": "Scheduled"
+    }
+  ],
+  "expected_roas_lift": "15%"
+}

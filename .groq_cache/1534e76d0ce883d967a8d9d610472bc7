@@ -1,0 +1,83 @@
+{
+  "app_campaign_types": [
+    {
+      "type": "App Installs",
+      "goal": "Maximize conversions",
+      "bid_strategy": "Target CPA",
+      "target_cpa": 10.00
+    },
+    {
+      "type": "App Engagement",
+      "goal": "Maximize conversions",
+      "bid_strategy": "Target CPA",
+      "target_cpa": 5.00
+    },
+    {
+      "type": "App Pre-Registration",
+      "goal": "Maximize conversions",
+      "bid_strategy": "Target CPA",
+      "target_cpa": 8.00
+    }
+  ],
+  "asset_requirements": {
+    "text_assets": [
+      {
+        "asset_name": "Garage Door Repair",
+        "asset_text": "Get your garage door repaired today!"
+      },
+      {
+        "asset_name": "Garage Door Installation",
+        "asset_text": "Get a new garage door installed today!"
+      },
+      {
+        "asset_name": "Garage Door Maintenance",
+        "asset_text": "Schedule your garage door maintenance today!"
+      },
+      {
+        "asset_name": "Quick Response",
+        "asset_text": "We respond quickly to all garage door service requests!"
+      },
+      {
+        "asset_name": "Trustworthy Service",
+        "asset_text": "Trust us for all your garage door service needs!"
+      }
+    ],
+    "image_assets": [
+      {
+        "asset_name": "Garage Door Repair Image",
+        "asset_image": "https://example.com/garage-door-repair-image.jpg"
+      },
+      {
+        "asset_name": "Garage Door Installation Image",
+        "asset_image": "https://example.com/garage-door-installation-image.jpg"
+      },
+      {
+        "asset_name": "Garage Door Maintenance Image",
+        "asset_image": "https://example.com/garage-door-maintenance-image.jpg"
+      },
+      {
+        "asset_name": "Quick Response Image",
+        "asset_image": "https://example.com/quick-response-image.jpg"
+      },
+      {
+        "asset_name": "Trustworthy Service Image",
+        "asset_image": "https://example.com/trustworthy-service-image.jpg"
+      }
+    ],
+    "video_assets": [
+      {
+        "asset_name": "Garage Door Repair Video",
+        "asset_video": "https://example.com/garage-door-repair-video.mp4"
+      },
+      {
+        "asset_name": "Garage Door Installation Video",
+        "asset_video": "https://example.com/garage-door-installation-video.mp4"
+      },
+      {
+        "asset_name": "Garage Door Maintenance Video",
+        "asset_video": "https://example.com/garage-door-maintenance-video.mp4"
+      }
+    ],
+    "html5_assets": []
+  },
+  "audience_strategy":

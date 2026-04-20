@@ -1,0 +1,36 @@
+{
+  "business_name": "Quick Response Garage Door Service",
+  "business_type": "Garage Door Repair, Garage Door Installation, Garage Door Maintenance",
+  "location": "Phoenix, AZ",
+  "services": [
+    "Garage Door Inspection",
+    "Installation & Replacement",
+    "Garage Door Repair",
+    "Garage Spring Repair",
+    "Garage Door Maintenance",
+    "Panel Repair & Replacement",
+    "Garage Door Openers",
+    "Door Opener Installations",
+    "Opener Repair & Replacement"
+  ],
+  "unique_value_propositions": [
+    "Same-day & 24/7 emergency repairs",
+    "Full-service work",
+    "Top-quality parts & premium openers",
+    "Licensed, insured, background-checked technicians",
+    "Proven 5-step installation system",
+    "Written multi-year warranties"
+  ],
+  "target_audience": "Homeowners in Phoenix",
+  "seed_keywords": [
+    "Garage Door Services",
+    "Garage Door Repair",
+    "Garage Door Installation",
+    "Garage Door Maintenance",
+    "Garage Door Openers",
+    "Garage Door Inspectors",
+    "Phoenix Garage Door Company",
+    "Quick Response Garage Door Services"
+  ],
+  "fetch_status": "success"
+}

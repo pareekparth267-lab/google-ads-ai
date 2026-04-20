@@ -1,0 +1,69 @@
+{
+  "hook_variations": [
+    {
+      "hook_type": "question|stat|story|pain_point",
+      "script_5s": "Are you tired of dealing with a malfunctioning garage door?",
+      "predicted_skip_rate": "15%"
+    },
+    {
+      "hook_type": "question|stat|story|pain_point",
+      "script_5s": "Did you know that a malfunctioning garage door can increase your energy bills by up to 20%?",
+      "predicted_skip_rate": "18%"
+    },
+    {
+      "hook_type": "question|stat|story|pain_point",
+      "script_5s": "Imagine coming home to a garage door that won't open or close. It's frustrating and inconvenient.",
+      "predicted_skip_rate": "12%"
+    },
+    {
+      "hook_type": "question|stat|story|pain_point",
+      "script_5s": "A broken garage door can be a safety hazard, especially for families with young children.",
+      "predicted_skip_rate": "10%"
+    }
+  ],
+  "cta_variations": [
+    {
+      "cta_type": "promotional|educational|testimonial",
+      "script_10s": "Get 10% off your garage door repair or installation today!",
+      "predicted_click_rate": "5%"
+    },
+    {
+      "cta_type": "promotional|educational|testimonial",
+      "script_10s": "Don't wait any longer! Contact us now for a free quote.",
+      "predicted_click_rate": "8%"
+    },
+    {
+      "cta_type": "promotional|educational|testimonial",
+      "script_10s": "Our expert technicians are here to help. Call us now!",
+      "predicted_click_rate": "6%"
+    }
+  ],
+  "ab_test_elements": [
+    {
+      "element_type": "color|font|background",
+      "element_variation": "Red|Arial|Blue",
+      "predicted_conversion_rate": "2%"
+    },
+    {
+      "element_type": "color|font|background",
+      "element_variation": "Green|Times New Roman|Red",
+      "predicted_conversion_rate": "3%"
+    }
+  ],
+  "optimal_video_length_by_goal": {
+    "goal": "awareness",
+    "optimal_length": "30s"
+  },
+  "optimal_video_length_by_goal": {
+    "goal": "conversion",
+    "optimal_length": "60s"
+  },
+  "voiceover_guidelines": "Speak clearly and at a moderate pace. Emphasize key points with a slight pause.",
+  "thumbnail_concepts": [
+    {
+      "thumbnail_type": "image|video",
+      "thumbnail_description": "A broken garage door with a red X marked through it.",
+      "predicted_click_rate": "4%"
+    },
+    {
+      "thumbnail

@@ -1,0 +1,40 @@
+{
+  "brand_campaign": {
+    "keywords": [
+      "Quick Response Garage Door Service",
+      "Quick Response Garage Door",
+      "Quick Response Garage Doors",
+      "QR Garage Door Service",
+      "QR Garage Doors"
+    ],
+    "recommended_bid_strategy": "Target CPA",
+    "budget_percentage": 20
+  },
+  "non_brand_campaigns": {
+    "keywords": [
+      "garage door repair",
+      "garage door installation",
+      "garage door maintenance",
+      "garage door service",
+      "emergency garage door repair",
+      "garage door replacement",
+      "garage door opener repair",
+      "garage door spring repair"
+    ],
+    "recommended_bid_strategy": "Target ROAS",
+    "budget_percentage": 80
+  },
+  "competitor_keywords": [
+    "Overhead Door",
+    "Clopay",
+    "Wayne Dalton",
+    "Amarr",
+    "LiftMaster"
+  ],
+  "brand_protection_keywords": [
+    "Quick Response Garage Door Service reviews",
+    "Quick Response Garage Door Service complaints",
+    "Quick Response Garage Door Service coupons",
+    "Quick Response Garage Door Service discounts"
+  ]
+}

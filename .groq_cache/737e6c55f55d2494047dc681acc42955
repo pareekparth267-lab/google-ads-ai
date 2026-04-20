@@ -1,0 +1,21 @@
+{
+  "monthly_projections": [
+    {"month":"Month 1","phase":"Learning","est_leads":30,"est_revenue":4500,"spend":1500,"roas":3.0},
+    {"month":"Month 2","phase":"Optimization","est_leads":45,"est_revenue":6750,"spend":1500,"roas":4.5},
+    {"month":"Month 3","phase":"Scaling","est_leads":60,"est_revenue":9000,"spend":1500,"roas":6.0}
+  ],
+  "break_even_analysis": {"days_to_break_even":60,"cumulative_cost":3000,"cumulative_revenue":3000},
+  "attribution_model": "Data-Driven",
+  "projected_roas": 4.5,
+  "90_day_revenue_forecast": 20250,
+  "risk_factors": [
+    "seasonal fluctuations in demand",
+    "competition from established players",
+    "advertising platform algorithm changes"
+  ],
+  "upside_scenarios": [
+    "increased demand due to extreme weather conditions",
+    "expansion into adjacent services (e.g. gate repair)",
+    "strategic partnerships with local hardware stores"
+  ]
+}

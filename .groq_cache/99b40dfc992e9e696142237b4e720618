@@ -1,0 +1,25 @@
+{
+  "master_strategy_summary": "Quick Response Garage Door Service campaign aims to increase leads in Phoenix, AZ through targeted Search, Performance Max, and Display ads.",
+  "top_priority_actions": [
+    {"priority":1,"action":"Optimize Search ads for high-converting keywords (e.g., 'garage door repair Phoenix AZ', 'garage door installation Phoenix')","expected_impact":"25% increase in leads","timeline":"Day 1-7","owner":"automation"},
+    {"priority":2,"action":"Launch Performance Max campaign targeting Phoenix, AZ audience with relevant ad creative and messaging","expected_impact":"30% increase in conversions","timeline":"Day 8-14","owner":"automation"},
+    {"priority":3,"action":"Create and distribute engaging Display ad assets (e.g., images, videos) showcasing Quick Response Garage Door Service's expertise and services","expected_impact":"15% increase in brand awareness","timeline":"Day 15-21","owner":"human"},
+    {"priority":4,"action":"Set up and track key performance indicators (KPIs) for campaign success, including lead generation and cost per acquisition (CPA)","expected_impact":"Improved campaign optimization and ROI","timeline":"Day 1-30","owner":"automation"},
+    {"priority":5,"action":"Develop and implement a retargeting strategy to engage with users who have interacted with Quick Response Garage Door Service's website or ads","expected_impact":"10% increase in conversions","timeline":"Day 30-60","owner":"automation"}
+  ],
+  "agent_activation_sequence": [
+    {"agent":"Search Ads Optimizer","status":"active","priority":1},
+    {"agent":"Performance Max Campaign Manager","status":"active","priority":2},
+    {"agent":"Display Ads Creator","status":"active","priority":3},
+    {"agent":"Campaign Tracker","status":"active","priority":4},
+    {"agent":"Retargeting Manager","status":"inactive","priority":5}
+  ],
+  "30_day_game_plan": [
+    {"milestone":"Day 1-7: Optimize Search ads for high-converting keywords","target":"25% increase in leads","metric":"leads"},
+    {"milestone":"Day 8-14: Launch Performance Max campaign","target":"30% increase in conversions","metric":"conversions"},
+    {"milestone":"Day 15-21: Create and distribute engaging Display ad assets","target":"15% increase in brand awareness","metric":"brand awareness"},
+    {"milestone":"Day 22-30: Monitor and adjust campaign performance based on KPIs","target":"Improved campaign optimization and ROI","metric":"ROI"}
+  ],
+  "60_day_game_plan": [
+    {"milestone":"Day 30-45: Develop and implement a retargeting strategy","target":"10% increase in conversions","metric":"conversions"},
+    {"milestone":"Day 46-60:

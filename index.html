@@ -671,6 +671,18 @@ input::placeholder,textarea::placeholder{color:var(--muted);}
     <div class="nav-item" onclick="nav('oauth',this)">
       <span class="ni">🔐</span> Google Auth
     </div>
+
+    <div class="nav-section">Groas.ai Features</div>
+    <div class="nav-item" onclick="nav('scheduler',this)">
+      <span class="ni">⏰</span> Auto-Scheduler
+      <span class="nav-badge" id="schedulerBadge" style="display:none;background:var(--accent3)">ON</span>
+    </div>
+    <div class="nav-item" onclick="nav('auto-apply',this)">
+      <span class="ni">⚡</span> Auto-Apply
+    </div>
+    <div class="nav-item" onclick="nav('real-data',this)">
+      <span class="ni">📡</span> Real Data Run
+    </div>
   </nav>
 
   <div class="sidebar-footer">
@@ -1627,6 +1639,198 @@ DASHBOARD_API_KEY=<span style="color:var(--muted)">optional security key</span>
       </div>
     </div>
 
+
+
+
+    <!-- ══ PAGE: AUTO-SCHEDULER ══ -->
+    <div class="page" id="page-scheduler">
+      <div class="flex-b mb20">
+        <div>
+          <div class="card-title" style="font-size:20px;">⏰ Auto-Scheduler</div>
+          <div class="card-sub">Runs all 91 agents automatically every day — like Groas.ai</div>
+        </div>
+        <div class="flex gap8">
+          <button class="btn btn-green btn-sm" onclick="startScheduler()">▶ Start Scheduler</button>
+          <button class="btn btn-ghost btn-sm" onclick="stopScheduler()">⏹ Stop</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadSchedulerStatus()">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <div class="grid2 mb16">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Scheduler Config</div></div>
+          <div class="form-group mb8">
+            <label>Customer IDs (comma-separated)</label>
+            <input type="text" id="sched_cids" placeholder="123-456-7890">
+          </div>
+          <div class="form-group mb8">
+            <label>Business Name</label>
+            <input type="text" id="sched_biz_name" placeholder="e.g. Kennedy Electric">
+          </div>
+          <div class="form-group mb8">
+            <label>Business Type</label>
+            <input type="text" id="sched_biz_type" placeholder="e.g. Electrical Contractor">
+          </div>
+          <div class="form-group mb8">
+            <label>Website URL</label>
+            <input type="text" id="sched_website" placeholder="https://yourbusiness.com">
+          </div>
+          <div class="form-group mb8">
+            <label>Monthly Budget (USD)</label>
+            <input type="number" id="sched_budget" value="3000" min="100">
+          </div>
+          <div class="fg fg2 mb8">
+            <div class="form-group">
+              <label>Run Every (hours)</label>
+              <select id="sched_interval">
+                <option value="6">Every 6 hours</option>
+                <option value="12">Every 12 hours</option>
+                <option value="24" selected>Every 24 hours (daily)</option>
+                <option value="48">Every 48 hours</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Auto-Apply Changes</label>
+              <select id="sched_auto_apply">
+                <option value="true">Yes — push to Google Ads</option>
+                <option value="false" selected>No — generate only</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Scheduler Status</div></div>
+          <div id="schedulerStatus">
+            <div class="empty"><div class="empty-icon">⏰</div><div class="empty-text">Scheduler not running</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Scheduler Log</div>
+          <button class="btn btn-ghost btn-sm" onclick="loadSchedulerLog()">📋 Load Log</button>
+        </div>
+        <div id="schedulerLog">
+          <div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No log entries yet</div></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ══ PAGE: AUTO-APPLY ══ -->
+    <div class="page" id="page-auto-apply">
+      <div class="flex-b mb20">
+        <div>
+          <div class="card-title" style="font-size:20px;">⚡ Auto-Apply to Google Ads</div>
+          <div class="card-sub">Reads agent recommendations and pushes changes directly to your live account</div>
+        </div>
+      </div>
+
+      <div class="grid2 mb16">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Apply Settings</div></div>
+          <div class="form-group mb8">
+            <label>Customer ID</label>
+            <input type="text" id="apply_cid" placeholder="123-456-7890">
+          </div>
+          <div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:14px;margin-bottom:14px;font-size:12px;line-height:1.7;color:var(--muted);">
+            <div style="color:var(--accent);font-weight:700;margin-bottom:6px;">What Auto-Apply does:</div>
+            ✅ Adds negative keywords from Agent A06<br>
+            ✅ Adds new keywords from Agent A04 <span style="color:var(--accent4)">(as PAUSED — safe)</span><br>
+            ✅ Pauses keywords with 0 conversions + high cost<br>
+            ✅ Sets target CPA from Agent A19 recommendations
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="runAutoApply()">
+            ⚡ Apply Recommendations Now
+          </button>
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);text-align:center;">
+            Uses latest saved campaign results. Run agents first if needed.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Apply Results</div></div>
+          <div id="applyResults">
+            <div class="empty"><div class="empty-icon">⚡</div><div class="empty-text">Run auto-apply to see results</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Apply History</div>
+          <button class="btn btn-ghost btn-sm" onclick="loadApplyLog()">📋 Load History</button>
+        </div>
+        <div id="applyLog">
+          <div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No apply history yet</div></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ══ PAGE: REAL DATA RUN ══ -->
+    <div class="page" id="page-real-data">
+      <div class="flex-b mb20">
+        <div>
+          <div class="card-title" style="font-size:20px;">📡 Real Data Run</div>
+          <div class="card-sub">Pulls live search terms + auction insights from your account, then runs 91 agents using real data</div>
+        </div>
+      </div>
+
+      <div class="grid2 mb16">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Run Config</div></div>
+          <div class="form-group mb8">
+            <label>Customer ID</label>
+            <input type="text" id="rd_cid" placeholder="123-456-7890">
+          </div>
+          <div class="form-group mb8">
+            <label>Business Name</label>
+            <input type="text" id="rd_biz_name" placeholder="e.g. Kennedy Electric">
+          </div>
+          <div class="form-group mb8">
+            <label>Business Type</label>
+            <input type="text" id="rd_biz_type" placeholder="e.g. Electrical Contractor">
+          </div>
+          <div class="form-group mb8">
+            <label>Monthly Budget (USD)</label>
+            <input type="number" id="rd_budget" value="3000">
+          </div>
+          <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:14px;margin-bottom:14px;font-size:12px;line-height:1.7;color:var(--muted);">
+            <div style="color:var(--accent3);font-weight:700;margin-bottom:6px;">What Real Data Run does differently:</div>
+            📊 Pulls your actual top 50 search terms<br>
+            🏆 Pulls auction insights (competitor data)<br>
+            💰 Gets your real current CPA<br>
+            🤖 Injects all this into agent prompts<br>
+            📈 Agents make recommendations based on <strong style="color:var(--accent3);">your real numbers</strong>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="runRealDataRun()" id="rdBtn">
+            📡 Launch Real Data Run
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Live Metrics Preview</div></div>
+          <div class="form-group mb8">
+            <label>Customer ID</label>
+            <input type="text" id="rd_preview_cid" placeholder="123-456-7890">
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="loadLiveMetrics()" style="margin-bottom:12px">
+            📊 Load Live Metrics
+          </button>
+          <div id="liveMetricsPreview">
+            <div class="empty"><div class="empty-icon">📊</div><div class="empty-text">Load metrics to preview real data</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="rdResultsCard" style="display:none">
+        <div class="card-header"><div class="card-title">Real Data Run Results</div></div>
+        <div id="rdResults"></div>
+      </div>
+    </div>
 
   </div><!-- /content -->
 </main>
@@ -3882,6 +4086,291 @@ function closeGTMModal() {
   const m = document.getElementById('gtmModal');
   if (m) m.style.display = 'none';
 }
+
+
+// ═══════════════════════════════════════════════════════════════
+// GROAS.AI FEATURES — Scheduler, Auto-Apply, Real Data
+// ═══════════════════════════════════════════════════════════════
+
+// ── AUTO-SCHEDULER ──────────────────────────────────────────────
+
+async function startScheduler() {
+  const cids = document.getElementById('sched_cids').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if (!cids.length) { clog('Enter at least one Customer ID','error'); return; }
+  const bizName = document.getElementById('sched_biz_name').value.trim();
+  const bizType = document.getElementById('sched_biz_type').value.trim();
+  if (!bizName || !bizType) { clog('Enter Business Name and Type','error'); return; }
+
+  const body = {
+    customer_ids:    cids,
+    business_name:   bizName,
+    business_type:   bizType,
+    website_url:     document.getElementById('sched_website').value.trim(),
+    monthly_budget:  parseFloat(document.getElementById('sched_budget').value) || 3000,
+    interval_hours:  parseInt(document.getElementById('sched_interval').value) || 24,
+    auto_apply:      document.getElementById('sched_auto_apply').value === 'true',
+  };
+
+  try {
+    const d = await apiPost('/scheduler/start', body);
+    document.getElementById('schedulerStatus').innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="dot-green"></span>
+          <strong style="color:var(--accent3)">Scheduler Running</strong>
+        </div>
+        <div style="font-size:12px;color:var(--muted)">Running every ${d.interval_hours}h</div>
+        <div style="font-size:12px;color:var(--muted)">Auto-apply: ${d.auto_apply ? '✅ Yes' : '❌ No'}</div>
+        <div style="font-size:12px;color:var(--muted)">Next run: ${d.next_run ? new Date(d.next_run).toLocaleString() : 'Soon'}</div>
+        <div style="font-size:11px;color:var(--accent4);margin-top:4px">First run happening now in background...</div>
+      </div>`;
+    document.getElementById('schedulerBadge').style.display = 'inline';
+    clog('Scheduler started! First run in progress.','success');
+  } catch(e) {
+    clog('Error: ' + e.message,'error');
+  }
+}
+
+async function stopScheduler() {
+  try {
+    await apiPost('/scheduler/stop', {});
+    document.getElementById('schedulerStatus').innerHTML = `
+      <div class="empty"><div class="empty-icon">⏰</div><div class="empty-text">Scheduler stopped</div></div>`;
+    document.getElementById('schedulerBadge').style.display = 'none';
+    clog('Scheduler stopped','info');
+  } catch(e) {
+    clog('Error: ' + e.message,'error');
+  }
+}
+
+async function loadSchedulerStatus() {
+  try {
+    const d = await apiGet('/scheduler/status');
+    if (d.active) {
+      document.getElementById('schedulerStatus').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="dot-green"></span>
+            <strong style="color:var(--accent3)">Running</strong>
+          </div>
+          <div style="font-size:12px;color:var(--muted)">Every ${d.interval_hours}h | Auto-apply: ${d.auto_apply?'Yes':'No'}</div>
+          <div style="font-size:12px;color:var(--muted)">Next: ${d.next_run ? new Date(d.next_run).toLocaleString() : '—'}</div>
+        </div>`;
+    } else {
+      document.getElementById('schedulerStatus').innerHTML = `
+        <div class="empty"><div class="empty-icon">⏰</div><div class="empty-text">Scheduler not running</div></div>`;
+    }
+  } catch(e) {}
+}
+
+async function loadSchedulerLog() {
+  try {
+    const entries = await apiGet('/scheduler/log');
+    if (!entries.length) {
+      document.getElementById('schedulerLog').innerHTML = `<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No log entries yet</div></div>`;
+      return;
+    }
+    const colors = {done:'var(--accent3)', running:'var(--accent)', error:'var(--danger)', applied:'var(--accent3)'};
+    document.getElementById('schedulerLog').innerHTML = entries.slice().reverse().map(e => `
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;">
+        <span style="color:var(--muted);white-space:nowrap;font-family:var(--mono);font-size:10px">${e.ts}</span>
+        <span style="color:${colors[e.status]||'var(--muted)'}">●</span>
+        <span>${e.message}</span>
+      </div>`).join('');
+  } catch(e) {
+    clog('Error loading log: ' + e.message,'error');
+  }
+}
+
+
+// ── AUTO-APPLY ───────────────────────────────────────────────────
+
+async function runAutoApply() {
+  const cid = document.getElementById('apply_cid').value.trim();
+  if (!cid) { clog('Enter Customer ID','error'); return; }
+
+  document.getElementById('applyResults').innerHTML = `
+    <div class="empty"><div class="empty-icon">⚡</div><div class="empty-text">Applying recommendations...</div></div>`;
+
+  try {
+    const d = await apiPost('/auto-apply/' + cid.replace(/-/g,''), {});
+
+    if (d.success) {
+      const appliedHtml = (d.applied||[]).map(a =>
+        `<div style="padding:6px 0;font-size:12px;border-bottom:1px solid var(--border)">${a}</div>`
+      ).join('');
+      const errorsHtml = (d.errors||[]).length ? `
+        <div style="margin-top:10px;font-size:11px;color:var(--danger)">
+          ${d.errors.map(e=>`<div>⚠️ ${e}</div>`).join('')}
+        </div>` : '';
+
+      document.getElementById('applyResults').innerHTML = `
+        <div style="color:var(--accent3);font-weight:700;margin-bottom:10px">
+          ✅ ${d.summary}
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Campaign: ${d.campaign||cid}</div>
+        ${appliedHtml}${errorsHtml}`;
+      clog(d.summary,'success');
+    } else {
+      document.getElementById('applyResults').innerHTML = `
+        <div style="color:var(--danger)">❌ ${d.error}</div>`;
+      clog(d.error,'error');
+    }
+  } catch(e) {
+    document.getElementById('applyResults').innerHTML = `<div style="color:var(--danger)">❌ ${e.message}</div>`;
+    clog('Error: ' + e.message,'error');
+  }
+}
+
+async function loadApplyLog() {
+  try {
+    const entries = await apiGet('/auto-apply/log');
+    if (!entries.length) {
+      document.getElementById('applyLog').innerHTML = `<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No history yet</div></div>`;
+      return;
+    }
+    document.getElementById('applyLog').innerHTML = entries.slice().reverse().map(e => `
+      <div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:12px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <strong style="color:${e.success?'var(--accent3)':'var(--danger)'}">${e.success?'✅ Applied':'❌ Failed'}</strong>
+          <span style="color:var(--muted);font-size:10px">${e.timestamp ? new Date(e.timestamp).toLocaleString() : ''}</span>
+        </div>
+        <div style="color:var(--muted)">${e.summary||e.error||''}</div>
+        ${(e.applied||[]).slice(0,3).map(a=>`<div style="font-size:11px;color:var(--accent3)">${a}</div>`).join('')}
+      </div>`).join('');
+  } catch(e) {}
+}
+
+
+// ── REAL DATA RUN ────────────────────────────────────────────────
+
+async function runRealDataRun() {
+  const cid     = document.getElementById('rd_cid').value.trim();
+  const bizName = document.getElementById('rd_biz_name').value.trim();
+  const bizType = document.getElementById('rd_biz_type').value.trim();
+
+  if (!cid || !bizName || !bizType) {
+    clog('Enter Customer ID, Business Name and Type','error'); return;
+  }
+
+  const btn = document.getElementById('rdBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Running with real data...';
+
+  document.getElementById('rdResultsCard').style.display = 'none';
+
+  try {
+    const body = {
+      business_name:   bizName,
+      business_type:   bizType,
+      website_url:     '',
+      monthly_budget:  parseFloat(document.getElementById('rd_budget').value) || 3000,
+      target_location: 'United States',
+      campaign_types:  ['search','pmax'],
+    };
+
+    const d = await apiPost('/real-data-run/' + cid.replace(/-/g,''), body);
+
+    document.getElementById('rdResultsCard').style.display = 'block';
+
+    const realData = d.real_data_injected || {};
+    const terms    = realData.top_search_terms || [];
+    const perf     = realData.live_performance || {};
+
+    document.getElementById('rdResults').innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:800;color:var(--accent)">$${perf.total_cost||0}</div>
+          <div style="font-size:11px;color:var(--muted)">Spend Today</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:800;color:var(--accent3)">${perf.total_conv||0}</div>
+          <div style="font-size:11px;color:var(--muted)">Conversions</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:800;color:var(--accent4)">${perf.total_clicks||0}</div>
+          <div style="font-size:11px;color:var(--muted)">Clicks Today</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:22px;font-weight:800;color:var(--accent2)">${terms.length}</div>
+          <div style="font-size:11px;color:var(--muted)">Real Search Terms</div>
+        </div>
+      </div>
+
+      ${terms.length ? `
+      <div style="margin-bottom:16px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">Top Search Terms Injected Into Agents</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${terms.slice(0,15).map(t=>`
+            <span style="font-size:11px;padding:3px 10px;border-radius:99px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:var(--accent)">
+              ${t.term} <span style="color:var(--muted)">(${t.impressions} imp)</span>
+            </span>`).join('')}
+        </div>
+      </div>` : ''}
+
+      <div style="font-size:12px;color:var(--accent3);font-weight:600">
+        ✅ ${Object.keys(d).length} agent outputs generated using your real account data
+      </div>`;
+
+    clog('Real data run complete!','success');
+
+    // Store results for auto-apply
+    lastResults = d;
+
+  } catch(e) {
+    document.getElementById('rdResultsCard').style.display = 'block';
+    document.getElementById('rdResults').innerHTML = `<div style="color:var(--danger)">❌ ${e.message}</div>`;
+    clog('Error: ' + e.message,'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📡 Launch Real Data Run';
+  }
+}
+
+async function loadLiveMetrics() {
+  const cid = document.getElementById('rd_preview_cid').value.trim();
+  if (!cid) { clog('Enter Customer ID','error'); return; }
+
+  document.getElementById('liveMetricsPreview').innerHTML = `
+    <div class="empty"><div class="empty-icon">⏳</div><div class="empty-text">Loading...</div></div>`;
+
+  try {
+    const d = await apiGet('/live-monitor/metrics/' + cid.replace(/-/g,''));
+    if (d.error) {
+      document.getElementById('liveMetricsPreview').innerHTML = `<div style="color:var(--danger);font-size:12px">❌ ${d.error}</div>`;
+      return;
+    }
+    document.getElementById('liveMetricsPreview').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:800;color:var(--danger)">$${d.total_cost}</div>
+          <div style="font-size:10px;color:var(--muted)">Spent Today</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:800;color:var(--accent3)">${d.total_conv}</div>
+          <div style="font-size:10px;color:var(--muted)">Conversions</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:800;color:var(--accent4)">${d.total_clicks}</div>
+          <div style="font-size:10px;color:var(--muted)">Clicks</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:800;color:var(--accent2)">$${d.overall_cpa}</div>
+          <div style="font-size:10px;color:var(--muted)">CPA</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--muted)">Last updated: ${new Date(d.timestamp).toLocaleTimeString()}</div>`;
+  } catch(e) {
+    document.getElementById('liveMetricsPreview').innerHTML = `<div style="color:var(--danger);font-size:12px">❌ ${e.message}</div>`;
+  }
+}
+
+// Auto-load scheduler status when page opens
+document.addEventListener('DOMContentLoaded', () => {
+  loadSchedulerStatus();
+});
+
+
 </script>
 </body>
 </html>

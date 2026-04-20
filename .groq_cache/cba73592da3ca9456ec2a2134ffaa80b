@@ -1,0 +1,93 @@
+{
+  "remarketing_lists": [
+    {
+      "name": "All Users",
+      "trigger": "Visited website",
+      "membership_days": 540,
+      "message": "General awareness and promotions",
+      "bid_adjustment": "20%"
+    },
+    {
+      "name": "Service Pages",
+      "trigger": "Visited service pages (e.g. repair, installation, maintenance)",
+      "membership_days": 180,
+      "message": "Targeted promotions for specific services",
+      "bid_adjustment": "30%"
+    },
+    {
+      "name": "Quote Requests",
+      "trigger": "Submitted quote request form",
+      "membership_days": 90,
+      "message": "Follow-up and conversion-focused messaging",
+      "bid_adjustment": "40%"
+    },
+    {
+      "name": "Customers",
+      "trigger": "Completed purchase or service",
+      "membership_days": 730,
+      "message": "Loyalty and retention-focused messaging",
+      "bid_adjustment": "10%"
+    }
+  ],
+  "remarketing_sequence": [
+    {
+      "list": "All Users",
+      "wait": 3,
+      "ads": ["General awareness ad 1", "General awareness ad 2"]
+    },
+    {
+      "list": "Service Pages",
+      "wait": 7,
+      "ads": ["Targeted service ad 1", "Targeted service ad 2"]
+    },
+    {
+      "list": "Quote Requests",
+      "wait": 14,
+      "ads": ["Follow-up ad 1", "Follow-up ad 2"]
+    },
+    {
+      "list": "Customers",
+      "wait": 30,
+      "ads": ["Loyalty ad 1", "Loyalty ad 2"]
+    }
+  ],
+  "rlsa_strategy": {
+    "target_cpa": 50,
+    "target_roas": 300,
+    "bid_adjustment": "20%",
+    "ad_scheduling": {
+      "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "hours": ["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm"]
+    }
+  },
+  "customer_match_strategy": {
+    "match_type": "email",
+    "match_rate": 80,
+    "targeting": {
+      "location": "United States",
+      "language": "English"
+    }
+  },
+  "cross_sell_opportunities": [
+    {
+      "service": "Garage door maintenance",
+      "target_list": "Customers",
+      "ads": ["Maintenance ad 1", "Maintenance ad 2"]
+    },
+    {
+      "service": "Garage door accessories",
+      "target_list": "Customers",
+      "ads": ["Accessories ad 1", "Accessories ad 2"]
+    }
+  ],
+  "win_back_campaigns": [
+    {
+      "target_list": "Customers",
+      "wait": 120,
+      "ads": ["Win-back ad 1", "Win-back ad 2"],
+      "offer": "10% discount on next service"
+    },
+    {
+      "target_list": "Quote Requests",
+      "wait": 60,
+      "

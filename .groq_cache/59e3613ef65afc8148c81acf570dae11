@@ -1,0 +1,61 @@
+{
+  "responsive_display_ads": [
+    {
+      "headlines": [
+        "Fast Repair",
+        "New Doors",
+        "24/7 Service",
+        "Expert Techs",
+        "Low Prices"
+      ],
+      "long_headline": "Quick Response Garage Door Service - Fast and Reliable",
+      "descriptions": [
+        "Get quick help",
+        "New doors installed",
+        "24/7 emergency",
+        "Expert technicians",
+        "Affordable prices"
+      ],
+      "business_name": "Quick Response Garage Door Service",
+      "call_to_action": "Call Now",
+      "image_concepts": [
+        {
+          "size": "1200x628",
+          "description": "A photo of a garage door with a technician in the foreground, with a subtle background of a house",
+          "color_scheme": "Blue and white, to convey trust and reliability",
+          "key_element": "A prominent display of the company's logo"
+        }
+      ]
+    }
+  ],
+  "targeting_options": {
+    "topics": [
+      "Home improvement",
+      "Home repair",
+      "Garage doors",
+      "Home maintenance",
+      "Emergency services"
+    ],
+    "placements": [
+      "homedepot.com",
+      "lowes.com",
+      "angieslist.com",
+      "yelp.com",
+      "homeadvisor.com"
+    ],
+    "custom_intent_audiences": [
+      "People searching for garage door repair",
+      "People searching for garage door installation",
+      "People searching for emergency garage door services"
+    ],
+    "remarketing_lists": [
+      "Users who visited the website",
+      "Users who contacted the business",
+      "Users who abandoned their shopping cart"
+    ]
+  },
+  "brand_guidelines": {
+    "primary_color": "#007bff",
+    "tone": "Friendly, helpful, and reliable"
+  }
+}

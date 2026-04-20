@@ -1,0 +1,54 @@
+{
+  "kpi_thresholds": {
+    "ctr_drop_alert_pct": 20,
+    "cpc_spike_alert_pct": 30,
+    "conversion_rate_drop_pct": 15,
+    "impression_share_loss_pct": 10
+  },
+  "detection_rules": [
+    {
+      "rule": "low_ctr",
+      "condition": "CTR < 2% for 3 consecutive days",
+      "action": "pause ad group and investigate ad copy",
+      "severity": "warning"
+    },
+    {
+      "rule": "high_cpc",
+      "condition": "CPC > $10 for 2 consecutive days",
+      "action": "adjust bids and targeting",
+      "severity": "critical"
+    },
+    {
+      "rule": "low_conversion_rate",
+      "condition": "conversion rate < 5% for 1 week",
+      "action": "review landing page and ad copy",
+      "severity": "info"
+    },
+    {
+      "rule": "impression_share_loss",
+      "condition": "impression share loss > 20% for 2 consecutive weeks",
+      "action": "increase bids and improve ad relevance",
+      "severity": "warning"
+    }
+  ],
+  "automated_responses": [
+    {
+      "trigger": "low_ctr",
+      "response": "Ad group paused due to low CTR. Investigating ad copy and targeting."
+    },
+    {
+      "trigger": "high_cpc",
+      "response": "CPC spike detected. Adjusting bids and targeting to optimize ad spend."
+    }
+  ],
+  "weekly_audit_checklist": [
+    "review ad group performance",
+    "check for disapproved ads",
+    "verify targeting settings",
+    "analyze conversion tracking data"
+  ],
+  "alert_channels": [
+    "email",
+    "slack"
+  ]
+}

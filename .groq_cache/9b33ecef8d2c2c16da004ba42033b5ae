@@ -1,0 +1,80 @@
+{
+  "hourly_agents": [
+    {
+      "agent": "GarageDoorRepairAgent",
+      "task": "CheckGarageDoorRepairRequests",
+      "trigger": "EveryHour"
+    },
+    {
+      "agent": "GarageDoorInstallationAgent",
+      "task": "CheckGarageDoorInstallationRequests",
+      "trigger": "EveryHour"
+    },
+    {
+      "agent": "GarageDoorMaintenanceAgent",
+      "task": "CheckGarageDoorMaintenanceRequests",
+      "trigger": "EveryHour"
+    }
+  ],
+  "daily_agents": [
+    {
+      "agent": "GarageDoorRepairScheduleAgent",
+      "task": "GenerateGarageDoorRepairSchedule",
+      "run_time": "06:00",
+      "dependencies": ["GarageDoorRepairAgent"]
+    },
+    {
+      "agent": "GarageDoorInstallationScheduleAgent",
+      "task": "GenerateGarageDoorInstallationSchedule",
+      "run_time": "06:00",
+      "dependencies": ["GarageDoorInstallationAgent"]
+    },
+    {
+      "agent": "GarageDoorMaintenanceScheduleAgent",
+      "task": "GenerateGarageDoorMaintenanceSchedule",
+      "run_time": "06:00",
+      "dependencies": ["GarageDoorMaintenanceAgent"]
+    },
+    {
+      "agent": "GarageDoorReminderAgent",
+      "task": "SendGarageDoorReminder",
+      "run_time": "18:00",
+      "dependencies": []
+    }
+  ],
+  "weekly_agents": [
+    {
+      "agent": "GarageDoorMaintenanceReminderAgent",
+      "task": "SendGarageDoorMaintenanceReminder",
+      "run_day": "Sunday",
+      "estimated_duration_min": 5
+    }
+  ],
+  "monthly_agents": [
+    {
+      "agent": "GarageDoorMaintenanceReviewAgent",
+      "task": "ReviewGarageDoorMaintenanceHistory",
+      "run_day": "1st day of the month",
+      "estimated_duration_min": 10
+    }
+  ],
+  "dependency_graph": {
+    "GarageDoorRepairScheduleAgent": ["GarageDoorRepairAgent"],
+    "GarageDoorInstallationScheduleAgent": ["GarageDoorInstallationAgent"],
+    "GarageDoorMaintenanceScheduleAgent": ["GarageDoorMaintenanceAgent"],
+    "GarageDoorReminderAgent": [],
+    "GarageDoorMaintenanceReminderAgent": [],
+    "GarageDoorMaintenanceReviewAgent": []
+  },
+  "parallel_execution_groups": [
+    {
+      "group_name": "GarageDoorRepairGroup",
+      "agents": ["GarageDoorRepairAgent", "GarageDoorRepairScheduleAgent"]
+    },
+    {
+      "group_name": "GarageDoorInstallationGroup",
+      "agents": ["GarageDoorInstallationAgent", "GarageDoorInstallationScheduleAgent"]
+    },
+    {
+      "group_name": "GarageDoorMaintenanceGroup",
+      "

@@ -1,0 +1,61 @@
+{
+  "auction_insights_simulation": {
+    "impression_share_benchmark": "25%",
+    "overlap_rate_estimate": "40%",
+    "outranking_share_target": "30%"
+  },
+  "competitor_ad_patterns": [
+    {
+      "competitor": "Precision Garage Door",
+      "ad_pattern": "Emphasis on same-day service and lifetime warranties",
+      "ad_frequency": "High",
+      "targeting": "Phoenix, AZ and surrounding areas"
+    },
+    {
+      "competitor": "Garage Door Medics",
+      "ad_pattern": "Focus on emergency repair services and 24/7 availability",
+      "ad_frequency": "Medium",
+      "targeting": "Phoenix, AZ and nearby cities"
+    },
+    {
+      "competitor": "Arizona Garage Door",
+      "ad_pattern": "Highlighting energy-efficient and custom garage door solutions",
+      "ad_frequency": "Low",
+      "targeting": "Affluent neighborhoods in Phoenix, AZ"
+    }
+  ],
+  "gap_opportunities": [
+    {
+      "opportunity": "Lack of emphasis on eco-friendly garage door options",
+      "target_audience": "Environmentally conscious homeowners in Phoenix, AZ",
+      "recommended_ad_copy": "Eco-friendly garage doors for a sustainable future"
+    },
+    {
+      "opportunity": "Insufficient focus on smart garage door technology",
+      "target_audience": "Tech-savvy homeowners in Phoenix, AZ",
+      "recommended_ad_copy": "Upgrade to smart garage doors for enhanced security and convenience"
+    },
+    {
+      "opportunity": "Limited online presence for garage door maintenance services",
+      "target_audience": "Homeowners in Phoenix, AZ seeking regular maintenance",
+      "recommended_ad_copy": "Preventative garage door maintenance for a worry-free experience"
+    }
+  ],
+  "recommended_counter_strategies": [
+    {
+      "strategy": "Targeted ad campaigns for specific neighborhoods in Phoenix, AZ",
+      "recommended_keywords": ["garage door repair Phoenix", "garage door installation AZ"],
+      "recommended_ad_scheduling": "Peak hours: 8am-12pm and 4pm-8pm"
+    },
+    {
+      "strategy": "Emphasize unique selling points, such as free estimates and lifetime warranties",
+      "recommended_ad_copy": "Get a free estimate and lifetime warranty on your garage door installation",
+      "recommended_landing_page": "Dedicated page for garage door installation services"
+    },
+    {
+      "strategy": "Utilize customer testimonials and reviews to build credibility",
+      "recommended_ad_copy": "Trust the experts: 4.9/5 stars on Google Reviews",
+      "recommended_extension": "Google Reviews extension for ads"
+    }
+  ]
+}

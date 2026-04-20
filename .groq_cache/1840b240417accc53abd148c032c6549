@@ -1,0 +1,74 @@
+{
+  "seasonality_adjustment_calendar": [
+    {
+      "event": "New Year's Day",
+      "date_range": "2024-01-01",
+      "adjustment_pct": 10,
+      "apply_to": ["Garage Door Repair"],
+      "advance_setup_days": 7
+    },
+    {
+      "event": "Martin Luther King Jr. Day",
+      "date_range": "2024-01-15",
+      "adjustment_pct": -5,
+      "apply_to": ["Garage Door Installation"],
+      "advance_setup_days": 14
+    },
+    {
+      "event": "Presidents' Day",
+      "date_range": "2024-02-19",
+      "adjustment_pct": 5,
+      "apply_to": ["Garage Door Maintenance"],
+      "advance_setup_days": 21
+    },
+    {
+      "event": "St. Patrick's Day",
+      "date_range": "2024-03-17",
+      "adjustment_pct": 15,
+      "apply_to": ["Garage Door Repair", "Garage Door Installation"],
+      "advance_setup_days": 28
+    },
+    {
+      "event": "Memorial Day",
+      "date_range": "2024-05-27",
+      "adjustment_pct": -10,
+      "apply_to": ["Garage Door Maintenance"],
+      "advance_setup_days": 35
+    },
+    {
+      "event": "Independence Day",
+      "date_range": "2024-07-04",
+      "adjustment_pct": 20,
+      "apply_to": ["Garage Door Repair", "Garage Door Installation"],
+      "advance_setup_days": 42
+    },
+    {
+      "event": "Labor Day",
+      "date_range": "2024-09-02",
+      "adjustment_pct": -5,
+      "apply_to": ["Garage Door Maintenance"],
+      "advance_setup_days": 49
+    },
+    {
+      "event": "Halloween",
+      "date_range": "2024-10-31",
+      "adjustment_pct": 10,
+      "apply_to": ["Garage Door Repair", "Garage Door Installation"],
+      "advance_setup_days": 56
+    },
+    {
+      "event": "Thanksgiving Day",
+      "date_range": "2024-11-28",
+      "adjustment_pct": -15,
+      "apply_to": ["Garage Door Maintenance"],
+      "advance_setup_days": 63
+    },
+    {
+      "event": "Christmas Day",
+      "date_range": "2024-12-25",
+      "adjustment_pct": 25,
+      "apply_to": ["Garage Door Repair", "Garage Door Installation"],
+      "advance_setup_days": 70
+    }
+  ],
+  "google_seasonality_tool_usage": {

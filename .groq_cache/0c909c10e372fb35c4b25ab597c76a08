@@ -1,0 +1,96 @@
+{
+  "account_structure": {
+    "campaigns": [
+      {
+        "name": "QRGDS - Search - Repair",
+        "type": "Search",
+        "goal": "Conversions",
+        "budget_percentage": 30,
+        "ad_groups": [
+          {
+            "name": "Garage Door Repair",
+            "keywords": ["garage door repair", "garage door fix", "broken garage door"],
+            "ads": [
+              {
+                "headline": "Emergency Garage Door Repair",
+                "description": "Get 24/7 garage door repair services from Quick Response Garage Door Service.",
+                "final_url": "https://quickresponsegaragedoor.com/repair"
+              }
+            ]
+          },
+          {
+            "name": "Garage Door Opener Repair",
+            "keywords": ["garage door opener repair", "garage door motor repair"],
+            "ads": [
+              {
+                "headline": "Garage Door Opener Repair Experts",
+                "description": "Trust Quick Response Garage Door Service for reliable garage door opener repair.",
+                "final_url": "https://quickresponsegaragedoor.com/opener-repair"
+              }
+            ]
+          }
+        ],
+        "bid_strategy": "CostPerConversion",
+        "targeting": {
+          "location": {
+            "target": "United States",
+            "excluded": []
+          },
+          "language": "English"
+        }
+      },
+      {
+        "name": "QRGDS - Search - Installation",
+        "type": "Search",
+        "goal": "Conversions",
+        "budget_percentage": 20,
+        "ad_groups": [
+          {
+            "name": "Garage Door Installation",
+            "keywords": ["garage door installation", "new garage door installation"],
+            "ads": [
+              {
+                "headline": "Professional Garage Door Installation",
+                "description": "Get a new garage door installed by Quick Response Garage Door Service.",
+                "final_url": "https://quickresponsegaragedoor.com/installation"
+              }
+            ]
+          },
+          {
+            "name": "Garage Door Replacement",
+            "keywords": ["garage door replacement", "replace garage door"],
+            "ads": [
+              {
+                "headline": "Garage Door Replacement Services",
+                "description": "Replace your old garage door with a new one from Quick Response Garage Door Service.",
+                "final_url": "https://quickresponsegaragedoor.com/replacement"
+              }
+            ]
+          }
+        ],
+        "bid_strategy": "CostPerConversion",
+        "targeting": {
+          "location": {
+            "target": "United States",
+            "excluded": []
+          },
+          "language": "English"
+        }
+      },
+      {
+        "name": "QRGDS - Search - Maintenance",
+        "type": "Search",
+        "goal": "Conversions",
+        "budget_percentage": 15,
+        "ad_groups": [
+          {
+            "name": "Garage Door Maintenance",
+            "keywords": ["garage door maintenance", "garage door tune-up"],
+            "ads": [
+              {
+                "headline": "Regular Garage Door Maintenance",
+                "description": "Keep your garage door running smoothly with maintenance services from Quick Response Garage Door Service.",
+                "final_url": "https://quickresponsegaragedoor.com/maintenance"
+              }
+            ]
+          },

@@ -1,0 +1,79 @@
+{
+  "campaign_level_negatives": [
+    "free",
+    "DIY",
+    "tutorial",
+    "video",
+    "youtube",
+    "blog",
+    "review",
+    "rating",
+    "price",
+    "cost",
+    "estimate",
+    "quote",
+    "cheap",
+    "discount",
+    "coupon",
+    "sale",
+    "clearance",
+    "auction",
+    "used",
+    "refurbished",
+    "rental",
+    "lease"
+  ],
+  "ad_group_level_negatives": {
+    "Garage Door Repair": [
+      "installation",
+      "maintenance",
+      "replacement"
+    ],
+    "Garage Door Installation": [
+      "repair",
+      "maintenance",
+      "service"
+    ],
+    "Garage Door Maintenance": [
+      "repair",
+      "installation",
+      "replacement"
+    ]
+  },
+  "competitor_brand_negatives": [
+    "Home Depot",
+    "Lowe's",
+    "Sears",
+    "Best Buy",
+    "Walmart",
+    "Amazon",
+    "Wayfair",
+    "Overstock"
+  ],
+  "informational_negatives": [
+    "what is",
+    "how to",
+    "why",
+    "when",
+    "where",
+    "who",
+    "history of",
+    "types of",
+    "benefits of",
+    "importance of"
+  ],
+  "job_seeker_negatives": [
+    "job",
+    "career",
+    "employment",
+    "salary",
+    "benefits",
+    "training",
+    "certification",
+    "license",
+    "resume",
+    "interview"
+  ],
+  "estimated_waste_saved": "$500-$1000 per month",
+  "total_negative_count": 73
+}

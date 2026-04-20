@@ -1,0 +1,86 @@
+{
+  "daily_report_template": {
+    "sections": [
+      {
+        "title": "Quick Response Garage Door Service Daily Pulse Report",
+        "description": "Daily performance metrics for Quick Response Garage Door Service",
+        "cards": [
+          {
+            "title": "Total Conversions",
+            "value": "Total conversions for the day",
+            "metric": "conversions"
+          },
+          {
+            "title": "Conversion Rate",
+            "value": "Conversion rate for the day",
+            "metric": "conversion_rate"
+          },
+          {
+            "title": "Cost Per Conversion",
+            "value": "Cost per conversion for the day",
+            "metric": "cost_per_conversion"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Repair Performance",
+        "description": "Performance metrics for Garage Door Repair",
+        "cards": [
+          {
+            "title": "Total Garage Door Repair Conversions",
+            "value": "Total conversions for Garage Door Repair",
+            "metric": "garage_door_repair_conversions"
+          },
+          {
+            "title": "Garage Door Repair Conversion Rate",
+            "value": "Conversion rate for Garage Door Repair",
+            "metric": "garage_door_repair_conversion_rate"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Installation Performance",
+        "description": "Performance metrics for Garage Door Installation",
+        "cards": [
+          {
+            "title": "Total Garage Door Installation Conversions",
+            "value": "Total conversions for Garage Door Installation",
+            "metric": "garage_door_installation_conversions"
+          },
+          {
+            "title": "Garage Door Installation Conversion Rate",
+            "value": "Conversion rate for Garage Door Installation",
+            "metric": "garage_door_installation_conversion_rate"
+          }
+        ]
+      },
+      {
+        "title": "Garage Door Maintenance Performance",
+        "description": "Performance metrics for Garage Door Maintenance",
+        "cards": [
+          {
+            "title": "Total Garage Door Maintenance Conversions",
+            "value": "Total conversions for Garage Door Maintenance",
+            "metric": "garage_door_maintenance_conversions"
+          },
+          {
+            "title": "Garage Door Maintenance Conversion Rate",
+            "value": "Conversion rate for Garage Door Maintenance",
+            "metric": "garage_door_maintenance_conversion_rate"
+          }
+        ]
+      }
+    ]
+  },
+  "kpis_to_include": [
+    "conversions",
+    "conversion_rate",
+    "cost_per_conversion",
+    "garage_door_repair_conversions",
+    "garage_door_repair_conversion_rate",
+    "garage_door_installation_conversions",
+    "garage_door_installation_conversion_rate",
+    "garage_door_maintenance_conversions",
+    "garage_door_maintenance_conversion_rate"
+  ],
+  "format": "email|slack|dashboard",

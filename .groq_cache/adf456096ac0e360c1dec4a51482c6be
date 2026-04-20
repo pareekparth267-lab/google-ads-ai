@@ -1,0 +1,73 @@
+{
+  "feed_optimization_checklist": [
+    {
+      "check": "Verify and optimize product titles for better relevance and accuracy",
+      "status": "In Progress"
+    },
+    {
+      "check": "Ensure product descriptions are accurate and up-to-date",
+      "status": "To-Do"
+    },
+    {
+      "check": "Validate and optimize product images for high-quality and relevance",
+      "status": "In Progress"
+    },
+    {
+      "check": "Review and optimize product categories for correct assignment",
+      "status": "To-Do"
+    }
+  ],
+  "product_segmentation_strategy": [
+    {
+      "segment": "Garage Door Repair",
+      "criteria": "Product ID contains 'repair'",
+      "bid_strategy": "Target ROAS",
+      "target_roas": 150
+    },
+    {
+      "segment": "Garage Door Installation",
+      "criteria": "Product ID contains 'installation'",
+      "bid_strategy": "Target ROAS",
+      "target_roas": 120
+    },
+    {
+      "segment": "Garage Door Maintenance",
+      "criteria": "Product ID contains 'maintenance'",
+      "bid_strategy": "Target ROAS",
+      "target_roas": 180
+    }
+  ],
+  "smart_shopping_vs_standard": "Recommend Smart Shopping for its automated bidding and ad rotation features",
+  "merchant_center_health_checklist": [
+    {
+      "check": "Verify and optimize product feeds for accuracy and completeness",
+      "status": "In Progress"
+    },
+    {
+      "check": "Review and optimize product pricing for competitiveness",
+      "status": "To-Do"
+    },
+    {
+      "check": "Validate and optimize product availability for accurate inventory tracking",
+      "status": "In Progress"
+    }
+  ],
+  "title_optimization_formula": "Use a combination of product name, material, and features in the title",
+  "custom_label_strategy": {
+    "label1": "Garage Door Repair",
+    "label2": "Garage Door Installation",
+    "label3": "Garage Door Maintenance"
+  },
+  "competitive_price_monitoring": "Monitor and adjust prices based on competitor pricing and market trends",
+  "seasonal_feed_updates": [
+    {
+      "update": "Update product feeds with seasonal promotions and offers",
+      "season": "Summer"
+    },
+    {
+      "update": "Update product feeds with winter maintenance and repair offers",
+      "season": "Winter"
+    }
+  ],
+  "shopping_vs_pmax_recommendation": "Recommend Shopping campaigns over Pmax for better ad visibility and control"
+}

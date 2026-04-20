@@ -1,0 +1,58 @@
+{
+  "competitor_ad_patterns": [
+    {
+      "competitor_type": "Local Garage Door Repair Service",
+      "common_hooks": ["24/7 Emergency Service", "Free Estimates", "Certified Technicians"],
+      "offers_used": ["10% Off First Service", "Free Tune-Up with Repair"],
+      "weaknesses": ["Limited Online Presence", "Low Quality Website", "No Clear Call-to-Action"]
+    },
+    {
+      "competitor_type": "National Garage Door Installation Company",
+      "common_hooks": ["High-Quality Doors", "Competitive Pricing", "Wide Range of Styles"],
+      "offers_used": ["Free Consultation", "10% Off First Purchase"],
+      "weaknesses": ["No Local Presence", "High Pressure Sales Tactics", "Limited Warranty"]
+    },
+    {
+      "competitor_type": "Garage Door Maintenance Service",
+      "common_hooks": ["Regular Maintenance", "Preventative Care", "Extended Door Life"],
+      "offers_used": ["Discounted Packages", "Monthly Subscription"],
+      "weaknesses": ["Limited Brand Recognition", "No Clear Differentiation", "No Emergency Service"]
+    }
+  ],
+  "counter_strategies": [
+    {
+      "counter_type": "Emphasize Local Expertise",
+      "headline_template": "Phoenix's Trusted Garage Door Repair Experts",
+      "description_template": "Our certified technicians have years of experience serving the Phoenix community.",
+      "unique_angle": "Highlight local roots and community involvement"
+    },
+    {
+      "counter_type": "Offer Competitive Pricing",
+      "headline_template": "Affordable Garage Door Repair in Phoenix",
+      "description_template": "We offer competitive pricing without sacrificing quality.",
+      "unique_angle": "Focus on value and affordability"
+    },
+    {
+      "counter_type": "Differentiate through Quality",
+      "headline_template": "Experience the Best in Garage Door Repair",
+      "description_template": "Our commitment to quality sets us apart from the competition.",
+      "unique_angle": "Emphasize high-quality materials and craftsmanship"
+    }
+  ],
+  "differentiation_opportunities": [
+    "Emphasize eco-friendly and energy-efficient garage door options",
+    "Highlight the importance of regular maintenance for door longevity",
+    "Offer a satisfaction guarantee or warranty on repairs and installations"
+  ],
+  "positioning_gaps": [
+    "Position as the go-to garage door repair service for Phoenix residents",
+    "Differentiate through local community involvement and charitable initiatives",
+    "Establish a strong online presence through a user-friendly website and engaging content"
+  ],
+  "messaging_recommendations": [
+    "Use clear and concise language to communicate services and offers",
+    "Emphasize the benefits of choosing a local, family-owned business",
+    "Highlight the expertise and qualifications of technicians and staff"
+  ],
+  "competitive_advantage_statements": [
+    "We're the trusted choice for

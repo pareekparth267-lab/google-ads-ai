@@ -1,0 +1,78 @@
+{
+  "spike_detection_rules": [
+    {
+      "metric": "leads_per_day",
+      "spike_threshold_pct": 200,
+      "drop_threshold_pct": 50,
+      "investigation_steps": [
+        {
+          "step": "Check for seasonal fluctuations",
+          "description": "Verify if the spike or drop is due to seasonal fluctuations in customer demand"
+        },
+        {
+          "step": "Review ad targeting and bidding",
+          "description": "Examine ad targeting and bidding strategies to ensure they are optimized for the current season"
+        },
+        {
+          "step": "Analyze landing page and ad copy",
+          "description": "Assess the relevance and effectiveness of the landing page and ad copy in driving leads"
+        }
+      ]
+    },
+    {
+      "metric": "lead_conversion_rate",
+      "spike_threshold_pct": 150,
+      "drop_threshold_pct": 30,
+      "investigation_steps": [
+        {
+          "step": "Review lead qualification process",
+          "description": "Verify that the lead qualification process is consistent and effective in identifying high-quality leads"
+        },
+        {
+          "step": "Analyze sales funnel and conversion rates",
+          "description": "Examine the sales funnel and conversion rates to identify bottlenecks and areas for improvement"
+        },
+        {
+          "step": "Check for changes in customer behavior",
+          "description": "Assess if there have been any changes in customer behavior that may be impacting lead conversion rates"
+        }
+      ]
+    }
+  ],
+  "conversion_health_checks": [
+    {
+      "check": "Lead volume",
+      "threshold": 10,
+      "description": "Verify that the lead volume is above the threshold of 10 leads per day"
+    },
+    {
+      "check": "Lead quality",
+      "threshold": 0.8,
+      "description": "Verify that the lead quality is above the threshold of 0.8 (80%)"
+    }
+  ],
+  "tracking_integrity_audit": [
+    {
+      "audit": "Conversion tracking code",
+      "description": "Verify that the conversion tracking code is properly installed and functioning on the website"
+    },
+    {
+      "audit": "Goal setup",
+      "description": "Verify that the conversion goal is properly set up and configured in Google Ads"
+    }
+  ],
+  "false_spike_indicators": [
+    {
+      "indicator": "Seasonal fluctuations",
+      "description": "Spike or drop in leads due to seasonal fluctuations in customer demand"
+    },
+    {
+      "indicator": "Changes in ad targeting and bidding",
+      "description": "Changes in ad targeting and bidding strategies that impact lead volume"
+    },
+    {
+      "indicator": "Landing page and ad copy changes",
+      "description": "Changes in landing page and ad copy that impact lead generation"
+    }
+  ],
+  "automated

@@ -1,0 +1,57 @@
+{
+  "qs_audit": {
+    "expected_ctr_factors": [
+      "Relevant ad copy with clear calls-to-action",
+      "Ad extensions such as site links and callouts",
+      "Highly targeted ad groups with specific keywords"
+    ],
+    "ad_relevance_factors": [
+      "Keyword-rich ad copy",
+      "Ad copy that matches the intent of the search query",
+      "Use of ad extensions to provide additional information"
+    ],
+    "landing_page_factors": [
+      "Relevant and useful content",
+      "Transparent and easy-to-navigate page structure",
+      "Prominent display of trust signals such as reviews and certifications"
+    ]
+  },
+  "optimization_actions": [
+    {
+      "action": "Implement keyword-rich ad copy with clear calls-to-action",
+      "impact": "high",
+      "effort": "easy",
+      "estimated_qs_gain": 2.5
+    },
+    {
+      "action": "Add site links and callouts to ads",
+      "impact": "medium",
+      "effort": "easy",
+      "estimated_qs_gain": 1.2
+    },
+    {
+      "action": "Restructure ad groups to be more targeted and specific",
+      "impact": "high",
+      "effort": "medium",
+      "estimated_qs_gain": 3.1
+    },
+    {
+      "action": "Optimize landing page content and structure for relevance and usability",
+      "impact": "high",
+      "effort": "hard",
+      "estimated_qs_gain": 4.2
+    }
+  ],
+  "landing_page_recommendations": [
+    "Use a clear and concise headline that matches the search query",
+    "Display trust signals such as reviews and certifications prominently",
+    "Use a simple and easy-to-use form for customers to request service",
+    "Provide a clear and detailed description of services offered"
+  ],
+  "ad_group_restructuring": [
+    "Create separate ad groups for 'garage door repair', 'garage door installation', and 'garage door maintenance'",
+    "Use targeted keywords such as 'emergency garage door repair' and 'garage door installation near me'",
+    "Use negative keywords to exclude irrelevant searches"
+  ],
+  "estimated_cpc_reduction_pct": 15
+}

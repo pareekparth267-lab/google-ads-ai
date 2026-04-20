@@ -1,0 +1,80 @@
+{
+  "remarketing_lists": [
+    {
+      "name": "Garage Door Service Abandoners",
+      "trigger": "Visited garage door service page but did not convert",
+      "membership_days": 180,
+      "message": "Don't let a broken garage door leave you stranded. Get a quote today!",
+      "bid_adjustment": "+20%"
+    },
+    {
+      "name": "Garage Door Repair Enquirers",
+      "trigger": "Submitted a garage door repair enquiry form",
+      "membership_days": 90,
+      "message": "Get your garage door repaired quickly and efficiently. Book now!",
+      "bid_adjustment": "+30%"
+    },
+    {
+      "name": "Garage Door Installation Considerers",
+      "trigger": "Visited garage door installation page but did not convert",
+      "membership_days": 120,
+      "message": "Upgrade your garage door with our expert installation services. Get a quote today!",
+      "bid_adjustment": "+25%"
+    },
+    {
+      "name": "Garage Door Maintenance Reminders",
+      "trigger": "Had a garage door maintenance service in the last 6 months",
+      "membership_days": 180,
+      "message": "Don't forget to schedule your next garage door maintenance service. Book now!",
+      "bid_adjustment": "+15%"
+    }
+  ],
+  "remarketing_sequence": [
+    {
+      "ad_group": "Garage Door Service Abandoners",
+      "ad": "Get a quote for garage door repair or installation",
+      "targeting": "Google Ads, Facebook Ads",
+      "frequency": "3 times in 30 days"
+    },
+    {
+      "ad_group": "Garage Door Repair Enquirers",
+      "ad": "Book your garage door repair service now",
+      "targeting": "Google Ads, Facebook Ads",
+      "frequency": "2 times in 15 days"
+    },
+    {
+      "ad_group": "Garage Door Installation Considerers",
+      "ad": "Get a quote for garage door installation",
+      "targeting": "Google Ads, Facebook Ads",
+      "frequency": "2 times in 30 days"
+    },
+    {
+      "ad_group": "Garage Door Maintenance Reminders",
+      "ad": "Schedule your next garage door maintenance service",
+      "targeting": "Email, Google Ads",
+      "frequency": "1 time in 60 days"
+    }
+  ],
+  "rlsa_strategy": {
+    "targeting": "Google Ads",
+    "bid_adjustment": "+20%",
+    "ad_scheduling": "Monday to Friday, 9am to 5pm"
+  },
+  "customer_match_strategy": {
+    "targeting": "Email, Phone",
+    "match_rate": "80%",
+    "bid_adjustment": "+30%"
+  },
+  "cross_sell_opportunities": [
+    {
+      "product": "Garage Door Accessories",
+      "targeting": "Customers who have purchased garage door installation services",
+      "message": "Complete your garage door with our range of accessories. Shop now!"
+    },
+    {
+      "product": "Garage Door Maintenance Plans",
+      "targeting": "Customers who have purchased garage door repair services",
+      "message": "Protect your garage door with our maintenance plans. Learn more!"
+    }
+  ],
+  "

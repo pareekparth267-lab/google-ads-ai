@@ -1,0 +1,72 @@
+{
+  "ctr_benchmarks_by_campaign_type": {
+    "search": "2.5%",
+    "display": "0.5%",
+    "pmax": "1%",
+    "shopping": "1.2%"
+  },
+  "drop_detection_rules": [
+    {
+      "metric": "CTR",
+      "drop_threshold_pct": 10,
+      "time_window_days": 7,
+      "action": "Notify campaign manager of potential CTR drop"
+    },
+    {
+      "metric": "CTR",
+      "drop_threshold_pct": 20,
+      "time_window_days": 30,
+      "action": "Pause campaign for review"
+    },
+    {
+      "metric": "CTR",
+      "drop_threshold_pct": 30,
+      "time_window_days": 90,
+      "action": "Re-evaluate campaign targeting and ad copy"
+    }
+  ],
+  "root_cause_investigation_checklist": [
+    "Check for ad copy changes or updates",
+    "Verify landing page quality and relevance",
+    "Review keyword targeting and match types",
+    "Analyze ad extensions and callouts",
+    "Check for any platform or account issues"
+  ],
+  "recovery_action_playbook": [
+    {
+      "step": 1,
+      "action": "Update ad copy to improve relevance and quality"
+    },
+    {
+      "step": 2,
+      "action": "Re-optimize keyword targeting and match types"
+    },
+    {
+      "step": 3,
+      "action": "Add or update ad extensions and callouts"
+    },
+    {
+      "step": 4,
+      "action": "Verify landing page quality and relevance"
+    },
+    {
+      "step": 5,
+      "action": "Monitor and adjust campaign settings as needed"
+    }
+  ],
+  "automated_alert_script": "if (CTR < 0.5%) { send_email('CTR drop alert', 'Campaign ID'); }",
+  "escalation_protocol": [
+    {
+      "threshold": 10,
+      "action": "Notify campaign manager and account owner"
+    },
+    {
+      "threshold": 20,
+      "action": "Escalate to senior campaign manager"
+    },
+    {
+      "threshold": 30,
+      "action": "Escalate to account owner and Google Ads support"
+    }
+  ]
+}

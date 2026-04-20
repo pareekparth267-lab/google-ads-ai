@@ -1,0 +1,71 @@
+{
+  "top_competitors": [
+    {
+      "name": "Garage Door Medics",
+      "estimated_ad_spend": "$5,000 - $10,000",
+      "strengths": [
+        "Strong online presence",
+        "Wide range of services offered",
+        "Positive customer reviews"
+      ],
+      "weaknesses": [
+        "Limited service area",
+        "Higher prices compared to competitors"
+      ],
+      "ad_copy_patterns": [
+        "Emergency garage door repair",
+        "24/7 service",
+        "Licensed and insured technicians"
+      ]
+    },
+    {
+      "name": "Phoenix Garage Door Repair",
+      "estimated_ad_spend": "$3,000 - $6,000",
+      "strengths": [
+        "Fast response times",
+        "Competitive pricing",
+        "Variety of payment options"
+      ],
+      "weaknesses": [
+        "Limited online presence",
+        "Fewer customer reviews"
+      ],
+      "ad_copy_patterns": [
+        "Same-day service",
+        "Free estimates",
+        "All major credit cards accepted"
+      ]
+    },
+    {
+      "name": "All Pro Garage Doors",
+      "estimated_ad_spend": "$2,000 - $4,000",
+      "strengths": [
+        "Family-owned and operated",
+        "Personalized service",
+        "Wide range of garage door brands"
+      ],
+      "weaknesses": [
+        "Smaller service area",
+        "Higher prices for certain services"
+      ],
+      "ad_copy_patterns": [
+        "Locally owned and operated",
+        "Personalized service",
+        "All major garage door brands"
+      ]
+    }
+  ],
+  "competitive_gaps": [
+    "Limited focus on eco-friendly and energy-efficient garage door solutions",
+    "Opportunity to offer more comprehensive maintenance packages",
+    "Gap in online review management and reputation building"
+  ],
+  "recommended_differentiators": [
+    "Eco-friendly garage door solutions",
+    "Comprehensive maintenance packages",
+    "Advanced technology integration (e.g. smart garage door openers)",
+    "Exceptional customer service and review management"
+  ],
+  "average_competitor_cpc": 12.50,
+  "market_saturation": "medium"
+}

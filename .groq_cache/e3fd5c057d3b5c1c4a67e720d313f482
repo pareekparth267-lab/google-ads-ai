@@ -1,0 +1,80 @@
+{
+  "local_campaign_setup": {
+    "campaign_type": "LOCAL",
+    "goal": "Store visits|Calls|Directions",
+    "bid_strategy": "Target CPA",
+    "budget": 500
+  },
+  "google_business_profile_optimization": [
+    {
+      "profile_name": "Quick Response Garage Door Service",
+      "profile_description": "Reliable garage door repair, installation, and maintenance services in Phoenix, AZ.",
+      "profile_hours": [
+        {
+          "day": "Monday",
+          "opening_hours": "9:00 AM - 5:00 PM"
+        },
+        {
+          "day": "Tuesday",
+          "opening_hours": "9:00 AM - 5:00 PM"
+        },
+        {
+          "day": "Wednesday",
+          "opening_hours": "9:00 AM - 5:00 PM"
+        },
+        {
+          "day": "Thursday",
+          "opening_hours": "9:00 AM - 5:00 PM"
+        },
+        {
+          "day": "Friday",
+          "opening_hours": "9:00 AM - 5:00 PM"
+        },
+        {
+          "day": "Saturday",
+          "opening_hours": "9:00 AM - 1:00 PM"
+        },
+        {
+          "day": "Sunday",
+          "opening_hours": "Closed"
+        }
+      ],
+      "profile_address": {
+        "street_address": "1234 N 44th St",
+        "city": "Phoenix",
+        "state": "AZ",
+        "zip": "85008",
+        "country": "USA"
+      },
+      "profile_categories": [
+        "Garage Door Repair",
+        "Garage Door Installation",
+        "Garage Door Maintenance"
+      ],
+      "profile_attributes": [
+        {
+          "attribute_name": "Services",
+          "attribute_value": "24/7 Emergency Services"
+        },
+        {
+          "attribute_name": "Certifications",
+          "attribute_value": "Certified Garage Door Technicians"
+        }
+      ]
+    }
+  ],
+  "local_search_ads_strategy": "Target high-intent keywords such as 'garage door repair near me' and 'garage door installation Phoenix AZ'.",
+  "location_extensions_setup": [
+    {
+      "extension_name": "Service Area",
+      "extension_value": "Phoenix, AZ and surrounding areas"
+    },
+    {
+      "extension_name": "Hours",
+      "extension_value": "Monday - Friday: 9:00 AM - 5:00 PM, Saturday: 9:00 AM - 1:00 PM"
+    }
+  ],
+  "call_extensions_for_local": "Set up a call extension to allow customers to call the business directly from the ad.",
+  "radius_targeting_recommendations": {
+    "target_radius": "5 miles",
+    "target_locations": "Phoenix, AZ and surrounding areas"

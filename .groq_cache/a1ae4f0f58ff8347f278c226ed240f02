@@ -1,0 +1,83 @@
+{
+  "spike_detection_rules": [
+    {
+      "metric": "Conversion Rate",
+      "spike_threshold_pct": 20,
+      "drop_threshold_pct": 15,
+      "investigation_steps": [
+        "Check for any changes in ad targeting or ad copy",
+        "Verify that landing page is functioning correctly",
+        "Review recent changes to the website or landing page"
+      ]
+    },
+    {
+      "metric": "Cost Per Conversion",
+      "spike_threshold_pct": 30,
+      "drop_threshold_pct": 25,
+      "investigation_steps": [
+        "Check for any changes in ad targeting or ad copy",
+        "Verify that landing page is functioning correctly",
+        "Review recent changes to the website or landing page"
+      ]
+    },
+    {
+      "metric": "Conversion Value",
+      "spike_threshold_pct": 40,
+      "drop_threshold_pct": 35,
+      "investigation_steps": [
+        "Check for any changes in ad targeting or ad copy",
+        "Verify that landing page is functioning correctly",
+        "Review recent changes to the website or landing page"
+      ]
+    }
+  ],
+  "conversion_health_checks": [
+    {
+      "check_name": "Conversion Rate Check",
+      "check_threshold": 0.05,
+      "check_interval": "Weekly"
+    },
+    {
+      "check_name": "Cost Per Conversion Check",
+      "check_threshold": 50,
+      "check_interval": "Monthly"
+    },
+    {
+      "check_name": "Conversion Value Check",
+      "check_threshold": 100,
+      "check_interval": "Bi-Weekly"
+    }
+  ],
+  "tracking_integrity_audit": [
+    {
+      "audit_name": "Conversion Tracking Integrity",
+      "audit_threshold": 90,
+      "audit_interval": "Quarterly"
+    }
+  ],
+  "false_spike_indicators": [
+    {
+      "indicator_name": "Holiday Season",
+      "indicator_threshold": "December 15th to January 15th"
+    },
+    {
+      "indicator_name": "Seasonal Promotion",
+      "indicator_threshold": "June 1st to August 31st"
+    }
+  ],
+  "automated_investigation_workflow": [
+    {
+      "workflow_name": "Spike Investigation Workflow",
+      "workflow_steps": [
+        "Notify stakeholders of potential issue",
+        "Review conversion data for anomalies",
+        "Verify landing page functionality"
+      ]
+    }
+  ],
+  "stakeholder_notification_template": "Subject: Potential Conversion Issue - Quick Response Garage Door Service\nDear [Stakeholder],\nA potential issue has been detected with conversion tracking for Quick Response Garage Door Service. Please review the attached report for details.\nBest regards, [Your Name]",
+  "data_reconciliation_process": [
+    {
+      "process_name": "Conversion Data Reconciliation",
+      "process_steps": [
+        "

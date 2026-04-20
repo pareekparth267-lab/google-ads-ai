@@ -1,0 +1,81 @@
+{
+  "common_disapproval_reasons": [
+    {
+      "policy": "Misleading or deceptive content",
+      "risk_level": "high",
+      "auto_fix_possible": true,
+      "fix_procedure": "Remove words like 'best', 'guaranteed', or 'lowest price'. Ensure the ad copy accurately reflects the service provided."
+    },
+    {
+      "policy": "Prohibited keywords",
+      "risk_level": "medium",
+      "auto_fix_possible": true,
+      "fix_procedure": "Remove keywords like 'free', 'discount', or 'limited time offer'. Replace with more descriptive and accurate keywords."
+    },
+    {
+      "policy": "Lack of transparency",
+      "risk_level": "low",
+      "auto_fix_possible": true,
+      "fix_procedure": "Add a clear call-to-action (CTA) and ensure the ad copy includes the business's name, location, and contact information."
+    },
+    {
+      "policy": "Excessive use of capitalization",
+      "risk_level": "low",
+      "auto_fix_possible": true,
+      "fix_procedure": "Use proper capitalization and avoid excessive use of capital letters in the ad copy."
+    }
+  ],
+  "pre_submission_audit_checklist": [
+    {
+      "check": "Verify business name and location match the ad copy",
+      "required": true
+    },
+    {
+      "check": "Ensure ad copy accurately reflects the service provided",
+      "required": true
+    },
+    {
+      "check": "Verify contact information is up-to-date and accurate",
+      "required": true
+    },
+    {
+      "check": "Check for excessive use of capitalization",
+      "required": false
+    }
+  ],
+  "sensitive_category_flags": [
+    {
+      "category": "Home services",
+      "flags": [
+        {
+          "flag": "Garage door repair",
+          "sensitivity": "medium"
+        },
+        {
+          "flag": "Garage door installation",
+          "sensitivity": "medium"
+        },
+        {
+          "flag": "Garage door maintenance",
+          "sensitivity": "low"
+        }
+      ]
+    }
+  ],
+  "appeal_process_guide": [
+    {
+      "step": "Review the ad disapproval reason and policy",
+      "description": "Understand the policy and reason for the ad disapproval"
+    },
+    {
+      "step": "Submit a clear and concise appeal",
+      "description": "Provide evidence and explanations to support the appeal"
+    },
+    {
+      "step": "Wait for Google Ads review and response",
+      "description": "Allow Google Ads to review the appeal and respond with a decision"
+    }
+  ],
+  "compliant_rewrite_templates": [
+    {
+      "template": "Get reliable garage door repair services from Quick Response Garage Door Service. Contact us at [phone
